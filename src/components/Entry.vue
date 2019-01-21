@@ -7,14 +7,51 @@
       </v-btn>
     </v-list-tile-avatar>
 
-    <v-list-tile-content>
-      <v-list-tile-title>
-        {{name}}: {{value}}{{currency}}
-      </v-list-tile-title>
-      <v-list-tile-sub-title>
-        {{translateevery()}} {{steps>1 ? steps : ""}} {{translate(typename(type)+(steps > 1 ? "s." : ".  ")).replace(" ", String.fromCharCode(160))}}
-      </v-list-tile-sub-title>
-    </v-list-tile-content>
+      <v-list-tile-content>
+        <v-dialog v-model="dialog" max-width="600px">
+          <span slot="activator">
+            <v-list-tile-title>
+              {{name}}: {{value}}{{currency}}
+            </v-list-tile-title>
+            <v-list-tile-sub-title>
+              {{translateevery()}} {{steps>1 ? steps : ""}} {{translate(typename(type)+(steps > 1 ? "s." : "."))}}
+            </v-list-tile-sub-title>
+          </span>
+          <v-card>
+            <v-card-title>
+              <span class="headline">{{translate("Edit")}}: {{name}}</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container grid-list-md>
+                <v-layout wrap>
+                  <v-flex xs12 sm6>
+                    <v-text-field :label="translate('Name')" v-model="name" required></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6>
+                    <v-text-field :label="translate('Amount')" :prefix="currency" v-model="value" required></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6>
+                    <v-switch color="red darken-2" :label="!spending ? translate('Income') : translate('Expense')" v-model="spending"></v-switch>
+                  </v-flex>
+                  <v-flex xs12 sm6>
+                    <v-autocomplete
+                        :items="[1, 2, 3, 4, 5, 6, 7, 8]"
+                        :label="translate('')"
+                        v-model="steps"
+                        :prefix="translateevery()"
+                        :suffix="translate(typename(type)+(steps > 1 ? 's.' : '.'))"
+                    ></v-autocomplete>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-2" flat @click="dialog = false">Close</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-list-tile-content>
 
     <v-list-tile-action>
       <v-layout row>
@@ -43,23 +80,33 @@
       return {
         translation: {
           "de": {
+            "Edit": "Bearbeiten",
             "Expense": "Ausgabe",
             "Income": "Einnahme",
+            "Amount": "Betrag",
+            "Name": "Name",
             "days.": "Tag.",
             "weeks.": "Woche.",
             "months.": "Monat.",
-            "years.": " Jahr.",
-            "day.  ": " Tag.",
-            "week.  ": " Woche.",
-            "month.  ": " Monat.",
-            "year.  ": "  Jahr."
+            "years.": "Jahr.",
+            "day.": "Tag.",
+            "week.": "Woche.",
+            "month.": "Monat.",
+            "year.": "Jahr.",
+            "How many times per ": "Wie oft pro "
           }
-        }
+        },
+        dialog: false
       }
     },
     computed: {
-      name() {
-        return this.$store.getters[this.type][this.identity].name;
+      name: {
+        get() {
+          return this.$store.getters[this.type][this.identity].name;
+        },
+        set(value) {
+          this.$store.dispatch('updatename', {identity: this.identity, type: this.type, value: value})
+        }
       },
       spending: {
         get() {

@@ -66,7 +66,7 @@
       <h3>
         <span v-if="values.length>0">
           <span v-if="steps>1">{{steps}}-</span>
-          {{translate(firstuppercase(type))}} {{translate("average")}}: {{formatcurrency(averages.slice(-1)[0]/steps)}}
+          {{firstuppercase(translate(type))}} {{translate("average")}}: {{formatcurrency(averages.slice(-1)[0]*steps)}}
         </span>
       </h3>
       <v-spacer></v-spacer>

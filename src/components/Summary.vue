@@ -13,11 +13,15 @@
       </v-btn>
     </v-card-title>
     <v-card-text v-if="expand">
-      <v-layout>
+      <v-layout row wrap>
         <v-flex md2>
-          {{translate("Your budget is")}}:
+          {{translate("Your free budget is")}}:
           <v-list>
             <v-list-tile v-for="item in ['daily', 'weekly', 'monthly', 'yearly']" :key="item.title">
+              <v-list-tile-avatar>
+                <v-icon v-if="balance < 0" color="red darken-2">fas {{icontype(item)}}</v-icon>
+                <v-icon v-else color="blue darken-2">fas {{icontype(item)}}</v-icon>
+              </v-list-tile-avatar>
               <v-list-tile-content>
                 <v-list-tile-title>{{formatcurrency(Math.abs(balance/multiplier[item]))}} {{translate(item)}}.</v-list-tile-title>
               </v-list-tile-content>
@@ -25,6 +29,7 @@
           </v-list>
         </v-flex>
         <v-flex md4>
+          {{translate("Your monthly budged consists of the following parts:")}}
           <chart :height="200" :chart-data="data" :options="options"></chart>
         </v-flex>
       </v-layout>
@@ -149,6 +154,7 @@
         expand: true,
         translation: {
           "de": {
+            "Your monthly budged consists of the following parts:": "Ihr monatliches Budget setzt sich folgendermaßen zusammen:",
             "daily": "pro Tag",
             "weekly": "pro Woche",
             "monthly": "pro Monat",
@@ -156,7 +162,7 @@
             "Summary: You": "Kurzfassung: Sie",
             "are making": "erhalten",
             "are losing": "verlieren",
-            "Your budget is": "Ihr Budget beträgt",
+            "Your free budget is": "Ihr verfügbares Budget entspricht",
             "Incomes": "Einnahmen",
             "Expenses": "Ausgaben",
             "Daily": "Täglich",
@@ -170,6 +176,15 @@
     methods: {
       helper(type) {
         return [this.incomes[type] * this.multiplier[type], this.expenses[type] * this.multiplier[type]];
+      },
+      icontype(type) {
+        switch (type) {
+          case "daily": return "fa-calendar-day";
+          case "weekly": return "fa-calendar-week";
+          case "monthly": return "fa-calendar-alt";
+          case "yearly": return "fa-calendar-check ";
+        }
+        return "";
       }
     },
     mixins: [Settings]

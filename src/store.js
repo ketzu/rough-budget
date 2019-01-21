@@ -164,6 +164,9 @@ export default new Vuex.Store({
     updatesteps(state, payload) {
       state.entries[payload.type][payload.identity].steps = payload.value;
     },
+    updatename(state, payload) {
+      state.entries[payload.type][payload.identity].name = payload.value;
+    },
     newentry(state, {type, name}) {
       Vue.set(state.entries[type], name, {name: name, value: 0, steps: 1, spending: false});
     },
@@ -220,6 +223,9 @@ export default new Vuex.Store({
     },
     updatesteps({commit}, payload) {
       commit('updatesteps', payload);
+    },
+    updatename({commit}, payload) {
+      commit('updatename', payload);
     },
     newentry({commit}, payload) {
       commit('newentry', payload);
