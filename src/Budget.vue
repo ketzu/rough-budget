@@ -84,7 +84,7 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-        <a href="https://paypal.me/roughbudget"><v-btn flat>{{translate("Donate")}}</v-btn></a>
+        <a href="https://paypal.me/roughbudget" target="_blank"><v-btn flat>{{translate("Donate")}}</v-btn></a>
         <a href="mailto:contact@rough-budget.com"> <v-btn flat>{{translate("Contact")}}</v-btn></a>
       </v-layout>
     </v-footer>
