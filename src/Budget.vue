@@ -12,8 +12,7 @@
 
     <v-navigation-drawer fixed v-model="sidemenu" app right>
       <settings></settings>
-      <!--<account v-if="showaccount"></account>-->
-      <!--<feedback v-if="showfeedback" v-on:feedback-submit="showfeedback = false"></feedback>-->
+      <!--<account></account>-->
     </v-navigation-drawer>
 
     <v-content class="blue darken-2">
@@ -31,8 +30,8 @@
         </v-layout>
       </v-container>
     </v-content>
-    <v-footer app dark height="auto">
-      <v-layout align-center justify-center row fill-height>
+    <v-footer app dark height="auto" absolute>
+      <v-layout justify-center row wrap>
         <v-dialog v-model="dialog" scrollable max-width="600px">
           <v-btn slot="activator" flat>{{translate("Privacy Policy")}}</v-btn>
           <v-card>
@@ -84,7 +83,7 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-        <a href="https://paypal.me/roughbudget" target="_blank"><v-btn flat>{{translate("Donate")}}</v-btn></a>
+        <a href="https://paypal.me/roughbudget" target="_blank"><v-btn flat>{{translate("Support us")}}</v-btn></a>
         <a href="mailto:contact@rough-budget.com"> <v-btn flat>{{translate("Contact")}}</v-btn></a>
       </v-layout>
     </v-footer>
@@ -98,7 +97,6 @@
   import Category from './components/Category.vue'
   import Summary from './components/Summary.vue'
   import Tracking from './components/Tracking.vue'
-  import Feedback from './components/Feedback.vue'
   import Account from './components/Account.vue'
 
   export default {
@@ -107,9 +105,8 @@
       'settings': Settings,
       'category': Category,
       'tracking': Tracking,
-      'summary-chart': Summary,
-      'feedback': Feedback,
-      'account': Account
+      'summary-chart': Summary
+      //'account': Account
     },
     data() {
       return {
@@ -134,7 +131,7 @@
         ],
         translation: {
           "de": {
-            "Donate": "Spenden",
+            "Support us": "Unterstütze uns",
             "Contact": "Kontakt",
             "Privacy Policy": "Datenschutz & Impressum",
             "These list all your incomes and expenses per day, week, month and year.": "Hier werden ihre Einkünfte und Ausgaben pro Tag, Woche, Monat und Jahr aufgelistet.",

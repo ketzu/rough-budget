@@ -1,13 +1,8 @@
 <template>
-  <v-list dense>
+  <v-container>
     <v-layout row align-center wrap>
-      <v-flex xs10>
-        <v-subheader>
-          <label for="lang">{{translate("Language")}}:</label>
-        </v-subheader>
-      </v-flex>
-      <v-flex xs10 offset-xs1>
-        <v-select id="lang" v-model="lang" :items="['en','de']">
+      <v-flex xs12>
+        <v-select id="lang" v-model="lang" :items="['en','de']" :label="translate('Language')">
           <template slot="selection" slot-scope="data">
             {{ langname(data.item) }}
           </template>
@@ -16,44 +11,11 @@
           </template>
         </v-select>
       </v-flex>
-      <v-flex xs10>
-        <v-subheader>
-          <label for="currency">{{translate("Currency")}}:</label>
-        </v-subheader>
-      </v-flex>
-      <v-flex xs10 offset-xs1>
-        <v-select id="currency" v-model="currency" :items="['$','€','£','₩','¥']"/>
+      <v-flex xs12>
+        <v-select id="currency" v-model="currency" :items="['$','€','£','₩','¥']" :label="translate('Currency')"/>
       </v-flex>
     </v-layout>
-  </v-list>
-  <!--<div class="col-md-2">
-    <label for="separator">{{translate("Separator")}}:</label>
-    <div class="input-group md-2">
-      <select v-model="separator" id="separator" class="custom-select">
-        <option value=",">,</option>
-        <option value=".">.</option>
-        <option value="-">-</option>
-      </select>
-    </div>
-  </div>
-  <div class="col-md-2">
-    <label for="precision">{{translate("Precision")}}:</label>
-    <div class="input-group md-2">
-      <select v-model="precision" id="precision" class="custom-select">
-        <option value="0">0{{currency}}</option>
-        <option value="2">0.00{{currency}}</option>
-      </select>
-    </div>
-  </div>
-  <div class="col-md-2">
-    <label for="window">{{translate("Window size for average")}}:</label>
-    <div class="input-group md-2">
-      <input id="window" ref="input" type="number" class="form-control" min="1" v-model="window">
-      <div class="input-group-append">
-        <span class="input-group-text">{{translate("Days")}}</span>
-      </div>
-    </div>
-  </div>-->
+  </v-container>
 </template>
 
 <script>
