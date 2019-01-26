@@ -36,7 +36,7 @@
         </v-layout>
       </v-container>
     </v-content>
-    <v-footer app dark height="auto" absolute>
+    <v-footer app dark height="auto">
       <v-layout justify-center row wrap>
         <v-dialog v-model="dialog" scrollable max-width="600px">
           <v-btn slot="activator" flat>{{translate("Privacy Policy")}}</v-btn>
