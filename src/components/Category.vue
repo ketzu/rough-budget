@@ -8,8 +8,6 @@
         <v-icon v-else large color="blue darken-2">fas fa-angle-down</v-icon>
       </v-btn>
     </v-card-title>
-    <v-list two-line>
-    </v-list>
 
     <v-list two-line v-if="expand">
       <budget-entry v-bind:key="key" :identity="key" :type="type"  v-for="(entry, key) in entries"></budget-entry>
@@ -23,6 +21,7 @@
         </v-text-field>
       </v-list-tile>
     </v-list>
+
     <v-card-actions class="pt-0">
       <v-spacer></v-spacer>
       <h2>
