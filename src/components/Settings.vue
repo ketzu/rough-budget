@@ -2,6 +2,9 @@
   <v-container>
     <v-layout row align-center wrap>
       <v-flex xs12>
+        <v-switch color="blue darken-2" :label="dual ? translate('Income/Expenses') : translate('Daily to Yearly')" v-model="dual"></v-switch>
+      </v-flex>
+      <v-flex xs12>
         <v-select id="lang" v-model="lang" :items="['en','de']" :label="translate('Language')">
           <template slot="selection" slot-scope="data">
             {{ langname(data.item) }}
@@ -30,7 +33,9 @@
             "Window size for average": "Fenstergröße des Mittelwerts",
             "Separator": "Trennzeichen",
             "Currency": "Währung",
-            "Days": "Tage"
+            "Days": "Tage",
+            "Income/Expenses": "Einnahmen/Ausgaben",
+            "Daily to Yearly": "Täglich bis Jährlich"
           }
         }
       }
@@ -43,26 +48,34 @@
     computed: {
       currency: {
         get() {
-          return this.$store.getters.currency
+          return this.$store.getters.currency;
         },
         set(value) {
-          this.$store.dispatch('setcurrency', value)
+          this.$store.dispatch('setcurrency', value);
+        }
+      },
+      dual: {
+        get() {
+          return this.$store.getters.dual;
+        },
+        set(value) {
+          this.$store.dispatch('setdual', value);
         }
       },
       precision: {
         get() {
-          return this.$store.getters.precision
+          return this.$store.getters.precision;
         },
         set(value) {
-          this.$store.dispatch('setprecision', value)
+          this.$store.dispatch('setprecision', value);
         }
       },
       window: {
         get() {
-          return this.$store.getters.window
+          return this.$store.getters.window;
         },
         set(value) {
-          this.$store.dispatch('setwindow', value)
+          this.$store.dispatch('setwindow', value);
         }
       },
       lang: {

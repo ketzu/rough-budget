@@ -3,12 +3,45 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex);
 
+let filter = (obj, fn) => {
+  let result = {};
+  for(const key in obj) {
+    if(obj.hasOwnProperty(key) && fn(obj[key]))
+      result[key] = obj[key];
+  }
+  return result;
+};
+
+let typed = (obj, type) => {
+  let result = {};
+  for(const key in obj) {
+    if(obj.hasOwnProperty(key)){
+      result[key] = obj[key];
+      result[key]["type"] = type;
+    }
+  }
+  return result;
+};
+
 let acummulator = (obj) => Object.keys(obj).map(key => obj[key].value/obj[key].steps*(obj[key].spending?-1:1)).reduce((sum, x) => sum+x, 0);
 let spendingacummulator = (obj, spending) => Object.keys(obj).map(key => spending===obj[key].spending? obj[key].value/obj[key].steps:0).reduce((sum, x) => sum+x, 0);
+let fullacummulator = (obj, spending) => {
+  return spendingacummulator(obj.daily, spending)*365+
+    spendingacummulator(obj.weekly, spending)*365/7+
+    spendingacummulator(obj.monthly, spending)*12+
+    spendingacummulator(obj.yearly, spending);
+};
+
+let mergedentries = entries => {
+  return {...typed(entries.daily, "daily"),
+    ...typed(entries.weekly,"weekly"),
+    ...typed(entries.monthly, "monthly"),
+    ...typed(entries.yearly,"yearly")};
+};
 
 export default new Vuex.Store({
   state: {
-    settings: { currency: '$', lang: 'en', precision: 0, separator: ',', window: 14, locale: 'en-US' },
+    settings: { currency: '$', lang: 'en', precision: 0, separator: ',', window: 14, locale: 'en-US', dual: false },
     multiplier: { daily: 365/12, weekly: 365/(7*12), monthly: 1, yearly: 1/12 },
     // what entries should look like: {name: 'Job', spending: false, value: 0, steps: 1}
     entries: {
@@ -22,6 +55,7 @@ export default new Vuex.Store({
   },
   getters: {
     currency(state) { return state.settings.currency; },
+    dual(state) { return state.settings.dual; },
     locale(state) { return state.settings.locale; },
     localecurrency(state) { return state.settings.localecurrency; },
     precision(state) { return state.settings.precision; },
@@ -32,6 +66,12 @@ export default new Vuex.Store({
     daily(state) {   return state.entries.daily;   },
     weekly(state) {  return state.entries.weekly;  },
     monthly(state) { return state.entries.monthly; },
+    income(state) {
+      return filter(mergedentries(state.entries), obj => !obj.spending);
+    },
+    expense(state) {
+      return filter(mergedentries(state.entries), obj => obj.spending);
+    },
     yearly(state) {  return state.entries.yearly;  },
     trackings(state) {  return state.trackings; },
     multiplier(state) {  return state.multiplier; },
@@ -47,7 +87,9 @@ export default new Vuex.Store({
         daily: acummulator(state.entries.daily),
         weekly: acummulator(state.entries.weekly),
         monthly: acummulator(state.entries.monthly),
-        yearly: acummulator(state.entries.yearly)
+        yearly: acummulator(state.entries.yearly),
+        income: fullacummulator(state.entries, false)/12,
+        expense: (-1)*fullacummulator(state.entries, true)/12
       }
     },
     incomes(state) {
@@ -143,6 +185,9 @@ export default new Vuex.Store({
     setcurrency(state, symbol) {
       state.settings.currency = symbol;
     },
+    setdual(state, dual) {
+      state.settings.dual = dual;
+    },
     setprecision(state, precision) {
       state.settings.precision = precision;
     },
@@ -167,8 +212,8 @@ export default new Vuex.Store({
     updatename(state, payload) {
       state.entries[payload.type][payload.identity].name = payload.value;
     },
-    newentry(state, {type, name}) {
-      Vue.set(state.entries[type], name, {name: name, value: 0, steps: 1, spending: false});
+    newentry(state, {type, name, spending}) {
+      Vue.set(state.entries[type], name, {name: name, value: 0, steps: 1, spending: spending});
     },
     delentry(state, {type, identity}) {
       Vue.delete(state.entries[type], identity);
@@ -186,14 +231,22 @@ export default new Vuex.Store({
     deltracking(state, index) {
       Vue.delete(state.trackings, index);
     },
-    addtrackentry(state, {name, value, identity, type, date}) {
+    addtrackentry(state, {value, identity, type, date}) {
       const tracking = state.trackings.map(obj => obj.type+obj.name).findIndex((value) => value===(type+identity));
       state.trackings[tracking].values.push({value: value, date: date});
     },
-    removetrackentry(state, {name, value, identity, type, date}) {
+    removetrackentry(state, {value, identity, type, date}) {
       const tracking = state.trackings.map(obj => obj.type+obj.name).findIndex((value) => value===(type+identity));
       const element = state.trackings[tracking].values.findIndex((elem) => elem.value===value && elem.date===date);
       state.trackings[tracking].values.splice(element, 1);
+    },
+    moveentry(state, {identity, type, to}) {
+      let newidentity = identity;
+      while(state.entries[to].hasOwnProperty(newidentity)) {
+        newidentity = newidentity.concat(Math.floor(" "+Math.random()*1000));
+      }
+      state.entries[to][newidentity] = state.entries[type][identity];
+      Vue.delete(state.entries[type], identity);
     }
   },
   actions: {
@@ -202,6 +255,9 @@ export default new Vuex.Store({
     },
     setcurrency({commit}, symbol) {
       commit('setcurrency', symbol);
+    },
+    setdual({commit}, dual) {
+      commit('setdual', dual);
     },
     setprecision({commit}, precision) {
       commit('setprecision', precision);
@@ -244,6 +300,9 @@ export default new Vuex.Store({
     },
     removetrackentry({commit}, payload) {
       commit('removetrackentry', payload);
+    },
+    moveentry({commit}, payload) {
+      commit('moveentry', payload);
     }
   }
 })

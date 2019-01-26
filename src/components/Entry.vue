@@ -14,7 +14,7 @@
               {{name}}: {{value}}{{currency}}
             </v-list-tile-title>
             <v-list-tile-sub-title>
-              {{translateevery()}} {{steps>1 ? steps : ""}} {{translate(typename(type)+(steps > 1 ? "s." : "."))}}
+              {{translateevery()}} {{steps>1 ? steps : ""}} {{typeshow(type)}}
             </v-list-tile-sub-title>
           </span>
           <v-card>
@@ -30,17 +30,46 @@
                   <v-flex xs12 sm6>
                     <v-text-field :label="translate('Amount')" :prefix="currency" v-model="value" required></v-text-field>
                   </v-flex>
-                  <v-flex xs12 sm6>
+                  <v-flex xs12 sm4>
                     <v-switch color="red darken-2" :label="!spending ? translate('Income') : translate('Expense')" v-model="spending"></v-switch>
                   </v-flex>
-                  <v-flex xs12 sm6>
-                    <v-autocomplete
+                  <v-flex xs12 sm4>
+                    <v-select
                         :items="[1, 2, 3, 4, 5, 6, 7, 8]"
                         :label="translate('')"
                         v-model="steps"
                         :prefix="translateevery()"
-                        :suffix="translate(typename(type)+(steps > 1 ? 's.' : '.'))"
-                    ></v-autocomplete>
+                    >
+                      <template
+                          slot="selection"
+                          slot-scope="{item}"
+                      >
+                        <v-spacer></v-spacer>
+                        <span v-if="item>1">
+                          {{ item }}
+                        </span>
+                      </template>
+                    </v-select>
+                  </v-flex>
+                  <v-flex xs12 sm4>
+                    <v-select
+                        :items="['daily', 'weekly', 'monthly', 'yearly']"
+                        :label="translate('')"
+                        v-model="date"
+                    >
+                      <template
+                          slot="selection"
+                          slot-scope="{item}"
+                      >
+                        {{ typeshow(item) }}
+                      </template>
+                      <template
+                          slot="item"
+                          slot-scope="{item}"
+                      >
+                        {{ typeshow(item) }}
+                      </template>
+                    </v-select>
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -105,7 +134,18 @@
           return this.$store.getters[this.type][this.identity].name;
         },
         set(value) {
-          this.$store.dispatch('updatename', {identity: this.identity, type: this.type, value: value})
+          this.$store.dispatch('updatename', {identity: this.identity, type: this.type, value: value});
+        }
+      },
+      date: {
+        get() {
+          return this.type;
+        },
+        set(value) {
+          if(this.type !== value) {
+            this.$store.dispatch('moveentry', {identity: this.identity, type: this.type, to: value});
+            this.dialog = false;
+          }
         }
       },
       spending: {
@@ -113,23 +153,23 @@
           return this.$store.getters[this.type][this.identity].spending
         },
         set(value) {
-          this.$store.dispatch('updatespending', {identity: this.identity, type: this.type, value: value})
+          this.$store.dispatch('updatespending', {identity: this.identity, type: this.type, value: value});
         }
       },
       value: {
         get() {
-          return this.$store.getters[this.type][this.identity].value
+          return this.$store.getters[this.type][this.identity].value;
         },
         set(value) {
-          this.$store.dispatch('updatevalue', {identity: this.identity, type: this.type, value: value})
+          this.$store.dispatch('updatevalue', {identity: this.identity, type: this.type, value: value});
         }
       },
       steps: {
         get() {
-          return this.$store.getters[this.type][this.identity].steps
+          return this.$store.getters[this.type][this.identity].steps;
         },
         set(value) {
-          this.$store.dispatch('updatesteps', {identity: this.identity, type: this.type, value: value})
+          this.$store.dispatch('updatesteps', {identity: this.identity, type: this.type, value: value});
         }
       }
     },
@@ -148,6 +188,9 @@
           case "yearly":
             return "Jedes";
         }
+      },
+      typeshow(typename) {
+        return this.translate(this.typename(typename)+(this.steps > 1 ? 's.' : '.'))
       }
     },
     mixins: [Settings]

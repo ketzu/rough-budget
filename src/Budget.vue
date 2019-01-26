@@ -21,8 +21,14 @@
           <v-flex md12 v-if="showsummary">
             <summary-chart></summary-chart>
           </v-flex>
-          <v-flex :key="key" md3 v-for="(entry,key) in entries">
+          <v-flex :key="key" md3 v-for="(entry,key) in entries" v-if="!dual">
             <category :type="key"></category>
+          </v-flex>
+          <v-flex md6 v-if="dual">
+            <category type="income"></category>
+          </v-flex>
+          <v-flex md6 v-if="dual">
+            <category type="expense"></category>
           </v-flex>
           <v-flex :key="index" md3 v-for="(entry, index) in trackings">
             <tracking :index="index"></tracking>
@@ -164,6 +170,11 @@
           return "Andere personenbezogenen Daten, insbeondere alle eingaben innerhalb der Applikation, werden nur dann zum Server übertragen, falls Sie einen Account verwenden. Diese Daten werden mit ihrem Passwort verschlüsselt und können von uns nicht ohne dieses entschlüsselt werden. Ihr passwort wird in keiner von uns lesbaren form übertragen.";
         }else{
           return "Other identifying data, especially all data used withing the app, is only transmitted to the server if you register an account. If you do so, the data will be encrypted with your password and can not be decrypted by us. Your password is not transmitted in any form that can be read by us.";
+        }
+      },
+      dual: {
+        get() {
+          return this.$store.getters.dual;
         }
       }
     },

@@ -10,7 +10,7 @@
     </v-card-title>
 
     <v-list two-line v-if="expand">
-      <budget-entry v-bind:key="key" :identity="key" :type="type"  v-for="(entry, key) in entries"></budget-entry>
+      <budget-entry v-bind:key="key" :identity="key" :type="type_distinction(entry)"  v-for="(entry, key) in entries"></budget-entry>
       <v-list-tile>
         <v-text-field v-model="newname" @keyup.enter="addEntry()"
                       :append-icon="newname != '' ? 'fa-plus' : ''"
@@ -25,7 +25,7 @@
     <v-card-actions class="pt-0">
       <v-spacer></v-spacer>
       <h2>
-        {{balance>0? "+" : "" }}{{formatcurrency(balance)}}
+        {{balance>0? "+" : "" }}{{formatcurrency(balance)}}{{balanceadd}}
       </h2>
     </v-card-actions>
   </v-card>
@@ -54,7 +54,14 @@
         return this.type;
       },
       title() {
+        if(this.type === "income" || this.type === "expense")
+          return this.firstuppercase(this.translate(this.type+"s"));
         return this.firstuppercase(this.translate(this.type));
+      },
+      balanceadd() {
+        if(this.type === "income" || this.type === "expense")
+          return this.translate(" per month");
+        return "";
       }
     },
     data() {
@@ -67,7 +74,12 @@
             "weekly": "wöchentliches",
             "monthly": "monatliches",
             "yearly": "jährliches",
-            "New entry": "Neuer Eintrag"
+            "New entry": "Neuer Eintrag",
+            "income": "einnahme",
+            "expense": "ausgabe",
+            "incomes": "einnahmen",
+            "expenses": "ausgaben",
+            " per month": " pro Monat"
           }
         }
       }
@@ -77,9 +89,25 @@
         if (this.newname in this.entries || this.newname === '') {
           // already exists or empty, do error stuff
         } else {
-          this.$store.dispatch('newentry', {type: this.type, name: this.newname});
+          if(this.type === "income" || this.type === "expense") {
+            // need another exists check in this case, as data model sucks for income/expense mode
+            if(this.newname in this.$store.getters["expense"]){
+              console.log("TRIGGERRED");
+              return;
+            }
+            // Use monthly as default entry
+            this.$store.dispatch('newentry', {type: "monthly", name: this.newname, spending: this.type==="expense"});
+          }else{
+            // use expense as default
+            this.$store.dispatch('newentry', {type: this.type, name: this.newname, spending: true});
+          }
           this.newname = '';
         }
+      },
+      type_distinction(entry) {
+        if(this.type === "daily" || this.type === "weekly" || this.type === "monthly" || this.type === "yearly")
+          return this.type;
+        return entry.type;
       }
     },
     mixins: [Settings]
