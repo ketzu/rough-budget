@@ -5,9 +5,9 @@
         <a href="#"><b><img src="banner.png" height="30" alt="Rough-Budget" width="204"></b></a>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <button id="sidemenutoggle" type="button" @click="sidemenu = !sidemenu">
+      <v-btn icon id="sidemenutoggle" @click="sidemenu = !sidemenu">
         <v-icon>fas fa-bars</v-icon>
-      </button>
+      </v-btn>
     </v-toolbar>
 
     <v-navigation-drawer fixed v-model="sidemenu" app right>
