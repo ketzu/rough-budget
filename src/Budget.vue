@@ -11,8 +11,10 @@
     </v-toolbar>
 
     <v-navigation-drawer fixed v-model="sidemenu" app right>
-      <settings></settings>
-      <!--<account></account>-->
+      <v-container>
+        <settings></settings>
+        <account></account>
+      </v-container>
     </v-navigation-drawer>
 
     <v-content class="blue darken-2">
@@ -111,8 +113,8 @@
       'settings': Settings,
       'category': Category,
       'tracking': Tracking,
-      'summary-chart': Summary
-      //'account': Account
+      'summary-chart': Summary,
+      'account': Account
     },
     data() {
       return {

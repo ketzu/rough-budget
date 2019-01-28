@@ -1,9 +1,5 @@
 <template>
-  <v-container>
-    <v-layout row align-center wrap>
-      <v-flex xs12>
-        <v-switch color="blue darken-2" :label="dual ? translate('Income/Expenses') : translate('Daily to Yearly')" v-model="dual"></v-switch>
-      </v-flex>
+  <v-layout row align-center wrap>
       <v-flex xs12>
         <v-select id="lang" v-model="lang" :items="['en','de']" :label="translate('Language')">
           <template slot="selection" slot-scope="data">
@@ -17,8 +13,11 @@
       <v-flex xs12>
         <v-select id="currency" v-model="currency" :items="['$','€','£','₩','¥']" :label="translate('Currency')"/>
       </v-flex>
-    </v-layout>
-  </v-container>
+    <v-flex xs12>
+      <h3>Beta Features:</h3>
+      <v-switch color="blue darken-2" :label="dual ? translate('Income/Expenses') : translate('Daily to Yearly')" v-model="dual"></v-switch>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
