@@ -84,6 +84,8 @@
     name: "account",
     data() {
       return {
+        authkey: "",
+        enckey: "",
         confirmation: "",
         showpw: false,
         name: "",
@@ -107,7 +109,7 @@
     },
     methods: {
       deleteAccount() {
-        if(this.confirmation !== "") {
+        if (this.confirmation !== "") {
           alert("DELETED!");
           this.dialog = false;
           this.loggedin = false;
@@ -119,6 +121,7 @@
       },
       login() {
         this.$store.dispatch('setcredentials', {username: this.name, password: this.password, loggedin: true});
+        this.createKeys();
         // Dispatch login call
       },
       logout() {
@@ -127,18 +130,47 @@
       store() {
         // dispatch store operation
       },
+      createKeys() {
+        let self = this;
+        window.crypto.subtle.importKey("raw",(new TextEncoder()).encode("my password"),{name: "PBKDF2",},false,["deriveKey"])
+          .then((key) => {
+            // Dervie Enc/Dec Key
+          window.crypto.subtle.deriveKey({name: "PBKDF2",salt: (new TextEncoder()).encode(this.name),iterations: 2500,hash: {name: "SHA-256"},},key,{name: "AES-GCM",length: 256,},false,["encrypt", "decrypt"])
+            .then(key => {
+              console.log(key);
+              self.enckey = key;
+            });
+            // Derive Auth Key
+          window.crypto.subtle.deriveKey({name: "PBKDF2",salt: (new TextEncoder()).encode(this.name),iterations: 5000,hash: {name: "SHA-256"},},key,{name: "AES-GCM",length: 256,},true,["encrypt", "decrypt"])
+            .then(key => {
+            window.crypto.subtle.exportKey("jwk",key)
+              .then(function (keydata) {
+                self.authkey = keydata.k;
+              })
+              .catch(function (err) {
+                console.error(err);
+              });
+          })
+        }).catch(function (err) {
+          console.error(err);
+        });
+      },
       load() {
         // dispatch load operation
         fetch("https://rough-budget.com/request.php", {
           method: 'POST', // or 'PUT'
           body: JSON.stringify(), // data can be `string` or {object}!
-          headers:{
+          headers: {
             'Content-Type': 'application/json'
           }
         }).then(res => res.json())
           .then(response => console.log('Success:', JSON.stringify(response)))
           .catch(error => console.error('Error:', error));
       }
+    },
+    mounted() {
+      this.name = this.$store.getters.username;
+      this.password = this.$store.getters.password;
     },
     mixins: [Settings]
   }
