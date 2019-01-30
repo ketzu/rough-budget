@@ -266,7 +266,7 @@ export default new Vuex.Store({
     },
     setcurrency({commit}, symbol) {
       commit('setcurrency', symbol);
-    }
+    },
     setdual({commit}, dual) {
       commit('setdual', dual);
     },
