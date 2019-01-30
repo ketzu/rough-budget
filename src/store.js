@@ -43,6 +43,9 @@ export default new Vuex.Store({
   state: {
     settings: { currency: '$', lang: 'en', precision: 0, separator: ',', window: 14, locale: 'en-US', dual: false },
     multiplier: { daily: 365/12, weekly: 365/(7*12), monthly: 1, yearly: 1/12 },
+    username: "",
+    password: "",
+    loggedin: false,
     // what entries should look like: {name: 'Job', spending: false, value: 0, steps: 1}
     entries: {
       daily: {},
@@ -56,6 +59,9 @@ export default new Vuex.Store({
   getters: {
     currency(state) { return state.settings.currency; },
     dual(state) { return state.settings.dual; },
+    username(state) { return state.username; },
+    password(state) { return state.password; },
+    loggedin(state) { return state.loggedin; },
     locale(state) { return state.settings.locale; },
     localecurrency(state) { return state.settings.localecurrency; },
     precision(state) { return state.settings.precision; },
@@ -188,6 +194,11 @@ export default new Vuex.Store({
     setdual(state, dual) {
       state.settings.dual = dual;
     },
+    setcredentials(state, {password, username, loggedin}) {
+      state.password = password;
+      state.username = username;
+      state.loggedin = loggedin;
+    },
     setprecision(state, precision) {
       state.settings.precision = precision;
     },
@@ -255,9 +266,12 @@ export default new Vuex.Store({
     },
     setcurrency({commit}, symbol) {
       commit('setcurrency', symbol);
-    },
+    }
     setdual({commit}, dual) {
       commit('setdual', dual);
+    },
+    setcredentials({commit}, payload) {
+      commit('setcredentials', payload);
     },
     setprecision({commit}, precision) {
       commit('setprecision', precision);

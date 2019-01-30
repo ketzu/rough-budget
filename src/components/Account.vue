@@ -84,11 +84,10 @@
     name: "account",
     data() {
       return {
-        password: "",
-        name: "",
         confirmation: "",
         showpw: false,
-        loggedin: false,
+        name: "",
+        password: "",
         dialog: false,
         translation: {
           "de": {
@@ -96,6 +95,13 @@
             "Please insert anything to proceed.": "Bitte tragen Sie etwas ein um fortzufahren.",
             "This will delete your account. This can not be undone.": "Dies wird ihren Account unwiederruflich löschen."
           }
+        }
+      }
+    },
+    computed: {
+      loggedin: {
+        get() {
+          return this.$store.getters.loggedin;
         }
       }
     },
@@ -112,16 +118,26 @@
         this.loggedin = true;
       },
       login() {
-        this.loggedin = true;
+        this.$store.dispatch('setcredentials', {username: this.name, password: this.password, loggedin: true});
+        // Dispatch login call
       },
       logout() {
-        this.loggedin = false;
+        this.$store.dispatch('setcredentials', {username: "", password: "", loggedin: false});
       },
       store() {
-
+        // dispatch store operation
       },
       load() {
-
+        // dispatch load operation
+        fetch("https://rough-budget.com/request.php", {
+          method: 'POST', // or 'PUT'
+          body: JSON.stringify(), // data can be `string` or {object}!
+          headers:{
+            'Content-Type': 'application/json'
+          }
+        }).then(res => res.json())
+          .then(response => console.log('Success:', JSON.stringify(response)))
+          .catch(error => console.error('Error:', error));
       }
     },
     mixins: [Settings]
