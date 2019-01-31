@@ -157,7 +157,7 @@
       },
       load() {
         // dispatch load operation
-        fetch("https://rough-budget.com/request.php", {
+        fetch("https://rough-budget.com/load.php", {
           method: 'POST', // or 'PUT'
           body: JSON.stringify(), // data can be `string` or {object}!
           headers: {
@@ -171,6 +171,9 @@
     mounted() {
       this.name = this.$store.getters.username;
       this.password = this.$store.getters.password;
+      if(this.loggedin) {
+        this.createKeys();
+      }
     },
     mixins: [Settings]
   }
