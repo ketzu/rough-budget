@@ -110,25 +110,56 @@
     methods: {
       deleteAccount() {
         if (this.confirmation !== "") {
-          alert("DELETED!");
           this.dialog = false;
           this.loggedin = false;
           this.confirmation = "";
+          this.formLike().then(formdata => {
+            fetch("./api/delete.php", {
+              method: 'POST',
+              body: formdata
+            }).then(res => res.json())
+              .then(response => console.log('Success:', JSON.stringify(response)))
+              .catch(error => console.error('Error:', error));
+          });
         }
       },
       registerAccount() {
         this.loggedin = true;
+        this.formLike().then(formdata => {
+          fetch("./api/register.php", {
+            method: 'POST',
+            body: formdata
+          }).then(res => res.json())
+            .then(response => console.log('Success:', JSON.stringify(response)))
+            .catch(error => console.error('Error:', error));
+        });
       },
       login() {
         this.$store.dispatch('setcredentials', {username: this.name, password: this.password, loggedin: true});
         this.createKeys();
         // Dispatch login call
+        this.formLike().then(formdata => {
+          fetch("./api/login.php", {
+            method: 'POST',
+            body: formdata
+          }).then(res => res.json())
+            .then(response => console.log('Success:', JSON.stringify(response)))
+            .catch(error => console.error('Error:', error));
+        });
       },
       logout() {
         this.$store.dispatch('setcredentials', {username: "", password: "", loggedin: false});
       },
       store() {
         // dispatch store operation
+        this.formLike(true).then(formdata => {
+          fetch("./api/load.php", {
+            method: 'POST',
+            body: formdata
+          }).then(res => res.json())
+            .then(response => console.log('Success:', JSON.stringify(response)))
+            .catch(error => console.error('Error:', error));
+        });
       },
       createKeys() {
         let self = this;
@@ -157,15 +188,37 @@
       },
       load() {
         // dispatch load operation
-        fetch("https://rough-budget.com/load.php", {
-          method: 'POST', // or 'PUT'
-          body: JSON.stringify(), // data can be `string` or {object}!
-          headers: {
-            'Content-Type': 'application/json'
+        this.formLike().then(formdata => {
+          fetch("./api/load.php", {
+            method: 'POST', // or 'PUT'
+            body: formdata
+          }).then(res => res.json())
+            .then(response => console.log('Success:', JSON.stringify(response)))
+            .catch(error => console.error('Error:', error));
+        });
+      },
+      formLike(includeContent = false) {
+        return new Promise(function(resolve, reject) {
+          // create a FormData version of name+key
+          let fd = new FormData();
+
+          fd.append("name", this.name);
+          fd.append("pass", this.authkey);
+          if(includeContent) {
+            window.crypto.subtle.encrypt({name: "AES-GCM",iv: window.crypto.getRandomValues(new Uint8Array(12)),tagLength: 128,},this.enckey,(new TextEncoder()).encode(this.$store.getters.json))
+              .then(encrypted => {
+                //returns an ArrayBuffer containing the encrypted data
+                fd.append("data", window.btoa(encrypted));
+                resolve(fd);
+              })
+              .catch(err =>{
+                console.log(err);
+                reject();
+              });
+          }else{
+            resolve(fd);
           }
-        }).then(res => res.json())
-          .then(response => console.log('Success:', JSON.stringify(response)))
-          .catch(error => console.error('Error:', error));
+        });
       }
     },
     mounted() {

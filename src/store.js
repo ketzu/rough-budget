@@ -57,6 +57,7 @@ export default new Vuex.Store({
     trackings: []
   },
   getters: {
+    json(state) {return JSON.stringify(state); },
     currency(state) { return state.settings.currency; },
     dual(state) { return state.settings.dual; },
     username(state) { return state.username; },
