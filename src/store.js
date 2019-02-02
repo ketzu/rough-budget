@@ -189,6 +189,12 @@ export default new Vuex.Store({
         );
       }
     },
+    loadstore(state, newstate) {
+      console.log(state);
+      console.log(newstate);
+      // Replace the state object with the loaded item
+      this.replaceState(Object.assign(state, newstate));
+    },
     setcurrency(state, symbol) {
       state.settings.currency = symbol;
     },
@@ -264,6 +270,9 @@ export default new Vuex.Store({
   actions: {
     initstore({commit}) {
       commit('initstore');
+    },
+    loadstore({commit}, payload) {
+      commit('loadstore', payload);
     },
     setcurrency({commit}, symbol) {
       commit('setcurrency', symbol);

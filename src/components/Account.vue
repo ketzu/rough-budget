@@ -126,7 +126,14 @@
               method: 'POST',
               body: formdata
             }).then(res => res.json())
-              .then(response => console.log('Success:', JSON.stringify(response)))
+              .then(({success}) => {
+                console.log("Load operation: "+success);
+                if(success) {
+                  // Load Success
+                }else{
+                  // Load failed
+                }
+              })
               .catch(error => console.error('Error:', error));
           });
         }
@@ -214,8 +221,8 @@
                 let encdata = b64tou8a(ivAndData[1]);
                 window.crypto.subtle.decrypt({name: "AES-GCM",iv: iv,tagLength: 128},self.enckey, encdata)
                   .then(decrypted => {
-                    let state = (new TextDecoder()).decode(decrypted);
-                    console.log(state);
+                    let state = JSON.parse((new TextDecoder()).decode(decrypted));
+                    this.$store.dispatch('loadstore', state);
                   })
                   .catch(err =>{
                     console.error("Decrypt error:", err);
