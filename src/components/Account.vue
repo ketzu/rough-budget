@@ -9,6 +9,7 @@
         <v-text-field
             :disabled="loggedin"
             v-model="name"
+            :error-messages="nameerrors"
             label="Name"
             single-line
         ></v-text-field>
@@ -80,6 +81,10 @@
 <script>
   import Settings from './settingsmixin'
 
+  const b64tou8a = base64_string => Uint8Array.from(atob(base64_string), c => c.charCodeAt(0));
+  const u8atob64 = uint8array => btoa(String.fromCharCode(...uint8array));
+  const abtob64 = ab => u8atob64(new Uint8Array(ab));
+
   export default {
     name: "account",
     data() {
@@ -89,13 +94,16 @@
         confirmation: "",
         showpw: false,
         name: "",
+        nameerrors: "",
         password: "",
         dialog: false,
         translation: {
           "de": {
             "Really delete your account?": "Account wirklich Löschen?",
             "Please insert anything to proceed.": "Bitte tragen Sie etwas ein um fortzufahren.",
-            "This will delete your account. This can not be undone.": "Dies wird ihren Account unwiederruflich löschen."
+            "This will delete your account. This can not be undone.": "Dies wird ihren Account unwiederruflich löschen.",
+            "Name already exists.": "Accountname existiert bereits.",
+            "Name or password wrong.": "Name oder Passwort falsch."
           }
         }
       }
@@ -123,19 +131,32 @@
           });
         }
       },
-      registerAccount() {
+      loginsuccess() {
         this.loggedin = true;
+        this.$store.dispatch('setcredentials', {username: this.name, password: this.password, loggedin: true});
+      },
+      registerAccount() {
+        let self = this;
+        this.nameerrors = "";
         this.formLike().then(formdata => {
           fetch("./api/register.php", {
             method: 'POST',
             body: formdata
           }).then(res => res.json())
-            .then(response => console.log('Success:', JSON.stringify(response)))
+            .then(({success}) => {
+              console.log("Register operation: "+success);
+              if(success) {
+                self.loginsuccess();
+              }else{
+                self.nameerrors = self.translate("Name already exists.");
+              }
+            })
             .catch(error => console.error('Error:', error));
         });
       },
       login() {
-        this.$store.dispatch('setcredentials', {username: this.name, password: this.password, loggedin: true});
+        let self = this;
+        this.nameerrors = "";
         this.createKeys();
         // Dispatch login call
         this.formLike().then(formdata => {
@@ -143,7 +164,14 @@
             method: 'POST',
             body: formdata
           }).then(res => res.json())
-            .then(response => console.log('Success:', JSON.stringify(response)))
+            .then(({success}) => {
+              console.log("Login operation: "+success);
+              if(success) {
+                self.loginsuccess();
+              }else{
+                self.nameerrors = self.translate("Name or password wrong.");
+              }
+            })
             .catch(error => console.error('Error:', error));
         });
       },
@@ -151,69 +179,96 @@
         this.$store.dispatch('setcredentials', {username: "", password: "", loggedin: false});
       },
       store() {
+        let self = this;
         // dispatch store operation
         this.formLike(true).then(formdata => {
-          fetch("./api/load.php", {
+          fetch("./api/store.php", {
             method: 'POST',
             body: formdata
           }).then(res => res.json())
-            .then(response => console.log('Success:', JSON.stringify(response)))
-            .catch(error => console.error('Error:', error));
-        });
+            .then(({success}) => {
+              console.log("Store operation: "+success);
+              if(success) {
+                // Store Success
+              }else{
+                // Store failed
+              }
+            })
+            .catch(error => console.error('Fetch Error:', error));
+        }).catch(error => console.error('FormLike Error:', error));
+      },
+      load() {
+        // dispatch load operation
+        let self = this;
+        this.formLike().then(formdata => {
+          fetch("./api/load.php", {
+            method: 'POST', // or 'PUT'
+            body: formdata
+          }).then(res => res.json())
+            .then(({success, data}) => {
+              console.log("Load operation: "+success);
+              if(success) {
+                // Load Success
+                let ivAndData = data.split(";");
+                let iv = b64tou8a(ivAndData[0]);
+                let encdata = b64tou8a(ivAndData[1]);
+                window.crypto.subtle.decrypt({name: "AES-GCM",iv: iv,tagLength: 128},self.enckey, encdata)
+                  .then(decrypted => {
+                    let state = (new TextDecoder()).decode(decrypted);
+                    console.log(state);
+                  })
+                  .catch(err =>{
+                    console.error("Decrypt error:", err);
+                  });
+              }else{
+                // Load failed
+              }
+            }).catch(error => console.error('Fetch error:', error));
+        }).catch(error => console.error('Formlike error:', error));
       },
       createKeys() {
         let self = this;
         window.crypto.subtle.importKey("raw",(new TextEncoder()).encode("my password"),{name: "PBKDF2",},false,["deriveKey"])
           .then((key) => {
             // Dervie Enc/Dec Key
-          window.crypto.subtle.deriveKey({name: "PBKDF2",salt: (new TextEncoder()).encode(this.name),iterations: 2500,hash: {name: "SHA-256"},},key,{name: "AES-GCM",length: 256,},false,["encrypt", "decrypt"])
-            .then(key => {
-              console.log(key);
-              self.enckey = key;
-            });
-            // Derive Auth Key
-          window.crypto.subtle.deriveKey({name: "PBKDF2",salt: (new TextEncoder()).encode(this.name),iterations: 5000,hash: {name: "SHA-256"},},key,{name: "AES-GCM",length: 256,},true,["encrypt", "decrypt"])
-            .then(key => {
-            window.crypto.subtle.exportKey("jwk",key)
-              .then(function (keydata) {
-                self.authkey = keydata.k;
-              })
-              .catch(function (err) {
-                console.error(err);
+            window.crypto.subtle.deriveKey({name: "PBKDF2",salt: (new TextEncoder()).encode(self.name),iterations: 2500,hash: {name: "SHA-256"},},key,{name: "AES-GCM",length: 256,},false,["encrypt", "decrypt"])
+              .then(key => {
+                self.enckey = key;
               });
-          })
-        }).catch(function (err) {
+            // Derive Auth Key
+            window.crypto.subtle.deriveKey({name: "PBKDF2",salt: (new TextEncoder()).encode(self.name),iterations: 5000,hash: {name: "SHA-256"},},key,{name: "AES-GCM",length: 256,},true,["encrypt", "decrypt"])
+              .then(key => {
+                window.crypto.subtle.exportKey("jwk",key)
+                  .then(function (keydata) {
+                    self.authkey = keydata.k;
+                  })
+                  .catch(function (err) {
+                    console.error(err);
+                  });
+              })
+          }).catch(function (err) {
           console.error(err);
         });
       },
-      load() {
-        // dispatch load operation
-        this.formLike().then(formdata => {
-          fetch("./api/load.php", {
-            method: 'POST', // or 'PUT'
-            body: formdata
-          }).then(res => res.json())
-            .then(response => console.log('Success:', JSON.stringify(response)))
-            .catch(error => console.error('Error:', error));
-        });
-      },
       formLike(includeContent = false) {
+        let self = this;
         return new Promise(function(resolve, reject) {
           // create a FormData version of name+key
           let fd = new FormData();
 
-          fd.append("name", this.name);
-          fd.append("pass", this.authkey);
+          fd.append("name", self.name);
+          fd.append("pass", self.authkey);
           if(includeContent) {
-            window.crypto.subtle.encrypt({name: "AES-GCM",iv: window.crypto.getRandomValues(new Uint8Array(12)),tagLength: 128,},this.enckey,(new TextEncoder()).encode(this.$store.getters.json))
+            let iv = window.crypto.getRandomValues(new Uint8Array(12));
+            window.crypto.subtle.encrypt({name: "AES-GCM",iv: iv},self.enckey,(new TextEncoder()).encode(self.$store.getters.json))
               .then(encrypted => {
                 //returns an ArrayBuffer containing the encrypted data
-                fd.append("data", window.btoa(encrypted));
+                fd.append("data", u8atob64(iv)+";"+abtob64(encrypted));
                 resolve(fd);
               })
-              .catch(err =>{
-                console.log(err);
-                reject();
+              .catch(err => {
+                console.error('Encrypt error:', err);
+                reject("Encryption failed.");
               });
           }else{
             resolve(fd);
