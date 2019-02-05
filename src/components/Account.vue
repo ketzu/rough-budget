@@ -164,23 +164,41 @@
       login() {
         let self = this;
         this.nameerrors = "";
-        this.createKeys();
-        // Dispatch login call
-        this.formLike().then(formdata => {
-          fetch("./api/login.php", {
-            method: 'POST',
-            body: formdata
-          }).then(res => res.json())
-            .then(({success}) => {
-              console.log("Login operation: "+success);
-              if(success) {
-                self.loginsuccess();
-              }else{
-                self.nameerrors = self.translate("Name or password wrong.");
-              }
-            })
-            .catch(error => console.error('Error:', error));
-        });
+
+        window.crypto.subtle.importKey("raw",(new TextEncoder()).encode("my password"),{name: "PBKDF2",},false,["deriveKey"])
+          .then((key) => {
+            // Dervie Enc/Dec Key
+            window.crypto.subtle.deriveKey({name: "PBKDF2",salt: (new TextEncoder()).encode(self.name),iterations: 2500,hash: {name: "SHA-256"},},key,{name: "AES-GCM",length: 256,},false,["encrypt", "decrypt"])
+              .then(key => {
+                self.enckey = key;
+              });
+            // Derive Auth Key
+            window.crypto.subtle.deriveKey({name: "PBKDF2",salt: (new TextEncoder()).encode(self.name),iterations: 5000,hash: {name: "SHA-256"},},key,{name: "AES-GCM",length: 256,},true,["encrypt", "decrypt"])
+              .then(key => {
+                window.crypto.subtle.exportKey("jwk",key)
+                  .then(keydata => {
+                    self.authkey = keydata.k;
+
+                    // Dispatch login call
+                    this.formLike().then(formdata => {
+                      fetch("./api/login.php", {
+                        method: 'POST',
+                        body: formdata
+                      }).then(res => res.json())
+                        .then(({success}) => {
+                          console.log("Login operation: "+success);
+                          if(success) {
+                            self.loginsuccess();
+                          }else{
+                            self.loggedin = false;
+                            self.nameerrors = self.translate("Name or password wrong.");
+                          }
+                        })
+                        .catch(error => console.error('Error:', error));
+                    });
+                  });
+              });
+          });
       },
       logout() {
         this.$store.dispatch('setcredentials', {username: "", password: "", loggedin: false});
@@ -233,30 +251,6 @@
             }).catch(error => console.error('Fetch error:', error));
         }).catch(error => console.error('Formlike error:', error));
       },
-      createKeys() {
-        let self = this;
-        window.crypto.subtle.importKey("raw",(new TextEncoder()).encode("my password"),{name: "PBKDF2",},false,["deriveKey"])
-          .then((key) => {
-            // Dervie Enc/Dec Key
-            window.crypto.subtle.deriveKey({name: "PBKDF2",salt: (new TextEncoder()).encode(self.name),iterations: 2500,hash: {name: "SHA-256"},},key,{name: "AES-GCM",length: 256,},false,["encrypt", "decrypt"])
-              .then(key => {
-                self.enckey = key;
-              });
-            // Derive Auth Key
-            window.crypto.subtle.deriveKey({name: "PBKDF2",salt: (new TextEncoder()).encode(self.name),iterations: 5000,hash: {name: "SHA-256"},},key,{name: "AES-GCM",length: 256,},true,["encrypt", "decrypt"])
-              .then(key => {
-                window.crypto.subtle.exportKey("jwk",key)
-                  .then(function (keydata) {
-                    self.authkey = keydata.k;
-                  })
-                  .catch(function (err) {
-                    console.error(err);
-                  });
-              })
-          }).catch(function (err) {
-          console.error(err);
-        });
-      },
       formLike(includeContent = false) {
         let self = this;
         return new Promise(function(resolve, reject) {
@@ -287,7 +281,7 @@
       this.name = this.$store.getters.username;
       this.password = this.$store.getters.password;
       if(this.loggedin) {
-        this.createKeys();
+        this.login();
       }
     },
     mixins: [Settings]
