@@ -127,11 +127,11 @@
               body: formdata
             }).then(res => res.json())
               .then(({success}) => {
-                console.log("Load operation: "+success);
+                console.log("Delete: "+success);
                 if(success) {
-                  // Load Success
+                  // delete Success
                 }else{
-                  // Load failed
+                  // delete failed
                 }
               })
               .catch(error => console.error('Error:', error));
@@ -152,7 +152,7 @@
             body: formdata
           }).then(res => res.json())
             .then(({success}) => {
-              console.log("Register operation: "+success);
+              console.log("Register: "+success);
               if(success) {
                 self.loginsuccess();
               }else{
@@ -173,7 +173,7 @@
             body: formdata
           }).then(res => res.json())
             .then(({success}) => {
-              console.log("Login operation: "+success);
+              console.log("Login: "+success);
               if(success) {
                 self.loginsuccess();
               }else{
@@ -197,7 +197,7 @@
             body: formdata
           }).then(res => res.json())
             .then(({success}) => {
-              console.log("Store operation: "+success);
+              console.log("Store: "+success);
               if(success) {
                 // Store Success
                 // flash check on button
@@ -217,7 +217,7 @@
             body: formdata
           }).then(res => res.json())
             .then(({success, data}) => {
-              console.log("Load operation: "+success);
+              console.log("Load: "+success);
               if(success) {
                 // Load Success
                 let ivAndData = data.split(";");
@@ -273,19 +273,18 @@
           if(self.enckey !== undefined && self.authkey !== undefined)
           {
             console.log("Keys do exist.");
-            console.log([self.authkey, self.enckey]);
             resolve([self.authkey, self.enckey]);
           }
           window.crypto.subtle.importKey("raw", (new TextEncoder()).encode("my password"), {name: "PBKDF2",}, false, ["deriveKey"])
             .then((key) => {
               // Dervie Enc/Dec Key
-              let enc = new Promise(resolve => {window.crypto.subtle.deriveKey({name: "PBKDF2",salt: (new TextEncoder()).encode(self.name),iterations: 2500,hash: {name: "SHA-256"},}, key, {name: "AES-GCM", length: 256,}, false, ["encrypt", "decrypt"])
+              let enc = new Promise(resolve => {window.crypto.subtle.deriveKey({name: "PBKDF2",salt: (new TextEncoder()).encode(self.password),iterations: 2500,hash: {name: "SHA-256"},}, key, {name: "AES-GCM", length: 256,}, false, ["encrypt", "decrypt"])
                 .then(key => {
                   self.enckey = key;
                   resolve(key);
               });});
               // Derive Auth Key
-              let auth = new Promise(resolve => {window.crypto.subtle.deriveKey({name: "PBKDF2",salt: (new TextEncoder()).encode(self.name),iterations: 5000,hash: {name: "SHA-256"},}, key, {name: "AES-GCM", length: 256,}, true, ["encrypt", "decrypt"])
+              let auth = new Promise(resolve => {window.crypto.subtle.deriveKey({name: "PBKDF2",salt: (new TextEncoder()).encode(self.password),iterations: 5000,hash: {name: "SHA-256"},}, key, {name: "AES-GCM", length: 256,}, true, ["encrypt", "decrypt"])
                 .then(key => {
                   window.crypto.subtle.exportKey("jwk", key)
                     .then(keydata => {
