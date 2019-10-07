@@ -16,7 +16,7 @@
                       :append-icon="newname != '' ? 'fa-plus' : ''"
                       @click:append="addEntry">
           <template slot="label">
-            {{translate("New entry")}}
+            New entry
           </template>
         </v-text-field>
       </v-list-item>
@@ -55,33 +55,19 @@
       },
       title() {
         if(this.type === "income" || this.type === "expense")
-          return this.firstuppercase(this.translate(this.type+"s"));
-        return this.firstuppercase(this.translate(this.type));
+          return this.firstuppercase(this.type+"s");
+        return this.firstuppercase(this.type);
       },
       balanceadd() {
         if(this.type === "income" || this.type === "expense")
-          return this.translate(" per month");
+          return  "per month";
         return "";
       }
     },
     data() {
       return {
         newname: '',
-        expand: true,
-        translation: {
-          "de": {
-            "daily": "tägliches",
-            "weekly": "wöchentliches",
-            "monthly": "monatliches",
-            "yearly": "jährliches",
-            "New entry": "Neuer Eintrag",
-            "income": "einnahme",
-            "expense": "ausgabe",
-            "incomes": "einnahmen",
-            "expenses": "ausgaben",
-            " per month": " pro Monat"
-          }
-        }
+        expand: true
       }
     },
     methods: {

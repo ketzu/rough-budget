@@ -2,8 +2,8 @@
   <v-card>
     <v-card-title>
       <h2>
-        {{translate("Summary: You")}} {{translate(makelose)}}
-        {{formatcurrency(Math.abs(balance))}} {{translate("monthly")}}.
+        Summary: You {{makelose}}
+        {{formatcurrency(Math.abs(balance))}} monthly.
       </h2>
 
       <v-spacer></v-spacer>
@@ -15,7 +15,7 @@
     <v-card-text v-if="expand">
       <v-layout row wrap>
         <v-flex md2>
-          {{translate("Your free budget is")}}:
+          Your free budget is:
           <v-list>
             <v-list-item v-for="item in ['daily', 'weekly', 'monthly', 'yearly']" :key="item.title">
               <v-list-item-avatar>
@@ -23,13 +23,13 @@
                 <v-icon v-else color="blue darken-2">fas {{icontype(item)}}</v-icon>
               </v-list-item-avatar>
               <v-list-item-content>
-                <v-list-item-title>{{formatcurrency(Math.abs(balance/multiplier[item]))}} {{translate(item)}}.</v-list-item-title>
+                <v-list-item-title>{{formatcurrency(Math.abs(balance/multiplier[item]))}} {{item}}.</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list>
         </v-flex>
         <v-flex md4>
-          {{translate("Your monthly budged consists of the following parts:")}}
+          Your monthly budged consists of the following parts:
           <chart :height="200" :chart-data="data" :options="options"></chart>
         </v-flex>
       </v-layout>
@@ -82,7 +82,7 @@
               stacked: true,
               ticks: {
                 beginAtZero: true,
-                callback: function (label, index, labels) {
+                callback: function (label) {
                   return label + self.currency;
                 }
               },
@@ -111,10 +111,10 @@
       },
       data() {
         return {
-          labels: [this.translate('Incomes'), this.translate('Expenses')],
+          labels: ['Incomes', 'Expenses'],
           datasets: [
             {
-              label: this.translate('Daily'),
+              label: 'Daily',
               backgroundColor: [
                 'hsl(202, 52.4%, 28.6%)',
                 'hsl(354, 70.5%, 33.5%)'
@@ -122,7 +122,7 @@
               data: this.daily
             },
             {
-              label: this.translate('Weekly'),
+              label: 'Weekly',
               backgroundColor: [
                 'hsl(202, 52.4%, 38.6%)',
                 'hsl(354, 70.5%, 43.5%)'
@@ -130,7 +130,7 @@
               data: this.weekly
             },
             {
-              label: this.translate('Monthly'),
+              label: 'Monthly',
               backgroundColor: [
                 'hsl(202, 52.4%, 48.6%)',
                 'hsl(354, 70.5%, 53.5%)'
@@ -138,7 +138,7 @@
               data: this.monthly
             },
             {
-              label: this.translate('Yearly'),
+              label: 'Yearly',
               backgroundColor: [
                 'hsl(202, 52.4%, 58.6%)',
                 'hsl(354, 70.5%, 63.5%)'
@@ -151,26 +151,7 @@
     },
     data() {
       return {
-        expand: true,
-        translation: {
-          "de": {
-            "Your monthly budged consists of the following parts:": "Ihr monatliches Budget setzt sich folgendermaßen zusammen:",
-            "daily": "pro Tag",
-            "weekly": "pro Woche",
-            "monthly": "pro Monat",
-            "yearly": "pro Jahr",
-            "Summary: You": "Kurzfassung: Sie",
-            "are making": "erhalten",
-            "are losing": "verlieren",
-            "Your free budget is": "Ihr verfügbares Budget entspricht",
-            "Incomes": "Einnahmen",
-            "Expenses": "Ausgaben",
-            "Daily": "Täglich",
-            "Weekly": "Wöchentlich",
-            "Monthly": "Monatlich",
-            "Yearly": "Jährlich"
-          }
-        }
+        expand: true
       }
     },
     methods: {

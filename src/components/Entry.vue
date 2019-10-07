@@ -15,32 +15,31 @@
               {{name}}: {{value}}{{currency}}
             </v-list-item-title>
             <v-list-item-subtitle>
-              {{translateevery()}} {{steps>1 ? steps : ""}} {{typeshow(type)}}
+              Every {{steps>1 ? steps : ""}} {{typeshow(type)}}
             </v-list-item-subtitle>
           </span>
           </template>
           <v-card>
             <v-card-title>
-              <span class="headline">{{translate("Edit")}}: {{name}}</span>
+              <span class="headline">Edit: {{name}}</span>
             </v-card-title>
             <v-card-text>
               <v-container grid-list-md>
                 <v-layout wrap>
                   <v-flex xs12 sm6>
-                    <v-text-field :label="translate('Name')" v-model="name" required></v-text-field>
+                    <v-text-field label="Name" v-model="name" required></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6>
-                    <v-text-field :label="translate('Amount')" :prefix="currency" v-model="value" required></v-text-field>
+                    <v-text-field label="Amount" :prefix="currency" v-model="value" required></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm4>
-                    <v-switch color="red darken-2" :label="!spending ? translate('Income') : translate('Expense')" v-model="spending"></v-switch>
+                    <v-switch color="red darken-2" :label="!spending ? 'Income' : 'Expense'" v-model="spending"></v-switch>
                   </v-flex>
                   <v-flex xs12 sm4>
                     <v-select
                         :items="[1, 2, 3, 4, 5, 6, 7, 8]"
-                        :label="translate('')"
                         v-model="steps"
-                        :prefix="translateevery()"
+                        prefix="Every"
                     >
                       <template
                           slot="selection"
@@ -56,7 +55,6 @@
                   <v-flex xs12 sm4>
                     <v-select
                         :items="['daily', 'weekly', 'monthly', 'yearly']"
-                        :label="translate('')"
                         v-model="date"
                     >
                       <template
@@ -109,24 +107,6 @@
     props: ['identity', 'type'],
     data() {
       return {
-        translation: {
-          "de": {
-            "Edit": "Bearbeiten",
-            "Expense": "Ausgabe",
-            "Income": "Einnahme",
-            "Amount": "Betrag",
-            "Name": "Name",
-            "days.": "Tag.",
-            "weeks.": "Woche.",
-            "months.": "Monat.",
-            "years.": "Jahr.",
-            "day.": "Tag.",
-            "week.": "Woche.",
-            "month.": "Monat.",
-            "year.": "Jahr.",
-            "How many times per ": "Wie oft pro "
-          }
-        },
         dialog: false
       }
     },
@@ -176,23 +156,8 @@
       }
     },
     methods: {
-      translateevery() {
-        if (this.lang === "en") {
-          return "Every";
-        }
-        switch (this.type) {
-          case "daily":
-            return "Jeden";
-          case "weekly":
-            return "Jede";
-          case "monthly":
-            return "Jeden";
-          case "yearly":
-            return "Jedes";
-        }
-      },
       typeshow(typename) {
-        return this.translate(this.typename(typename)+(this.steps > 1 ? 's.' : '.'))
+        return this.typename(typename)+(this.steps > 1 ? 's.' : '.');
       }
     },
     mixins: [Settings]

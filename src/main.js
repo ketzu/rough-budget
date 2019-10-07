@@ -20,12 +20,6 @@ Vue.mixin({
     firstuppercase(string) {
       return string.charAt(0).toUpperCase() + string.slice(1)
     },
-    translate(string) {
-      if (this.lang === "en") {
-        return string;
-      }
-      return this.translation[this.lang][string];
-    },
     typename(type) {
       switch (type) {
         case "daily":

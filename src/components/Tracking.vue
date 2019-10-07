@@ -2,7 +2,7 @@
   <v-card>
     <v-card-title>
       <h4>
-        {{title}} ({{translate(firstuppercase(type))}})
+        {{title}} ({{firstuppercase(type)}})
       </h4>
 
       <v-spacer></v-spacer>
@@ -58,7 +58,7 @@
                       :prefix="currency"
                       @click:append="addEntry">
           <template slot="label">
-            {{translate("New tracking data")}}
+            New tracking data
           </template>
         </v-text-field>
     </v-card-text>
@@ -66,12 +66,12 @@
       <h3>
         <span v-if="values.length>0">
           <span v-if="steps>1">{{steps}}-</span>
-          {{firstuppercase(translate(type))}} {{translate("average")}}: {{formatcurrency(averages.slice(-1)[0]*steps)}}
+          {{firstuppercase(type)}} average: {{formatcurrency(averages.slice(-1)[0]*steps)}}
         </span>
       </h3>
       <v-spacer></v-spacer>
       <v-btn text @click="putback()">
-        {{translate("Use value")}}
+        Use value
         <v-icon right small>fas fa-share-square</v-icon>
       </v-btn>
     </v-card-actions>
@@ -107,24 +107,7 @@
         modal: false,
         newentry: 0,
         edit: false,
-        newdate: dateformat(new Date()),
-        translation: {
-          "de": {
-            "average": "Durchschnitt",
-            "Entries": "Einträge",
-            "Current Budget": "Derzeitiger Plan",
-            "Daily": "Täglich",
-            "Weekly": "Wöchentlich",
-            "Monthly": "Monatlich",
-            "Yearly": "Jährlich",
-            "daily": "Täglicher",
-            "weekly": "Wöchentlicher",
-            "monthly": "Monatlicher",
-            "yearly": "Jährlicher",
-            "Use value": "Wert verwenden",
-            "New tracking data": "Neuer Datenpunkt"
-          }
-        }
+        newdate: dateformat(new Date())
       };
     },
     methods: {
@@ -193,7 +176,7 @@
             yAxes: [
               {
                 ticks: {
-                  callback: function (label, index, labels) {
+                  callback: function (label) {
                     return label + self.currency;
                   }
                 }
@@ -202,7 +185,7 @@
             xAxes: [
               {
                 ticks: {
-                  callback: function (label, index, labels) {
+                  callback: function (label) {
                     const obj = new Date(label);
                     switch (self.type) {
                       case 'daily':
@@ -226,7 +209,7 @@
           labels: this.times,
           datasets: [
             {
-              label: this.translate('Entries'),
+              label: 'Entries',
               showLine: false,
               borderColor: 'hsl(210, 50%, 50%)',
               backgroundColor: 'hsl(210, 50%, 50%)',
@@ -234,14 +217,14 @@
               data: this.datapoints // this.rawvalues.map(value => ({x: value.date, y: value.value}))
             },
             {
-              label: this.translate('Current Budget'),
+              label: 'Current Budget',
               fill: false,
               borderColor: 'hsl(0, 50%, 50%)',
               backgroundColor: 'hsl(0, 50%, 50%)',
               data: Array(this.times.length).fill(this.value)
             },
             {
-              label: this.firstuppercase(this.translate('average')),
+              label: this.firstuppercase('average'),
               borderColor: 'hsl(50, 50%, 50%)',
               backgroundColor: 'hsl(50, 50%, 50%)',
               fill: false,

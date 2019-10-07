@@ -43,15 +43,15 @@
         </template>
         <v-card>
           <v-card-title>
-            <span class="headline">{{translate("Really delete your account?")}}</span>
+            <span class="headline">Really delete your account?</span>
           </v-card-title>
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12>
-                  {{translate('This will delete your account. This can not be undone.')}}
+                  This will delete your account. This can not be undone.
                   <v-text-field
-                      :label="translate('Please insert anything to proceed.')"
+                      label="Please insert anything to proceed."
                       v-model="confirmation"
                       required
                   ></v-text-field>
@@ -98,16 +98,7 @@
         name: "",
         nameerrors: "",
         password: "",
-        dialog: false,
-        translation: {
-          "de": {
-            "Really delete your account?": "Account wirklich Löschen?",
-            "Please insert anything to proceed.": "Bitte tragen Sie etwas ein um fortzufahren.",
-            "This will delete your account. This can not be undone.": "Dies wird ihren Account unwiederruflich löschen.",
-            "Name already exists.": "Accountname existiert bereits.",
-            "Name or password wrong.": "Name oder Passwort falsch."
-          }
-        }
+        dialog: false
       }
     },
     computed: {
@@ -158,7 +149,7 @@
               if(success) {
                 self.loginsuccess();
               }else{
-                self.nameerrors = self.translate("Name already exists.");
+                self.nameerrors = "Name already exists.";
               }
             })
             .catch(error => console.error('Error:', error));
@@ -175,12 +166,11 @@
             body: formdata
           }).then(res => res.json())
             .then(({success}) => {
-              console.log("Login: "+success);
               if(success) {
                 self.loginsuccess();
               }else{
                 self.logout();
-                self.nameerrors = self.translate("Name or password wrong.");
+                self.nameerrors = "Name or password wrong.";
               }
             });
         });
@@ -191,7 +181,6 @@
         this.$store.dispatch('setcredentials', {username: "", password: "", loggedin: false});
       },
       store() {
-        let self = this;
         // dispatch store operation
         this.formLike(true).then(formdata => {
           fetch("https://rough-budget.com/api/store.php", {
