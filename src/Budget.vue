@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-toolbar dark fixed app>
+    <v-app-bar dark fixed app>
       <v-toolbar-title>
         <a href="#"><b><img src="banner.png" height="30" alt="Rough-Budget" width="204"></b></a>
       </v-toolbar-title>
@@ -8,7 +8,7 @@
       <v-btn icon id="sidemenutoggle" @click="sidemenu = !sidemenu">
         <v-icon>fas fa-bars</v-icon>
       </v-btn>
-    </v-toolbar>
+    </v-app-bar>
 
     <v-navigation-drawer fixed v-model="sidemenu" app right>
       <v-container>
@@ -41,7 +41,9 @@
     <v-footer app dark height="auto">
       <v-layout justify-center row wrap>
         <v-dialog v-model="dialog" scrollable max-width="600px">
-          <v-btn slot="activator" flat>{{translate("Privacy Policy")}}</v-btn>
+          <template v-slot:activator="{ on }">
+              <v-btn v-on="on" text>{{translate("Privacy Policy")}}</v-btn>
+          </template>
           <v-card>
             <v-card-title>{{translate("Privacy Policy")}}</v-card-title>
             <v-divider></v-divider>
@@ -87,12 +89,12 @@
             <v-divider></v-divider>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-2" flat @click="dialog = false">Close</v-btn>
+              <v-btn color="blue darken-2" text @click="dialog = false">Close</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
-        <a href="https://paypal.me/roughbudget" target="_blank"><v-btn flat>{{translate("Support us")}}</v-btn></a>
-        <a href="mailto:contact@rough-budget.com"> <v-btn flat>{{translate("Contact")}}</v-btn></a>
+        <a href="https://paypal.me/roughbudget" target="_blank"><v-btn text>{{translate("Support us")}}</v-btn></a>
+        <a href="mailto:contact@rough-budget.com"> <v-btn text>{{translate("Contact")}}</v-btn></a>
       </v-layout>
     </v-footer>
   </v-app>

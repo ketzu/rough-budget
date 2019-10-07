@@ -36,9 +36,11 @@
 
     <v-card-actions>
       <v-dialog v-model="dialog" persistent max-width="600px" v-if="loggedin">
-        <v-btn slot="activator">
-          Delete
-        </v-btn>
+        <template v-slot:activator="{ on }">
+          <v-btn v-on="on">
+            Delete
+          </v-btn>
+        </template>
         <v-card>
           <v-card-title>
             <span class="headline">{{translate("Really delete your account?")}}</span>

@@ -17,15 +17,15 @@
         <v-flex md2>
           {{translate("Your free budget is")}}:
           <v-list>
-            <v-list-tile v-for="item in ['daily', 'weekly', 'monthly', 'yearly']" :key="item.title">
-              <v-list-tile-avatar>
+            <v-list-item v-for="item in ['daily', 'weekly', 'monthly', 'yearly']" :key="item.title">
+              <v-list-item-avatar>
                 <v-icon v-if="balance < 0" color="red darken-2">fas {{icontype(item)}}</v-icon>
                 <v-icon v-else color="blue darken-2">fas {{icontype(item)}}</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{formatcurrency(Math.abs(balance/multiplier[item]))}} {{translate(item)}}.</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title>{{formatcurrency(Math.abs(balance/multiplier[item]))}} {{translate(item)}}.</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
           </v-list>
         </v-flex>
         <v-flex md4>

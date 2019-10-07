@@ -16,22 +16,22 @@
     <v-card-text>
       <chart :chart-data="data" :options="options" v-if="values.length>0"></chart>
       <v-list two-line v-if="edit">
-        <v-list-tile :key="index" v-for="(value,index) in rawvalues">
-          <v-list-tile-content>
-            <v-list-tile-title>
+        <v-list-item :key="index" v-for="(value,index) in rawvalues">
+          <v-list-item-content>
+            <v-list-item-title>
               {{(new Date(value.date)).toLocaleDateString()}}
-            </v-list-tile-title>
-            <v-list-tile-sub-title>
+            </v-list-item-title>
+            <v-list-item-subtitle>
               {{formatcurrency(value.value)}}
-            </v-list-tile-sub-title>
-          </v-list-tile-content>
+            </v-list-item-subtitle>
+          </v-list-item-content>
 
-          <v-list-tile-action>
+          <v-list-item-action>
             <v-btn icon ripple @click="removeEntry(value)">
               <v-icon color="grey darken-2">fas fa-times</v-icon>
             </v-btn>
-          </v-list-tile-action>
-        </v-list-tile>
+          </v-list-item-action>
+        </v-list-item>
       </v-list>
         <v-dialog
             ref="dialog"
@@ -49,8 +49,8 @@
           ></v-text-field>
           <v-date-picker v-model="newdate" scrollable>
             <v-spacer></v-spacer>
-            <v-btn flat color="primary" @click="modal = false">Cancel</v-btn>
-            <v-btn flat color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
+            <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
+            <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
           </v-date-picker>
         </v-dialog>
         <v-text-field v-model="newentry" @keyup.enter="addEntry()"
@@ -70,7 +70,7 @@
         </span>
       </h3>
       <v-spacer></v-spacer>
-      <v-btn flat @click="putback()">
+      <v-btn text @click="putback()">
         {{translate("Use value")}}
         <v-icon right small>fas fa-share-square</v-icon>
       </v-btn>

@@ -11,7 +11,7 @@
 
     <v-list two-line v-if="expand">
       <budget-entry v-bind:key="key" :identity="key" :type="type_distinction(entry)"  v-for="(entry, key) in entries"></budget-entry>
-      <v-list-tile>
+      <v-list-item>
         <v-text-field v-model="newname" @keyup.enter="addEntry()"
                       :append-icon="newname != '' ? 'fa-plus' : ''"
                       @click:append="addEntry">
@@ -19,7 +19,7 @@
             {{translate("New entry")}}
           </template>
         </v-text-field>
-      </v-list-tile>
+      </v-list-item>
     </v-list>
 
     <v-card-actions class="pt-0">

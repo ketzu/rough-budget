@@ -1,10 +1,10 @@
-import '@babel/polyfill'
 import Vue from 'vue'
-import './plugins/vuetify'
 import Budget from './Budget.vue'
 import store from './store'
+import vuetify from './plugins/vuetify'
+import '@babel/polyfill'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 Vue.mixin({
   methods: {
@@ -47,6 +47,7 @@ store.subscribe((mutation, state) => {
 
 new Vue({
   store,
+  vuetify,
   render: h => h(Budget),
   beforeCreate() {
     this.$store.commit('initstore');

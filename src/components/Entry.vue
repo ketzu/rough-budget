@@ -1,22 +1,24 @@
 <template>
-  <v-list-tile avatar>
-    <v-list-tile-avatar>
+  <v-list-item>
+    <v-list-item-avatar>
       <v-btn icon @click="spending = !spending">
         <v-icon large v-if="!spending" color="blue darken-2">fas fa-arrow-circle-up</v-icon>
         <v-icon large v-if="spending" color="red darken-2">fas fa-arrow-circle-down</v-icon>
       </v-btn>
-    </v-list-tile-avatar>
+    </v-list-item-avatar>
 
-      <v-list-tile-content>
+      <v-list-item-content>
         <v-dialog v-model="dialog" max-width="600px">
-          <span slot="activator">
-            <v-list-tile-title>
+          <template v-slot:activator="{ on }">
+          <span v-on="on">
+            <v-list-item-title>
               {{name}}: {{value}}{{currency}}
-            </v-list-tile-title>
-            <v-list-tile-sub-title>
+            </v-list-item-title>
+            <v-list-item-subtitle>
               {{translateevery()}} {{steps>1 ? steps : ""}} {{typeshow(type)}}
-            </v-list-tile-sub-title>
+            </v-list-item-subtitle>
           </span>
+          </template>
           <v-card>
             <v-card-title>
               <span class="headline">{{translate("Edit")}}: {{name}}</span>
@@ -76,13 +78,13 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-2" flat @click="dialog = false">Close</v-btn>
+              <v-btn color="blue darken-2" text @click="dialog = false">Close</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
-      </v-list-tile-content>
+      </v-list-item-content>
 
-    <v-list-tile-action>
+    <v-list-item-action>
       <v-layout row>
         <v-flex xs6>
           <v-btn icon ripple @click="$store.dispatch('newtracking', {type: type, identity: identity})">
@@ -95,8 +97,8 @@
           </v-btn>
         </v-flex>
       </v-layout>
-    </v-list-tile-action>
-  </v-list-tile>
+    </v-list-item-action>
+  </v-list-item>
 </template>
 
 <script>
