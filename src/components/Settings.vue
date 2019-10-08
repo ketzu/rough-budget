@@ -1,12 +1,9 @@
 <template>
-  <v-layout row align-center wrap>
-      <v-row xs12>
-        <v-select id="currency" v-model="currency" :items="['$','€','£','₩','¥']" label="Currency"/>
-      </v-row>
-    <v-row xs12>
-      <v-switch color="blue darken-2" :label="dual ? 'Income/Expenses' : 'Daily to Yearly'" v-model="dual"></v-switch>
-    </v-row>
-  </v-layout>
+  <v-row>
+    <v-col>
+      <v-select id="currency" v-model="currency" :items="['$','€','£','₩','¥']" label="Currency"/>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

@@ -5,14 +5,8 @@
         Summary: You {{makelose}}
         {{formatcurrency(Math.abs(balance))}} monthly.
       </h2>
-
-      <v-spacer></v-spacer>
-      <v-btn icon @click="expand = !expand">
-        <v-icon v-if="expand" large color="blue darken-2">fas fa-angle-up</v-icon>
-        <v-icon v-else large color="blue darken-2">fas fa-angle-down</v-icon>
-      </v-btn>
     </v-card-title>
-    <v-card-text v-if="expand">
+    <v-card-text>
       <v-layout row wrap>
         <v-row md2>
           Your free budget is:
@@ -147,11 +141,6 @@
             }
           ]
         }
-      }
-    },
-    data() {
-      return {
-        expand: true
       }
     },
     methods: {

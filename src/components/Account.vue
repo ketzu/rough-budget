@@ -4,35 +4,34 @@
       <h3>Online Sync</h3>
     </v-card-title>
 
-    <v-layout row align-center wrap>
-      <v-row xs10 offset-xs1>
-        <v-text-field
-            :disabled="loggedin"
-            v-model="name"
-            :error-messages="nameerrors"
-            label="Name"
-            single-line
-        ></v-text-field>
-      </v-row>
-      <v-row xs10 offset-xs1>
-        <v-text-field
-            :disabled="loggedin"
-            v-model="password"
-            :append-icon="showpw && !loggedin ? 'far fa-eye-slash' : 'far fa-eye'"
-            :type="showpw && !loggedin ? 'text' : 'password'"
-            label="Password"
-            @click:append="showpw = !showpw"
-        ></v-text-field>
-      </v-row>
-      <v-row xs10 offset-xs1>
-        <v-btn @click="store()" color="blue darken-2" :disabled="!loggedin" block>
-          Store
-        </v-btn>
-        <v-btn @click="load()" color="orange darken-2" :disabled="!loggedin" block>
-          Load
-        </v-btn>
-      </v-row>
-    </v-layout>
+    <v-row>
+      <v-text-field
+          :disabled="loggedin"
+          v-model="name"
+          :error-messages="nameerrors"
+          label="Name"
+          single-line
+      ></v-text-field>
+    </v-row>
+    <v-row>
+      <v-text-field
+          :disabled="loggedin"
+          v-model="password"
+          :append-icon="showpw && !loggedin ? 'far fa-eye-slash' : 'far fa-eye'"
+          :type="showpw && !loggedin ? 'text' : 'password'"
+          label="Password"
+          @click:append="showpw = !showpw"
+      ></v-text-field>
+    </v-row>
+
+    <v-row>
+      <v-btn @click="store()" color="blue darken-2" :disabled="!loggedin" block>
+        Store
+      </v-btn>
+      <v-btn @click="load()" color="orange darken-2" :disabled="!loggedin" block>
+        Load
+      </v-btn>
+    </v-row>
 
     <v-card-actions>
       <v-dialog v-model="dialog" persistent max-width="600px" v-if="loggedin">
