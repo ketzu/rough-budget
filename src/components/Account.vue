@@ -5,7 +5,7 @@
     </v-card-title>
 
     <v-layout row align-center wrap>
-      <v-flex xs10 offset-xs1>
+      <v-row xs10 offset-xs1>
         <v-text-field
             :disabled="loggedin"
             v-model="name"
@@ -13,8 +13,8 @@
             label="Name"
             single-line
         ></v-text-field>
-      </v-flex>
-      <v-flex xs10 offset-xs1>
+      </v-row>
+      <v-row xs10 offset-xs1>
         <v-text-field
             :disabled="loggedin"
             v-model="password"
@@ -23,15 +23,15 @@
             label="Password"
             @click:append="showpw = !showpw"
         ></v-text-field>
-      </v-flex>
-      <v-flex xs10 offset-xs1>
+      </v-row>
+      <v-row xs10 offset-xs1>
         <v-btn @click="store()" color="blue darken-2" :disabled="!loggedin" block>
           Store
         </v-btn>
         <v-btn @click="load()" color="orange darken-2" :disabled="!loggedin" block>
           Load
         </v-btn>
-      </v-flex>
+      </v-row>
     </v-layout>
 
     <v-card-actions>
@@ -48,14 +48,14 @@
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
-                <v-flex xs12>
+                <v-row xs12>
                   This will delete your account. This can not be undone.
                   <v-text-field
                       label="Please insert anything to proceed."
                       v-model="confirmation"
                       required
                   ></v-text-field>
-                </v-flex>
+                </v-row>
               </v-layout>
             </v-container>
           </v-card-text>

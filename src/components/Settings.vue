@@ -1,11 +1,11 @@
 <template>
   <v-layout row align-center wrap>
-      <v-flex xs12>
+      <v-row xs12>
         <v-select id="currency" v-model="currency" :items="['$','€','£','₩','¥']" label="Currency"/>
-      </v-flex>
-    <v-flex xs12>
+      </v-row>
+    <v-row xs12>
       <v-switch color="blue darken-2" :label="dual ? 'Income/Expenses' : 'Daily to Yearly'" v-model="dual"></v-switch>
-    </v-flex>
+    </v-row>
   </v-layout>
 </template>
 

@@ -26,16 +26,16 @@
             <v-card-text>
               <v-container grid-list-md>
                 <v-layout wrap>
-                  <v-flex xs12 sm6>
+                  <v-row xs12 sm6>
                     <v-text-field label="Name" v-model="name" required></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6>
+                  </v-row>
+                  <v-row xs12 sm6>
                     <v-text-field label="Amount" :prefix="currency" v-model="value" required></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm4>
+                  </v-row>
+                  <v-row xs12 sm4>
                     <v-switch color="red darken-2" :label="!spending ? 'Income' : 'Expense'" v-model="spending"></v-switch>
-                  </v-flex>
-                  <v-flex xs12 sm4>
+                  </v-row>
+                  <v-row xs12 sm4>
                     <v-select
                         :items="[1, 2, 3, 4, 5, 6, 7, 8]"
                         v-model="steps"
@@ -51,8 +51,8 @@
                         </span>
                       </template>
                     </v-select>
-                  </v-flex>
-                  <v-flex xs12 sm4>
+                  </v-row>
+                  <v-row xs12 sm4>
                     <v-select
                         :items="['daily', 'weekly', 'monthly', 'yearly']"
                         v-model="date"
@@ -70,7 +70,7 @@
                         {{ typeshow(item) }}
                       </template>
                     </v-select>
-                  </v-flex>
+                  </v-row>
                 </v-layout>
               </v-container>
             </v-card-text>
@@ -84,16 +84,16 @@
 
     <v-list-item-action>
       <v-layout row>
-        <v-flex xs6>
+        <v-row xs6>
           <v-btn icon ripple @click="$store.dispatch('newtracking', {type: type, identity: identity})">
             <v-icon color="blue darken-2">fas fa-chart-line</v-icon>
           </v-btn>
-        </v-flex>
-        <v-flex xs6>
+        </v-row>
+        <v-row xs6>
           <v-btn icon ripple @click="$store.dispatch('delentry',{type: type, identity: identity})">
             <v-icon color="grey darken-2">fas fa-times</v-icon>
           </v-btn>
-        </v-flex>
+        </v-row>
       </v-layout>
     </v-list-item-action>
   </v-list-item>

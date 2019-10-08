@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import router from './router'
 import Budget from './Budget.vue'
 import store from './store'
 import vuetify from './plugins/vuetify'
@@ -40,6 +41,7 @@ store.subscribe((mutation, state) => {
 });
 
 new Vue({
+  router,
   store,
   vuetify,
   render: h => h(Budget),

@@ -14,7 +14,7 @@
     </v-card-title>
     <v-card-text v-if="expand">
       <v-layout row wrap>
-        <v-flex md2>
+        <v-row md2>
           Your free budget is:
           <v-list>
             <v-list-item v-for="item in ['daily', 'weekly', 'monthly', 'yearly']" :key="item.title">
@@ -27,11 +27,11 @@
               </v-list-item-content>
             </v-list-item>
           </v-list>
-        </v-flex>
-        <v-flex md4>
+        </v-row>
+        <v-row md4>
           Your monthly budged consists of the following parts:
           <chart :height="200" :chart-data="data" :options="options"></chart>
-        </v-flex>
+        </v-row>
       </v-layout>
     </v-card-text>
   </v-card>
