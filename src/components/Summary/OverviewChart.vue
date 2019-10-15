@@ -1,38 +1,14 @@
 <template>
   <v-card>
-    <v-card-title>
-      <h2>
-        Summary: You {{makelose}}
-        {{formatcurrency(Math.abs(balance))}} monthly.
-      </h2>
-    </v-card-title>
     <v-card-text>
-      <v-layout row wrap>
-        <v-row md2>
-          Your free budget is:
-          <v-list>
-            <v-list-item v-for="item in ['daily', 'weekly', 'monthly', 'yearly']" :key="item.title">
-              <v-list-item-avatar>
-                <v-icon v-if="balance < 0" color="red darken-2">fas {{icontype(item)}}</v-icon>
-                <v-icon v-else color="blue darken-2">fas {{icontype(item)}}</v-icon>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title>{{formatcurrency(Math.abs(balance/multiplier[item]))}} {{item}}.</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-row>
-        <v-row md4>
-          Your monthly budged consists of the following parts:
-          <chart :height="200" :chart-data="data" :options="options"></chart>
-        </v-row>
-      </v-layout>
+      Your monthly budged consists of the following parts:
+      <chart :height="200" :chart-data="data" :options="options"></chart>
     </v-card-text>
   </v-card>
 </template>
 
 <script>
-  import Settings from './settingsmixin'
+  import Settings from '../settingsmixin'
   import {mapGetters} from 'vuex'
   import {HorizontalBar, mixins} from 'vue-chartjs'
 
@@ -46,15 +22,12 @@
   };
 
   export default {
-    name: 'summary-chart',
+    name: 'overview-chart',
     components: {
       chart
     },
     computed: {
       ...mapGetters(['incomes', 'expenses', 'multiplier', 'balance']),
-      makelose() {
-        return this.balance >= 0 ? 'are making' : 'are losing';
-      },
       daily() {
         return this.helper('daily');
       },
@@ -146,15 +119,6 @@
     methods: {
       helper(type) {
         return [this.incomes[type] * this.multiplier[type], this.expenses[type] * this.multiplier[type]];
-      },
-      icontype(type) {
-        switch (type) {
-          case "daily": return "fa-calendar-day";
-          case "weekly": return "fa-calendar-week";
-          case "monthly": return "fa-calendar-alt";
-          case "yearly": return "fa-calendar-check ";
-        }
-        return "";
       }
     },
     mixins: [Settings]

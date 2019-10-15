@@ -1,82 +1,72 @@
 <template>
-  <v-card>
-    <v-card-title class="pb-0">
-      <h3>Online Sync</h3>
-    </v-card-title>
+  <v-form>
+    <v-text-field
+        :disabled="loggedin"
+        v-model="name"
+        :error-messages="nameerrors"
+        label="Name"
+        single-line
+    ></v-text-field>
+    <v-text-field
+        :disabled="loggedin"
+        v-model="password"
+        :append-icon="showpw && !loggedin ? 'far fa-eye-slash' : 'far fa-eye'"
+        :type="showpw && !loggedin ? 'text' : 'password'"
+        label="Password"
+        @click:append="showpw = !showpw"
+    ></v-text-field>
 
-    <v-row>
-      <v-text-field
-          :disabled="loggedin"
-          v-model="name"
-          :error-messages="nameerrors"
-          label="Name"
-          single-line
-      ></v-text-field>
-    </v-row>
-    <v-row>
-      <v-text-field
-          :disabled="loggedin"
-          v-model="password"
-          :append-icon="showpw && !loggedin ? 'far fa-eye-slash' : 'far fa-eye'"
-          :type="showpw && !loggedin ? 'text' : 'password'"
-          label="Password"
-          @click:append="showpw = !showpw"
-      ></v-text-field>
-    </v-row>
+    <v-btn @click="store()" color="blue darken-2" :disabled="!loggedin" block class="white--text">
+      Store
+    </v-btn>
+    <v-btn @click="load()" color="orange darken-4" :disabled="!loggedin" block class="mt-2 white--text">
+      Load
+    </v-btn>
 
-    <v-row>
-      <v-btn @click="store()" color="blue darken-2" :disabled="!loggedin" block>
-        Store
-      </v-btn>
-      <v-btn @click="load()" color="orange darken-2" :disabled="!loggedin" block>
-        Load
-      </v-btn>
-    </v-row>
+    <v-dialog v-model="dialog" persistent max-width="600px" v-if="loggedin">
+      <template v-slot:activator="{ on }">
+        <v-btn v-on="on" class="mt-2" block>
+          Delete
+        </v-btn>
+      </template>
+      <v-card>
+        <v-card-title>
+          <span class="headline">Really delete your account?</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-layout wrap>
+              <v-row xs12>
+                This will delete your account. This can not be undone.
+                <v-text-field
+                    label="Please insert anything to proceed."
+                    v-model="confirmation"
+                    required
+                ></v-text-field>
+              </v-row>
+            </v-layout>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn @click="deleteAccount()" color="red darken-2" :disabled="confirmation===''">Delete Account</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" @click="dialog = false; confirmation=''">Keep</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
-    <v-card-actions>
-      <v-dialog v-model="dialog" persistent max-width="600px" v-if="loggedin">
-        <template v-slot:activator="{ on }">
-          <v-btn v-on="on">
-            Delete
-          </v-btn>
-        </template>
-        <v-card>
-          <v-card-title>
-            <span class="headline">Really delete your account?</span>
-          </v-card-title>
-          <v-card-text>
-            <v-container grid-list-md>
-              <v-layout wrap>
-                <v-row xs12>
-                  This will delete your account. This can not be undone.
-                  <v-text-field
-                      label="Please insert anything to proceed."
-                      v-model="confirmation"
-                      required
-                  ></v-text-field>
-                </v-row>
-              </v-layout>
-            </v-container>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn @click="deleteAccount()" color="red darken-2" :disabled="confirmation===''">Delete Account</v-btn>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" @click="dialog = false; confirmation=''">Keep</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <v-btn @click="registerAccount()" v-if="!loggedin">
-        Register
-      </v-btn>
-      <v-spacer></v-spacer>
-      <v-btn @click="logout()" v-if="loggedin">
-        Logout
-      </v-btn>
-      <v-btn @click="login()" v-if="!loggedin" color="blue darken-2">
-        Login
-      </v-btn>
-    </v-card-actions>
-  </v-card>
+    <v-btn @click="registerAccount()" v-if="!loggedin" block class="mt-2">
+      Register
+    </v-btn>
+
+    <v-btn @click="logout()" v-if="loggedin" block class="mt-2">
+      Logout
+    </v-btn>
+    <v-btn @click="login()" v-if="!loggedin" block class="mt-2">
+      Login
+    </v-btn>
+
+  </v-form>
 </template>
 
 <script>

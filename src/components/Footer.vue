@@ -1,5 +1,5 @@
 <template>
-  <v-footer app dark height="auto">
+  <v-footer dark app height="auto">
     <v-layout justify-center row wrap>
       <v-dialog v-model="dialog" scrollable max-width="600px">
         <template v-slot:activator="{ on }">

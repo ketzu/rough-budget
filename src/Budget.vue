@@ -1,28 +1,23 @@
 <template>
   <v-app>
-    <v-app-bar dark app>
+    <v-app-bar dark app color="accent">
       <v-toolbar-title>
-        <a href="#"><b><img src="banner.png" height="30" alt="Rough-Budget" width="204"></b></a>
+        <img src="banner.png" height="32" alt="Rough-Budget" width="63" class="mr-1" style="margin-bottom: -5px;">
       </v-toolbar-title>
 
-      <v-spacer></v-spacer>
-
-
-      <v-tabs
-          background-color="transparent"
-          optional
-          fixed-tabs
-      >
-        <v-tab router to="/">Summary</v-tab>
-        <v-tab router to="/inout">Income/Expense</v-tab>
-        <v-tab router to="/time">Time View</v-tab>
-        <v-tab router to="/tracking">Trackings</v-tab>
-      </v-tabs>
-
-      <v-spacer></v-spacer>
+        <v-tabs
+            background-color="transparent"
+            optional
+            fixed-tabs
+        >
+          <v-tab router to="/">Summary</v-tab>
+          <v-tab router to="/inout">Income/Expense</v-tab>
+          <v-tab router to="/time">Time View</v-tab>
+          <v-tab router to="/tracking">Trackings</v-tab>
+        </v-tabs>
 
       <v-btn icon id="sidemenutoggle" @click="sidemenu = !sidemenu">
-        <v-icon>fas fa-bars</v-icon>
+        <v-icon>fas fa-user</v-icon>
       </v-btn>
     </v-app-bar>
 
@@ -33,7 +28,7 @@
       </v-container>
     </v-navigation-drawer>
 
-    <v-content class="blue darken-2">
+    <v-content class="primary">
       <router-view/>
     </v-content>
     <bottom-footer></bottom-footer>
