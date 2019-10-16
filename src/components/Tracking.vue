@@ -37,20 +37,18 @@
             ref="dialog"
             v-model="modal"
             persistent
-            lazy
-            full-width
             width="290px"
         >
-          <v-text-field
-              slot="activator"
-              :value="(new Date(newdate)).toLocaleDateString()"
-              prepend-icon="fa-calendar-alt"
-              readonly
-          ></v-text-field>
-          <v-date-picker v-model="newdate" scrollable>
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-            <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
+          <template v-slot:activator="{ on }">
+            <v-text-field
+                slot="activator"
+                v-on="on"
+                :value="(new Date(newdate)).toLocaleDateString()"
+                prepend-icon="fa-calendar-alt"
+                readonly
+            ></v-text-field>
+          </template>
+          <v-date-picker v-model="newdate" scrollable @input="modal = false">
           </v-date-picker>
         </v-dialog>
         <v-text-field v-model="newentry" @keyup.enter="addEntry()"

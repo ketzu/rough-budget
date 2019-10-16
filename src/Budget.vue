@@ -13,7 +13,7 @@
           <v-tab router to="/">Summary</v-tab>
           <v-tab router to="/inout">Income/Expense</v-tab>
           <v-tab router to="/time">Time View</v-tab>
-          <v-tab router to="/tracking">Trackings</v-tab>
+          <v-tab router to="/trackings">Trackings</v-tab>
         </v-tabs>
 
       <v-btn icon id="sidemenutoggle" @click="sidemenu = !sidemenu">
