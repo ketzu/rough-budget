@@ -2,14 +2,9 @@
   <v-card>
     <v-card-title class="pb-0">
       <h2>{{title}}</h2>
-      <v-spacer></v-spacer>
-      <v-btn icon @click="expand = !expand">
-        <v-icon v-if="expand" large color="blue darken-2">fas fa-angle-up</v-icon>
-        <v-icon v-else large color="blue darken-2">fas fa-angle-down</v-icon>
-      </v-btn>
     </v-card-title>
 
-    <v-list two-line v-if="expand">
+    <v-list two-line>
       <budget-entry v-bind:key="key" :identity="key" :type="type_distinction(entry)"  v-for="(entry, key) in entries"></budget-entry>
       <v-list-item>
         <v-text-field v-model="newname" @keyup.enter="addEntry()"
@@ -66,8 +61,7 @@
     },
     data() {
       return {
-        newname: '',
-        expand: true
+        newname: ''
       }
     },
     methods: {

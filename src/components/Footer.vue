@@ -1,5 +1,5 @@
 <template>
-  <v-footer dark app height="auto">
+  <v-footer dark app absolute>
     <v-container fluid>
       <v-row justify="center" align="start">
       <v-dialog v-model="dialog" scrollable max-width="600px">
