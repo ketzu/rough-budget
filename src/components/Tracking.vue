@@ -35,35 +35,48 @@
         </v-list-item>
       </v-list>
       <v-divider></v-divider>
-        <v-dialog
-            ref="dialog"
-            v-model="modal"
-            persistent
-            width="290px"
-        >
-          <template v-slot:activator="{ on }">
-            <v-text-field
-                slot="activator"
-                v-on="on"
-                :value="(new Date(newdate)).toLocaleDateString()"
-                prepend-icon="fa-calendar-alt"
-                readonly
-            ></v-text-field>
-          </template>
-          <v-date-picker v-model="newdate" scrollable @input="modal = false">
-          </v-date-picker>
-        </v-dialog>
-        <v-text-field v-model="newentry" @keyup.enter="addEntry()"
-                      :append-icon="newentry != 0 ? 'fa-plus' : ''"
-                      :prefix="currency"
-                      @click:append="addEntry">
-          <template slot="label">
-            Amount {{ spending ? "spent" : "earned" }}
-          </template>
-        </v-text-field>
+      <v-container style="margin-bottom: -40px;">
+        <v-row>
+          <v-col>
+            <v-text-field v-model="newentry" @keyup.enter="addEntry()"
+                          :append-icon="newentry != 0 ? 'fa-plus' : ''"
+                          :prefix="currency"
+                          prepend-icon="fa-money-bill-wave-alt"
+                          @click:append="addEntry">
+              <template slot="label">
+                New data: Amount {{ spending ? "spent" : "earned" }}
+              </template>
+            </v-text-field>
+          </v-col>
+          <v-col>
+            <v-dialog
+                ref="dialog"
+                v-model="modal"
+                persistent
+                width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                    slot="activator"
+                    v-on="on"
+                    :value="(new Date(newdate)).toLocaleDateString()"
+                    prepend-icon="fa-calendar-alt"
+                    readonly
+                >
+                  <template slot="label">
+                    When was the amount {{ spending ? "spent" : "earned" }}
+                  </template>
+                </v-text-field>
+              </template>
+              <v-date-picker v-model="newdate" scrollable @input="modal = false">
+              </v-date-picker>
+            </v-dialog>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-card-text>
-    <v-card-actions>
-      <h3>
+    <v-card-actions v-if="values.length>0">
+      <h3 class="ml-5">
         <span v-if="values.length>0">
           <span v-if="steps>1">{{steps}}-</span>
           {{firstuppercase(type)}} average: {{formatcurrency(averages.slice(-1)[0]*steps)}}
