@@ -78,7 +78,6 @@
           if(this.type === "income" || this.type === "expense") {
             // need another exists check in this case, as data model sucks for income/expense mode
             if(this.newname in this.$store.getters["expense"]){
-              console.log("TRIGGERRED");
               return;
             }
             // Use monthly as default entry

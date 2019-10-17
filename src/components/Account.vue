@@ -31,26 +31,29 @@
       </template>
       <v-card>
         <v-card-title>
-          <span class="headline">Really delete your account?</span>
+          <span class="headline">Do you really want to delete your account?</span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
-            <v-layout wrap>
-              <v-row xs12>
-                This will delete your account. This can not be undone.
+              <v-row>
+                <h2>
+                  This will delete your account and remove all data from our database. This can not be undone.
+                </h2>
+              </v-row>
+              <v-row>
                 <v-text-field
                     label="Please insert anything to proceed."
                     v-model="confirmation"
                     required
                 ></v-text-field>
-              </v-row>
-            </v-layout>
+            </v-row>
+            <v-row>
+              <v-btn @click="deleteAccount()" color="red darken-2" :disabled="confirmation===''" block>Delete Account</v-btn>
+            </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>
-          <v-btn @click="deleteAccount()" color="red darken-2" :disabled="confirmation===''">Delete Account</v-btn>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" @click="dialog = false; confirmation=''">Keep</v-btn>
+          <v-btn color="blue darken-1" @click="dialog = false; confirmation=''" block>Keep</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

@@ -21,21 +21,23 @@
           </template>
           <v-card>
             <v-card-title>
-              <span class="headline">Edit: {{name}}</span>
+              <span class="headline">{{name}}</span>
             </v-card-title>
             <v-card-text>
-              <v-container grid-list-md>
-                <v-layout wrap>
-                  <v-row xs12 sm6>
+              <v-container>
+                <v-row>
+                  <v-col>
                     <v-text-field label="Name" v-model="name" required></v-text-field>
-                  </v-row>
-                  <v-row xs12 sm6>
+                  </v-col>
+                  <v-col>
                     <v-text-field label="Amount" :prefix="currency" v-model="value" required></v-text-field>
-                  </v-row>
-                  <v-row xs12 sm4>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
                     <v-switch color="red darken-2" :label="!spending ? 'Income' : 'Expense'" v-model="spending"></v-switch>
-                  </v-row>
-                  <v-row xs12 sm4>
+                  </v-col>
+                  <v-col>
                     <v-select
                         :items="[1, 2, 3, 4, 5, 6, 7, 8]"
                         v-model="steps"
@@ -51,8 +53,8 @@
                         </span>
                       </template>
                     </v-select>
-                  </v-row>
-                  <v-row xs12 sm4>
+                  </v-col>
+                  <v-col>
                     <v-select
                         :items="['daily', 'weekly', 'monthly', 'yearly']"
                         v-model="date"
@@ -70,8 +72,8 @@
                         {{ typeshow(item) }}
                       </template>
                     </v-select>
-                  </v-row>
-                </v-layout>
+                  </v-col>
+                </v-row>
               </v-container>
             </v-card-text>
             <v-card-actions>
@@ -83,18 +85,14 @@
       </v-list-item-content>
 
     <v-list-item-action>
-      <v-layout row>
-        <v-row xs6>
+      <v-row>
           <v-btn icon ripple @click="$store.dispatch('newtracking', {type: type, identity: identity})">
             <v-icon color="blue darken-2">fas fa-chart-line</v-icon>
           </v-btn>
-        </v-row>
-        <v-row xs6>
           <v-btn icon ripple @click="$store.dispatch('delentry',{type: type, identity: identity})">
             <v-icon color="grey darken-2">fas fa-times</v-icon>
           </v-btn>
-        </v-row>
-      </v-layout>
+      </v-row>
     </v-list-item-action>
   </v-list-item>
 </template>

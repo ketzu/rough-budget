@@ -12,16 +12,6 @@ let filter = (obj, fn) => {
   return result;
 };
 
-let filter2 = (obj, fn) => {
-  let result = {};
-  for(const key in obj) {
-    console.log(key,obj[key],fn(obj[key]))
-    if(obj.hasOwnProperty(key) && fn(obj[key]))
-      result[key] = obj[key];
-  }
-  return result;
-};
-
 let typed = (obj, type) => {
   let result = {};
   for(const key in obj) {

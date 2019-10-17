@@ -15,6 +15,7 @@
     </v-card-title>
     <v-card-text>
       <chart :chart-data="data" :options="options" v-if="values.length>0"></chart>
+      <v-divider v-if="edit"></v-divider>
       <v-list two-line v-if="edit">
         <v-list-item :key="index" v-for="(value,index) in rawvalues">
           <v-list-item-content>
@@ -33,6 +34,7 @@
           </v-list-item-action>
         </v-list-item>
       </v-list>
+      <v-divider></v-divider>
         <v-dialog
             ref="dialog"
             v-model="modal"
@@ -56,7 +58,7 @@
                       :prefix="currency"
                       @click:append="addEntry">
           <template slot="label">
-            New tracking data
+            Amount {{ spending ? "spent" : "earned" }}
           </template>
         </v-text-field>
     </v-card-text>
@@ -83,7 +85,7 @@
 
   const dateformat = (date) => {
     return date.getFullYear() + '-' + (date.getMonth() + 1).toLocaleString(undefined, {minimumIntegerDigits: 2}) + '-' + date.getDate();
-  }
+  };
 
   let chart = {
     extends: Line,
@@ -157,6 +159,9 @@
       steps() {
         return this.$store.getters[this.type][this.name].steps;
       },
+      spending() {
+        return this.$store.getters[this.type][this.name].spending;
+      },
       title() {
         return this.firstuppercase(this.name);
       },
@@ -207,7 +212,7 @@
           labels: this.times,
           datasets: [
             {
-              label: 'Entries',
+              label: 'Your Data',
               showLine: false,
               borderColor: 'hsl(210, 50%, 50%)',
               backgroundColor: 'hsl(210, 50%, 50%)',
@@ -215,7 +220,7 @@
               data: this.datapoints // this.rawvalues.map(value => ({x: value.date, y: value.value}))
             },
             {
-              label: 'Current Budget',
+              label: 'Current Budget Plan',
               fill: false,
               borderColor: 'hsl(0, 50%, 50%)',
               backgroundColor: 'hsl(0, 50%, 50%)',
