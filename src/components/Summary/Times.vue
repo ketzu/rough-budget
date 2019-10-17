@@ -1,12 +1,15 @@
 <template>
   <v-card>
     <v-card-text>
-      Your free budget is:
+      <v-container>
+        <v-row justify="center">
+          <h3>Budget Value Overview</h3>
+        </v-row>
+      </v-container>
       <v-list>
         <v-list-item v-for="item in ['daily', 'weekly', 'monthly', 'yearly']" :key="item.title">
           <v-list-item-avatar>
-            <v-icon v-if="balance < 0" color="red darken-2">fas {{icontype(item)}}</v-icon>
-            <v-icon v-else color="blue darken-2">fas {{icontype(item)}}</v-icon>
+            <v-icon :color='balance < 0 ? "red darken-2" : "blue darken-2"'>fas {{icontype(item)}}</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>{{formatcurrency(Math.abs(balance/multiplier[item]))}} {{item}}.</v-list-item-title>

@@ -1,7 +1,11 @@
 <template>
   <v-card>
     <v-card-text>
-      Your monthly budged consists of the following parts:
+      <v-container>
+        <v-row justify="center">
+          <h3>Monthly Budged Overview</h3>
+        </v-row>
+      </v-container>
       <chart :height="200" :chart-data="data" :options="options"></chart>
     </v-card-text>
   </v-card>
