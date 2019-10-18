@@ -20,7 +20,7 @@
     <v-card-actions class="pt-0">
       <v-spacer></v-spacer>
       <h2>
-        {{balance>0? "+" : "" }}{{formatcurrency(balance)}}{{balanceadd}}
+        {{balance>0? "+" : "" }}{{formatcurrency(balance)}} {{balanceadd}}
       </h2>
     </v-card-actions>
   </v-card>
@@ -29,6 +29,7 @@
 <script>
   import Entry from './Entry.vue'
   import Settings from './settingsmixin'
+  import {mapGetters} from "vuex";
 
   export default {
     name: 'category',
@@ -39,6 +40,7 @@
       'type'
     ],
     computed: {
+      ...mapGetters(['multiplier']),
       entries() {
         return this.$store.getters[this.type];
       },
@@ -56,6 +58,8 @@
       balanceadd() {
         if(this.type === "income" || this.type === "expense")
           return  "per month";
+        if(this.type === "daily" ||this.type === "weekly" || this.type === "yearly")
+          return "("+this.formatcurrency(this.balance*this.multiplier[this.type])+" per month)";
         return "";
       }
     },

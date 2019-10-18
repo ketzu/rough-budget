@@ -1,19 +1,48 @@
 <template>
   <v-app>
-    <v-app-bar dark app color="accent">
-      <v-toolbar-title>
-        <img src="banner.png" height="32" alt="Rough-Budget" width="63" class="mr-1" style="margin-bottom: -5px;">
+    <v-app-bar dark app short color="accent">
+      <v-toolbar-title class="d-none d-sm-block">
+        <v-img src="banner.png" max-height="32" alt="Rough-Budget" max-width="63"></v-img>
       </v-toolbar-title>
 
         <v-tabs
             background-color="transparent"
             optional
-            fixed-tabs
+            grow
+            icons-and-text
         >
-          <v-tab router to="/">Summary</v-tab>
-          <v-tab router to="/inout">Income/Expense</v-tab>
-          <v-tab router to="/time">Time View</v-tab>
-          <v-tab router to="/trackings">Trackings</v-tab>
+          <v-tab router to="/">
+            <v-icon>
+              fas fa-chart-pie
+            </v-icon>
+            <span class="d-none d-md-block">
+              Statistics
+            </span>
+          </v-tab>
+          <v-tab router to="/inout">
+            <v-icon>
+              fas fa-th-list
+            </v-icon>
+            <span class="d-none d-md-block">
+              Bookkeeping
+            </span>
+          </v-tab>
+          <v-tab router to="/time">
+            <v-icon>
+              fas fa-calendar-week
+            </v-icon>
+            <span class="d-none d-md-block">
+              Time
+            </span>
+          </v-tab>
+          <v-tab router to="/trackings">
+            <v-icon>
+              fas fa-chart-line
+            </v-icon>
+            <span class="d-none d-md-block">
+              Log
+            </span>
+          </v-tab>
         </v-tabs>
 
       <v-btn icon id="sidemenutoggle" @click="sidemenu = !sidemenu">
