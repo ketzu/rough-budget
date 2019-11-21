@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="72.093208mm"
+   height="15.199357mm"
+   viewBox="0 0 72.093208 15.199357"
+   version="1.1"
+   id="svg838"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
+   sodipodi:docname="logo.svg"
+   inkscape:export-filename="D:\Programmieren\Web Projekte\current\budget2\logo\logo.png"
+   inkscape:export-xdpi="54.024471"
+   inkscape:export-ydpi="54.024471">
+  <defs
+     id="defs832">
+    <marker
+       inkscape:stockid="TriangleOutM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutM"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path2120"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#3b8dbd;fill-opacity:1;fill-rule:evenodd;stroke:#3b8dbd;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.4)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="EmptyTriangleOutL"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="EmptyTriangleOutL"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path2135"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#3b8dbd;fill-opacity:1;fill-rule:evenodd;stroke:#3b8dbd;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.8,0,0,0.8,-4.8,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutL"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="TriangleOutL"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path2117"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#3b8dbd;fill-opacity:1;fill-rule:evenodd;stroke:#3b8dbd;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker2281"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path2279"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#3b8dbd;fill-opacity:1;fill-rule:evenodd;stroke:#3b8dbd;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path1978"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#3b8dbd;fill-opacity:1;fill-rule:evenodd;stroke:#3b8dbd;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#13161b"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.979899"
+     inkscape:cx="123.01154"
+     inkscape:cy="25.855933"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:pagecheckerboard="true"
+     fit-margin-top="1"
+     fit-margin-left="1"
+     fit-margin-right="1"
+     fit-margin-bottom="1" />
+  <metadata
+     id="metadata835">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-25.03075,-109.67092)">
+    <path
+       style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#3b8dbd;stroke-width:2.0999999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#TriangleOutM);paint-order:normal"
+       d="m 26.994222,121.13666 c 14.419099,1.31448 55.816558,3.38365 67.886458,-4.94449"
+       id="path2257"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-xdpi="70.065865"
+       inkscape:export-ydpi="70.065865" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot1383"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#f8f9fa;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       transform="matrix(0.26458333,0,0,0.26458333,-8.0180858,0.80180858)"
+       inkscape:export-xdpi="70.065865"
+       inkscape:export-ydpi="70.065865"><flowRegion
+         id="flowRegion1385"
+         style="fill:#f8f9fa;fill-opacity:1"><rect
+           id="rect1387"
+           width="499.01535"
+           height="125.25892"
+           x="135.36044"
+           y="419.45352"
+           style="fill:#f8f9fa;fill-opacity:1" /></flowRegion><flowPara
+         id="flowPara1389"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;font-family:'Fira Sans';-inkscape-font-specification:'Fira Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#f8f9fa;fill-opacity:1"><flowSpan
+           style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:40px;font-family:'Fira Sans';-inkscape-font-specification:'Fira Sans, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#f8f9fa;fill-opacity:1"
+           id="flowSpan1393">Rough</flowSpan><flowSpan
+           style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:40px;font-family:'Fira Sans';-inkscape-font-specification:'Fira Sans, Semi-Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#f8f9fa;fill-opacity:1"
+           id="flowSpan1391" /></flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot1395"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       transform="scale(0.26458333)"><flowRegion
+         id="flowRegion1397"><rect
+           id="rect1399"
+           width="128.28937"
+           height="44.446712"
+           x="255.56859"
+           y="430.06012" /></flowRegion><flowPara
+         id="flowPara1401">Budget</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot1403"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#f8f9fa;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       transform="matrix(0.26458333,0,0,0.26458333,-7.9375004,-0.26737679)"
+       inkscape:export-xdpi="70.065865"
+       inkscape:export-ydpi="70.065865"><flowRegion
+         id="flowRegion1405"
+         style="fill:#f8f9fa;fill-opacity:1;stroke:none;stroke-opacity:1"><rect
+           id="rect1407"
+           width="304.561"
+           height="128.79445"
+           x="246.47722"
+           y="423.49411"
+           style="fill:#f8f9fa;fill-opacity:1;stroke:none;stroke-opacity:1" /></flowRegion><flowPara
+         id="flowPara1409"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:40px;font-family:'Fira Sans';-inkscape-font-specification:'Fira Sans, Semi-Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#f8f9fa;fill-opacity:1;stroke:none;stroke-opacity:1">Budget</flowPara></flowRoot>  </g>
+</svg>
