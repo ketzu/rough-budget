@@ -1,6 +1,6 @@
 {
-  "name": "budget-v3",
-  "version": "0.1.0",
+  "name": "Rough Budget",
+  "version": "3.1.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
