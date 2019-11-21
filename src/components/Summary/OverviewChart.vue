@@ -60,9 +60,7 @@
               categoryPercentage: 1.0
             }],
             yAxes: [{
-              stacked: true,
-              barPercentage: 1.0,
-              categoryPercentage: 1.0
+              stacked: true
             }]
           },
           legend: {
@@ -85,6 +83,8 @@
           labels: ['Incomes', 'Expenses'],
           datasets: [
             {
+              barPercentage: 1.0,
+              categoryPercentage: 1.0,
               label: 'Daily',
               backgroundColor: [
                 'hsl(202, 52.4%, 28.6%)',
@@ -93,6 +93,8 @@
               data: this.daily
             },
             {
+              barPercentage: 1.0,
+              categoryPercentage: 1.0,
               label: 'Weekly',
               backgroundColor: [
                 'hsl(202, 52.4%, 38.6%)',
@@ -101,6 +103,8 @@
               data: this.weekly
             },
             {
+              barPercentage: 1.0,
+              categoryPercentage: 1.0,
               label: 'Monthly',
               backgroundColor: [
                 'hsl(202, 52.4%, 48.6%)',
@@ -109,6 +113,8 @@
               data: this.monthly
             },
             {
+              barPercentage: 1.0,
+              categoryPercentage: 1.0,
               label: 'Yearly',
               backgroundColor: [
                 'hsl(202, 52.4%, 58.6%)',
