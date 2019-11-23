@@ -9,9 +9,12 @@
       <v-list-item>
         <v-text-field v-model="newname" @keyup.enter="addEntry()"
                       :append-icon="newname != '' ? 'fa-plus' : ''"
-                      @click:append="addEntry">
+                      @click:append="addEntry"
+                      @focus="newEntryFocus=true"
+                      @blur="newEntryFocus=false"
+        >
           <template slot="label">
-            New entry
+            {{newEntryText}}
           </template>
         </v-text-field>
       </v-list-item>
@@ -41,6 +44,12 @@
     ],
     computed: {
       ...mapGetters(['multiplier']),
+      newEntryText() {
+        if(!this.newEntryFocus && this.newname == ''){
+          return "New Entry";
+        }
+        return "Name of new entry";
+      },
       entries() {
         return this.$store.getters[this.type];
       },
@@ -65,7 +74,8 @@
     },
     data() {
       return {
-        newname: ''
+        newname: '',
+        newEntryFocus: false
       }
     },
     methods: {
