@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import onboarding from "@/stores/onboarding";
+
 Vue.use(Vuex);
 
 let filter = (obj, fn) => {
@@ -336,5 +338,8 @@ export default new Vuex.Store({
     moveentry({commit}, payload) {
       commit('moveentry', payload);
     }
+  },
+  modules: {
+    onboarding
   }
 })

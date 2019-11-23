@@ -45,6 +45,9 @@
           </v-tab>
         </v-tabs>
 
+      <v-btn icon id="helptoggle" @click="help = !help">
+        <v-icon>fas fa-question</v-icon>
+      </v-btn>
       <v-btn icon id="sidemenutoggle" @click="sidemenu = !sidemenu">
         <v-icon>fas fa-user</v-icon>
       </v-btn>
@@ -81,7 +84,8 @@
     data() {
       return {
         sidemenu: false,
-        dialog: false
+        dialog: false,
+        help: false
       }
     },
     computed: {
