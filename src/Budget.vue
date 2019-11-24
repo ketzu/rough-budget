@@ -45,7 +45,7 @@
           </v-tab>
         </v-tabs>
 
-      <v-btn icon id="helptoggle" @click="help = !help">
+      <v-btn v-show="false" icon id="helptoggle" @click="help = !help">
         <v-icon>fas fa-question</v-icon>
       </v-btn>
       <v-btn icon id="sidemenutoggle" @click="sidemenu = !sidemenu">
