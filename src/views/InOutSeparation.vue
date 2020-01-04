@@ -1,10 +1,10 @@
 <template>
   <v-container>
     <v-row>
-      <v-col>
+      <v-col :md="6" cols="12">
         <category type="income"></category>
       </v-col>
-      <v-col>
+      <v-col :md="6" cols="12">
         <category type="expense"></category>
       </v-col>
     </v-row>
