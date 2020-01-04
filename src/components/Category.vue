@@ -12,6 +12,7 @@
                       @click:append="addEntry"
                       @focus="newEntryFocus=true"
                       @blur="newEntryFocus=false"
+                      :data-v-step="type"
         >
           <template slot="label">
             {{newEntryText}}

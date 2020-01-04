@@ -43,6 +43,7 @@ let mergedentries = entries => {
 
 export default new Vuex.Store({
   state: {
+    tours: {},
     settings: { currency: '$', lang: 'en', precision: 0, separator: ',', window: 14, locale: 'en-US', dual: false },
     multiplier: { daily: 365/12, weekly: 365/(7*12), monthly: 1, yearly: 1/12 },
     username: "",
@@ -60,6 +61,7 @@ export default new Vuex.Store({
   },
   getters: {
     json(state) {return JSON.stringify(state); },
+    tour(state) { return state.tours; },
     currency(state) { return state.settings.currency; },
     dual(state) { return state.settings.dual; },
     username(state) { return state.username; },
@@ -208,6 +210,9 @@ export default new Vuex.Store({
     setcurrency(state, symbol) {
       state.settings.currency = symbol;
     },
+    tourviewed(state, tourid) {
+      state.tours[tourid] = true;
+    },
     setdual(state, dual) {
       state.settings.dual = dual;
     },
@@ -280,6 +285,9 @@ export default new Vuex.Store({
   actions: {
     initstore({commit}) {
       commit('initstore');
+    },
+    settourviewed({commit}, tourid) {
+      commit('tourviewed', tourid);
     },
     loadstore({commit}, payload) {
       commit('loadstore', payload);

@@ -7,7 +7,7 @@
       </v-btn>
     </v-list-item-avatar>
 
-      <v-list-item-content>
+      <v-list-item-content data-v-step="entry">
         <v-dialog v-model="dialog" max-width="600px">
           <template v-slot:activator="{ on }">
           <span v-on="on">
@@ -86,22 +86,25 @@
 
     <v-list-item-action>
       <v-row>
-          <v-btn icon ripple @click="$store.dispatch('newtracking', {type: type, identity: identity})">
+          <v-btn icon ripple @click="$store.dispatch('newtracking', {type: type, identity: identity})" data-v-step="track">
             <v-icon color="blue darken-2">fas fa-chart-line</v-icon>
           </v-btn>
-          <v-btn icon ripple @click="$store.dispatch('delentry',{type: type, identity: identity})">
+          <v-btn icon ripple @click="$store.dispatch('delentry',{type: type, identity: identity})" data-v-step="delete">
             <v-icon color="grey darken-2">fas fa-times</v-icon>
           </v-btn>
       </v-row>
     </v-list-item-action>
+    <entry-tour></entry-tour>
   </v-list-item>
 </template>
 
 <script>
   import Settings from './settingsmixin'
+  import EntryTour from "../tours/EntryTour";
 
   export default {
     name: 'entry',
+    components: {EntryTour},
     props: ['identity', 'type'],
     data() {
       return {

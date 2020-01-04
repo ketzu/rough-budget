@@ -5,6 +5,7 @@ import store from './store'
 import vuetify from './plugins/vuetify'
 import '@babel/polyfill'
 import './registerServiceWorker'
+import VueTour from "vue-tour";
 
 Vue.config.productionTip = false;
 
@@ -40,6 +41,10 @@ Vue.mixin({
 store.subscribe((mutation, state) => {
   localStorage.setItem('budget-v3', JSON.stringify(state));
 });
+
+require('vue-tour/dist/vue-tour.css');
+
+Vue.use(VueTour);
 
 new Vue({
   router,
