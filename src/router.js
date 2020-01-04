@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Summary from "@/views/Summary";
 
 Vue.use(Router)
 
@@ -8,8 +7,12 @@ export default new Router({
   routes: [
     {
       path: '/',
+      redirect: '/inout'
+    },
+    {
+      path: '/summary',
       name: 'summary',
-      component: Summary
+      component: () => import('./views/Summary.vue')
     },
     {
       path: '/inout',

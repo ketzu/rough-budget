@@ -11,7 +11,7 @@
             grow
             icons-and-text
         >
-          <v-tab router to="/">
+          <v-tab router to="/summary">
             <v-icon>
               fas fa-chart-pie
             </v-icon>
