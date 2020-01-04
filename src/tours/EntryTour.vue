@@ -7,6 +7,7 @@
         name: "EntryTour",
         data () {
             return {
+                opened: false,
                 tourid: "EntryTour",
                 steps: [
                     {
@@ -33,6 +34,12 @@
             }
         },
         mounted: function () {
+            // only open once
+            if(!this.opened)
+                this.opened = true;
+            else
+                return;
+
             if(this.$store.getters.tour[this.tourid] !== true)
                 this.$tours[this.tourid].start()
         }
