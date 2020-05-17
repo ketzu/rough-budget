@@ -40,6 +40,17 @@ Rough-Budget is released as a web project under https://rough-budget.com/ and ca
 
 The beta version, auto compiled and pushed by github actions, is availiable under http://beta.rough-budget.com/
 
+## Docker
+
+The docker container requires 4 environment variables to have a functioning api.
+
+ * DB_SERVER
+ * DB_NAME
+ * DB_USER
+ * DB_PASSWORD
+
+It is available via [dockerhub](https://hub.docker.com/r/ketzu/budget) as `ketzu/budget`.
+
 ## Project usage
 
 Rough-Budget is a npm based vue project. To test the code locally, use  `npm install` to install all dependencies.
