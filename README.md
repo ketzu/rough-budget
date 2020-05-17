@@ -1,6 +1,6 @@
 # Rough-Budget
 
-[Rough-Budget](https://rough-budget.com/) is a simple budgeting tool.
+[Rough-Budget](https://budget.ketzu.net/) is a simple budgeting tool.
 
 The core functionality is keeping track of your regular expenses, resulting in an estimate of available money per month (or other time unit you like).
 
@@ -34,12 +34,6 @@ It is designed like this, so a database access is not enough to retrieve your da
 
 If the database should leak, an attacker should not be able to use any of the provided information, besides the username.
 
-## Release
-
-Rough-Budget is released as a web project under https://rough-budget.com/ and can be used free of charge.
-
-The beta version, auto compiled and pushed by github actions, is availiable under http://beta.rough-budget.com/
-
 ## Docker
 
 The docker container requires 4 environment variables to have a functioning api.
@@ -50,6 +44,49 @@ The docker container requires 4 environment variables to have a functioning api.
  * DB_PASSWORD
 
 It is available via [dockerhub](https://hub.docker.com/r/ketzu/budget) as `ketzu/budget`.
+
+### docker-compose example
+
+The docker-compose example in use right now, looks like this:
+
+```
+version: '3'
+services:
+
+  budget:
+    image: ketzu/budget
+    restart: always
+    hostname: budget.ketzu.net
+    env_file:
+      - ~/secrets/budget.env
+    networks:
+      web:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.budget.rule=Host(`budget.ketzu.net`)"
+      - "traefik.http.routers.budget.entryPoints=websecure"
+      - "traefik.http.routers.budget.tls=true"
+      - "traefik.http.routers.budget.tls.certresolver=le"
+
+networks:
+  web:
+    external: true
+```
+
+the environment file contains the secret access credentials to the mysql instance:
+
+```
+DB_SERVER=mysql
+DB_NAME=budget
+DB_USER=budget
+DB_PASSWORD=Yeah no, not gonna tell you.
+```
+
+## Release
+
+Rough-Budget is released as a web project under https://budget.ketzu.net/ and can be used free of charge.
+
+The release uses the docker version of rough-budget.
 
 ## Project usage
 
