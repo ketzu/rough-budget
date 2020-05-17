@@ -107,7 +107,7 @@
           this.dialog = false;
           this.confirmation = "";
           this.formLike().then(formdata => {
-            fetch("https://rough-budget.com/api/delete.php", {
+            fetch("/api/delete.php", {
               method: 'POST',
               body: formdata
             }).then(res => res.json())
@@ -132,7 +132,7 @@
 
         // Dispatch registering call
         this.formLike().then(formdata => {
-          fetch("https://rough-budget.com/api/register.php", {
+          fetch("/api/register.php", {
             method: 'POST',
             body: formdata
           }).then(res => res.json())
@@ -153,7 +153,7 @@
 
         // Dispatch login call
         this.formLike().then(formdata => {
-          fetch("https://rough-budget.com/api/login.php", {
+          fetch("/api/login.php", {
             method: 'POST',
             body: formdata
           }).then(res => res.json())
@@ -175,7 +175,7 @@
       store() {
         // dispatch store operation
         this.formLike(true).then(formdata => {
-          fetch("https://rough-budget.com/api/store.php", {
+          fetch("/api/store.php", {
             method: 'POST',
             body: formdata
           }).then(res => res.json())
@@ -195,7 +195,7 @@
         // dispatch load operation
         let self = this;
         this.formLike().then(formdata => {
-          fetch("https://rough-budget.com/api/load.php", {
+          fetch("/api/load.php", {
             method: 'POST', // or 'PUT'
             body: formdata
           }).then(res => res.json())
