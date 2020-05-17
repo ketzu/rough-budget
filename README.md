@@ -82,6 +82,8 @@ DB_USER=budget
 DB_PASSWORD=Yeah no, not gonna tell you.
 ```
 
+This setup requires a second container under the name of `mysql` with the respective credentials and database.
+
 ## Release
 
 Rough-Budget is released as a web project under https://budget.ketzu.net/ and can be used free of charge.
