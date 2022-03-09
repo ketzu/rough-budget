@@ -1,6 +1,6 @@
 {
   "name": "budget-v3",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -15,7 +15,7 @@
     "vue-chartjs": "^3.5.1",
     "vue-router": "^3.5.2",
     "vue-tour": "^1.6.0",
-    "vuetify": "^2.5.8",
+    "vuetify": "^2.6.4",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
