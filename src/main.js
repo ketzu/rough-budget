@@ -4,7 +4,6 @@ import Budget from './Budget.vue'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import '@babel/polyfill'
-import './registerServiceWorker'
 import VueTour from "vue-tour";
 
 Vue.config.productionTip = false;
@@ -18,7 +17,6 @@ Vue.mixin({
         case "£": currency = "GBP"; break;
       }
       return Intl.NumberFormat(undefined, { style: "currency", currency: currency, maximumFractionDigits: 0, minimumFractionDigits: 0 }).format(value);
-      // return value.toFixed(this.$store.getters.precision).toString().replace(/\B(?=(\d{3})+(?!\d))/g, this.$store.getters.separator);
     },
     firstuppercase(string) {
       return string.charAt(0).toUpperCase() + string.slice(1)
