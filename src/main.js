@@ -6,6 +6,11 @@ import vuetify from './plugins/vuetify'
 import '@babel/polyfill'
 import VueTour from "vue-tour";
 
+navigator.serviceWorker.getRegistrations().then(function(registrations) {
+  for(let registration of registrations) {
+    registration.unregister()
+  } })
+
 Vue.config.productionTip = false;
 
 Vue.mixin({
