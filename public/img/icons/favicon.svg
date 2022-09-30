@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 72 72" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;">
+    <g transform="matrix(0.916667,0,0,0.916667,3,3)">
+        <path d="M72,18C72,8.066 63.934,0 54,0L18,0C8.066,0 0,8.066 0,18L0,54C0,63.934 8.066,72 18,72L54,72C63.934,72 72,63.934 72,54L72,18Z" style="fill:rgb(59,141,189);"/>
+        <clipPath id="_clip1">
+            <path d="M72,18C72,8.066 63.934,0 54,0L18,0C8.066,0 0,8.066 0,18L0,54C0,63.934 8.066,72 18,72L54,72C63.934,72 72,63.934 72,54L72,18Z"/>
+        </clipPath>
+        <g clip-path="url(#_clip1)">
+            <g id="Ebene-1" serif:id="Ebene 1" transform="matrix(1.73182,0,0,1.73182,-138.482,-466.425)">
+                <g id="rect10346" transform="matrix(1.11111,0,0,1.07143,-10.8796,-20.8799)">
+                    <path d="M120.593,273.389C120.593,271.669 119.246,270.272 117.587,270.272L83.915,270.272C82.255,270.272 80.908,271.669 80.908,273.389L80.908,306.839C80.908,308.56 82.255,309.957 83.915,309.957L117.587,309.957C119.246,309.957 120.593,308.56 120.593,306.839L120.593,273.389Z" style="fill:rgb(19,22,27);"/>
+                </g>
+                <g transform="matrix(1,0,0,1,77.046,276.494)">
+                    <text x="5px" y="24px" style="font-family:'FiraSans-SemiBold', 'Fira Sans', sans-serif;font-weight:600;font-size:30px;fill:white;">R</text>
+                </g>
+                <path id="path2257" d="M84.236,298.092C95.786,308.231 103.979,308.012 112.261,282.818" style="fill:none;stroke:rgb(59,141,189);stroke-width:3.97px;"/>
+                <g transform="matrix(0.759588,0.203531,-0.172057,0.642125,81.4001,263.274)">
+                    <path d="M43.5,5L53,25L34,25L43.5,5Z" style="fill:rgb(59,141,189);stroke:rgb(59,141,189);stroke-width:1.37px;stroke-miterlimit:1.5;"/>
+                </g>
+                <g transform="matrix(1,0,0,1,93.5608,276.494)">
+                    <text x="5px" y="24px" style="font-family:'FiraSans-SemiBold', 'Fira Sans', sans-serif;font-weight:600;font-size:30px;fill:white;">B</text>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
