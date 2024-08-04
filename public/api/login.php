@@ -1,5 +1,5 @@
 <?php
-include 'conf.php';
+include 'auth.php';
 
 $success = $auth;
 

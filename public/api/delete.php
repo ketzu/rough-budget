@@ -1,5 +1,5 @@
 <?php
-include 'conf.php';
+include 'auth.php';
 
 if($auth == TRUE) {
     $stmt2 = $mysqli->prepare("DELETE FROM users WHERE name=?");

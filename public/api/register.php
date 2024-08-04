@@ -1,5 +1,5 @@
 <?php
-include 'conf.php';
+include 'auth.php';
 
 $pw = "";
 if($exists == FALSE) {
