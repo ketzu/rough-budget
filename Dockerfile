@@ -10,3 +10,5 @@ FROM php:8.2-apache
 RUN docker-php-ext-install mysqli
 COPY --from=build-stage /dist /var/www/html/
 EXPOSE 80/tcp
+COPY entrypoint.sh /entrypoint.sh
+CMD ["/entrypoint.sh"]

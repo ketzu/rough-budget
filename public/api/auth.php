@@ -1,7 +1,22 @@
 <?php
 header('Content-type: application/json');
+ini_set('display_errors',0);
 
 include 'conf.php';
+
+########## READ DATA
+
+$name = $_POST["name"]?: '';
+$pass = $_POST["pass"]?: '';
+$data = $_POST["data"]?: '';
+
+// Create connection
+try {
+	$mysqli = new mysqli($db_server, $db_user, $db_passwd, $db_name);
+} catch (Exception $e) {
+	error_log("Connection failed: {$e->getMessage()}");
+	die(json_encode("database connection failed"));
+}
 
 function auth($name, $pass, $mysqli)
 {
