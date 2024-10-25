@@ -10,7 +10,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "chart.js": "^2.9.4",
-    "vue": "^2.7.16",
+    "vue": "^3.0.0",
     "vue-chartjs": "^3.5.1",
     "vue-router": "^3.6.5",
     "vue-tour": "^1.6.0",
