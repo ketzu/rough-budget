@@ -60,11 +60,6 @@ export const deriveKeys = async (password, salt, version = PROTOCOL_VERSION) => 
   };
 };
 
-export const createSalt = () => window.crypto.getRandomValues(new Uint8Array(SALT_BYTES));
-
-export const encodeSalt = salt => toBase64(salt);
-
-
 // --- Legacy Part-- -
 
 const deriveLegacyKey = async (password, iterations, extractable) => {
