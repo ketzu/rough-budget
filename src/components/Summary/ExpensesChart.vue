@@ -31,6 +31,8 @@
             options() {
                 const self = this;
                 return {
+                    responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
                         legend: {
                             display: true
