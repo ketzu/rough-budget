@@ -4,8 +4,8 @@ import onboarding from "@/stores/onboarding";
 
 let filter = (obj, fn) => {
   let result = {};
-  for(const key in obj) {
-    if(obj.hasOwnProperty(key) && fn(obj[key]))
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key) && fn(obj[key]))
       result[key] = obj[key];
   }
   return result;
@@ -13,8 +13,8 @@ let filter = (obj, fn) => {
 
 let typed = (obj, type) => {
   let result = {};
-  for(const key in obj) {
-    if(obj.hasOwnProperty(key)){
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
       result[key] = obj[key];
       result[key]["type"] = type;
     }
@@ -22,27 +22,29 @@ let typed = (obj, type) => {
   return result;
 };
 
-let acummulator = (obj) => Object.keys(obj).map(key => obj[key].value/obj[key].steps*(obj[key].spending?-1:1)).reduce((sum, x) => sum+x, 0);
-let spendingacummulator = (obj, spending) => Object.keys(obj).map(key => spending===obj[key].spending? obj[key].value/obj[key].steps:0).reduce((sum, x) => sum+x, 0);
+let acummulator = (obj) => Object.keys(obj).map(key => obj[key].value / obj[key].steps * (obj[key].spending ? -1 : 1)).reduce((sum, x) => sum + x, 0);
+let spendingacummulator = (obj, spending) => Object.keys(obj).map(key => spending === obj[key].spending ? obj[key].value / obj[key].steps : 0).reduce((sum, x) => sum + x, 0);
 let fullacummulator = (obj, spending) => {
-  return spendingacummulator(obj.daily, spending)*365+
-    spendingacummulator(obj.weekly, spending)*365/7+
-    spendingacummulator(obj.monthly, spending)*12+
+  return spendingacummulator(obj.daily, spending) * 365 +
+    spendingacummulator(obj.weekly, spending) * 365 / 7 +
+    spendingacummulator(obj.monthly, spending) * 12 +
     spendingacummulator(obj.yearly, spending);
 };
 
 let mergedentries = entries => {
-  return {...typed(entries.daily, "daily"),
-    ...typed(entries.weekly,"weekly"),
+  return {
+    ...typed(entries.daily, "daily"),
+    ...typed(entries.weekly, "weekly"),
     ...typed(entries.monthly, "monthly"),
-    ...typed(entries.yearly,"yearly")};
+    ...typed(entries.yearly, "yearly")
+  };
 };
 
 export default createStore({
   state: {
     tours: {},
     settings: { currency: '$', lang: 'en', precision: 0, separator: ',', window: 14, locale: 'en-US', dual: false },
-    multiplier: { daily: 365/12, weekly: 365/(7*12), monthly: 1, yearly: 1/12 },
+    multiplier: { daily: 365 / 12, weekly: 365 / (7 * 12), monthly: 1, yearly: 1 / 12 },
     username: "",
     password: "",
     loggedin: false,
@@ -57,7 +59,7 @@ export default createStore({
     trackings: []
   },
   getters: {
-    json(state) {return JSON.stringify(state); },
+    json(state) { return JSON.stringify(state); },
     tour(state) { return state.tours; },
     currency(state) { return state.settings.currency; },
     dual(state) { return state.settings.dual; },
@@ -71,8 +73,8 @@ export default createStore({
     lang(state) { return state.settings.lang; },
     window(state) { return state.settings.window; },
     entries(state) { return state.entries; },
-    daily(state) {   return state.entries.daily;   },
-    weekly(state) {  return state.entries.weekly;  },
+    daily(state) { return state.entries.daily; },
+    weekly(state) { return state.entries.weekly; },
     monthly(state) { return state.entries.monthly; },
     income(state) {
       return filter(mergedentries(state.entries), obj => !obj.spending);
@@ -80,21 +82,21 @@ export default createStore({
     expense(state) {
       return filter(mergedentries(state.entries), obj => obj.spending);
     },
-    untrackedincome(state,getters) {
-      const trackings = state.trackings.map(track => track["name"]+track["type"]);
-      return filter(getters.income, obj => !trackings.includes(obj["name"]+obj["type"]));
+    untrackedincome(state, getters) {
+      const trackings = state.trackings.map(track => track["name"] + track["type"]);
+      return filter(getters.income, obj => !trackings.includes(obj["name"] + obj["type"]));
     },
-    untrackedexpense(state,getters) {
-      const trackings = state.trackings.map(track => track["name"]+track["type"]);
-      return filter(getters.expense, obj => !trackings.includes(obj["name"]+obj["type"]));
+    untrackedexpense(state, getters) {
+      const trackings = state.trackings.map(track => track["name"] + track["type"]);
+      return filter(getters.expense, obj => !trackings.includes(obj["name"] + obj["type"]));
     },
-    yearly(state) {  return state.entries.yearly;  },
-    trackings(state) {  return state.trackings; },
-    multiplier(state) {  return state.multiplier; },
+    yearly(state) { return state.entries.yearly; },
+    trackings(state) { return state.trackings; },
+    multiplier(state) { return state.multiplier; },
     balance(state) {
       let accumulator = 0;
       for (const [key, value] of Object.entries(state.entries)) {
-        accumulator += (acummulator(value)*state.multiplier[key]);
+        accumulator += (acummulator(value) * state.multiplier[key]);
       }
       return accumulator;
     },
@@ -104,8 +106,8 @@ export default createStore({
         weekly: acummulator(state.entries.weekly),
         monthly: acummulator(state.entries.monthly),
         yearly: acummulator(state.entries.yearly),
-        income: fullacummulator(state.entries, false)/12,
-        expense: (-1)*fullacummulator(state.entries, true)/12
+        income: fullacummulator(state.entries, false) / 12,
+        expense: (-1) * fullacummulator(state.entries, true) / 12
       }
     },
     incomes(state) {
@@ -125,7 +127,7 @@ export default createStore({
       }
     },
     anyEntries(state) {
-      return Object.keys(state.entries).map(key => state.entries[key]).some(obj => Object.keys(obj).length>0);
+      return Object.keys(state.entries).map(key => state.entries[key]).some(obj => Object.keys(obj).length > 0);
     }
   },
   mutations: {
@@ -135,7 +137,7 @@ export default createStore({
         JSON.parse(localStorage.entries).forEach((entries, i) => {
           var category = ['daily', 'weekly', 'monthly', 'yearly'][i - 1];
           entries.forEach(e => {
-            state.entries[category][e[0]] = {name:e[0], value: Math.abs(e[1]), spending : e[1]<0, steps: 1};
+            state.entries[category][e[0]] = { name: e[0], value: Math.abs(e[1]), spending: e[1] < 0, steps: 1 };
           });
         });
         // delete budget-v1 style entry
@@ -153,7 +155,7 @@ export default createStore({
         if (localStorage.getItem(frame)) {
           for (let entry of JSON.parse(localStorage[frame])) {
             let obj = JSON.parse(localStorage[entry]);
-            state.entries[frame.toLowerCase()][obj.name] = Object.assign({steps: 1}, obj);
+            state.entries[frame.toLowerCase()][obj.name] = Object.assign({ steps: 1 }, obj);
             localStorage.removeItem(entry);
           }
           localStorage.removeItem(frame);
@@ -194,6 +196,8 @@ export default createStore({
       if (localStorage.getItem('budget-v3')) {
         // Replace the state object with the stored item
         Object.assign(state, JSON.parse(localStorage.getItem('budget-v3')))
+        state.password = "";
+        state.loggedin = false;
       }
     },
     loadstore(state, newstate) {
@@ -211,8 +215,8 @@ export default createStore({
     setdual(state, dual) {
       state.settings.dual = dual;
     },
-    setcredentials(state, {password, username, loggedin}) {
-      state.password = password;
+    setcredentials(state, { username, loggedin }) {
+      state.password = "";
       state.username = username;
       state.loggedin = loggedin;
     },
@@ -240,105 +244,105 @@ export default createStore({
     updatename(state, payload) {
       state.entries[payload.type][payload.identity].name = payload.value;
     },
-    newentry(state, {type, name, spending}) {
-      state.entries[type][name] = {name: name, value: 0, steps: 1, spending: spending};
+    newentry(state, { type, name, spending }) {
+      state.entries[type][name] = { name: name, value: 0, steps: 1, spending: spending };
     },
-    delentry(state, {type, identity}) {
+    delentry(state, { type, identity }) {
       delete state.entries[type][identity];
-      const tracking = state.trackings.map(obj => obj.type+obj.name).findIndex((value) => value===(type+identity));
+      const tracking = state.trackings.map(obj => obj.type + obj.name).findIndex((value) => value === (type + identity));
       if (tracking !== -1) {
         state.trackings.splice(tracking, 1);
       }
     },
-    newtracking(state, {type, identity}) {
-      const tracking = state.trackings.map(obj => obj.type+obj.name).findIndex((value) => value===(type+identity));
+    newtracking(state, { type, identity }) {
+      const tracking = state.trackings.map(obj => obj.type + obj.name).findIndex((value) => value === (type + identity));
       if (tracking === -1) {
-        state.trackings.push({name: identity, type: type, values: []});
+        state.trackings.push({ name: identity, type: type, values: [] });
       }
     },
     deltracking(state, index) {
       state.trackings.splice(index, 1);
     },
-    addtrackentry(state, {value, identity, type, date}) {
-      const tracking = state.trackings.map(obj => obj.type+obj.name).findIndex((value) => value===(type+identity));
-      state.trackings[tracking].values.push({value: value, date: date});
+    addtrackentry(state, { value, identity, type, date }) {
+      const tracking = state.trackings.map(obj => obj.type + obj.name).findIndex((value) => value === (type + identity));
+      state.trackings[tracking].values.push({ value: value, date: date });
     },
-    removetrackentry(state, {value, identity, type, date}) {
-      const tracking = state.trackings.map(obj => obj.type+obj.name).findIndex((value) => value===(type+identity));
-      const element = state.trackings[tracking].values.findIndex((elem) => elem.value===value && elem.date===date);
+    removetrackentry(state, { value, identity, type, date }) {
+      const tracking = state.trackings.map(obj => obj.type + obj.name).findIndex((value) => value === (type + identity));
+      const element = state.trackings[tracking].values.findIndex((elem) => elem.value === value && elem.date === date);
       state.trackings[tracking].values.splice(element, 1);
     },
-    moveentry(state, {identity, type, to}) {
+    moveentry(state, { identity, type, to }) {
       let newidentity = identity;
-      while(state.entries[to].hasOwnProperty(newidentity)) {
-        newidentity = newidentity.concat(Math.floor(" "+Math.random()*1000));
+      while (state.entries[to].hasOwnProperty(newidentity)) {
+        newidentity = newidentity.concat(Math.floor(" " + Math.random() * 1000));
       }
       state.entries[to][newidentity] = state.entries[type][identity];
       delete state.entries[type][identity];
     }
   },
   actions: {
-    initstore({commit}) {
+    initstore({ commit }) {
       commit('initstore');
     },
-    settourviewed({commit}, tourid) {
+    settourviewed({ commit }, tourid) {
       commit('tourviewed', tourid);
     },
-    loadstore({commit}, payload) {
+    loadstore({ commit }, payload) {
       commit('loadstore', payload);
     },
-    setcurrency({commit}, symbol) {
+    setcurrency({ commit }, symbol) {
       commit('setcurrency', symbol);
     },
-    setdual({commit}, dual) {
+    setdual({ commit }, dual) {
       commit('setdual', dual);
     },
-    setcredentials({commit}, payload) {
+    setcredentials({ commit }, payload) {
       commit('setcredentials', payload);
     },
-    setprecision({commit}, precision) {
+    setprecision({ commit }, precision) {
       commit('setprecision', precision);
     },
-    setlang({commit}, lang) {
+    setlang({ commit }, lang) {
       commit('setlang', lang);
     },
-    setseparator({commit}, symbol) {
+    setseparator({ commit }, symbol) {
       commit('setseparator', symbol);
     },
-    setwindow({commit}, window) {
+    setwindow({ commit }, window) {
       commit('setwindow', window);
     },
-    updatespending({commit}, payload) {
+    updatespending({ commit }, payload) {
       commit('updatespending', payload);
     },
-    updatevalue({commit}, payload) {
+    updatevalue({ commit }, payload) {
       commit('updatevalue', payload);
     },
-    updatesteps({commit}, payload) {
+    updatesteps({ commit }, payload) {
       commit('updatesteps', payload);
     },
-    updatename({commit}, payload) {
+    updatename({ commit }, payload) {
       commit('updatename', payload);
     },
-    newentry({commit}, payload) {
+    newentry({ commit }, payload) {
       commit('newentry', payload);
     },
-    delentry({commit}, payload) {
+    delentry({ commit }, payload) {
       commit('delentry', payload);
     },
-    newtracking({commit}, payload) {
+    newtracking({ commit }, payload) {
       commit('newtracking', payload);
     },
-    deltracking({commit}, index) {
+    deltracking({ commit }, index) {
       commit('deltracking', index);
     },
-    addtrackentry({commit}, payload) {
+    addtrackentry({ commit }, payload) {
       commit('addtrackentry', payload);
     },
-    removetrackentry({commit}, payload) {
+    removetrackentry({ commit }, payload) {
       commit('removetrackentry', payload);
     },
-    moveentry({commit}, payload) {
+    moveentry({ commit }, payload) {
       commit('moveentry', payload);
     }
   },
