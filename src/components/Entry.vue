@@ -4,6 +4,7 @@
       <v-btn
         :icon="spending ? 'fas fa-arrow-circle-down' : 'fas fa-arrow-circle-up'"
         :color="spending ? 'red-darken-2' : 'blue-darken-2'"
+        variant="text"
         @click="spending = !spending"
       ></v-btn>
     </template>
@@ -73,8 +74,8 @@
 
     <template #append>
       <div class="entry-actions">
-          <v-btn icon="fas fa-chart-line" color="blue-darken-2" ripple @click="$store.dispatch('newtracking', {type: type, identity: identity})" data-v-step="track"></v-btn>
-          <v-btn icon="fas fa-times" color="grey-darken-2" ripple @click="$store.dispatch('delentry',{type: type, identity: identity})" data-v-step="delete"></v-btn>
+          <v-btn icon="fas fa-chart-line" color="blue-darken-2" variant="text" ripple @click="$store.dispatch('newtracking', {type: type, identity: identity})" data-v-step="track"></v-btn>
+          <v-btn icon="fas fa-times" color="grey-darken-2" variant="text" ripple @click="$store.dispatch('delentry',{type: type, identity: identity})" data-v-step="delete"></v-btn>
       </div>
     </template>
     <entry-tour></entry-tour>

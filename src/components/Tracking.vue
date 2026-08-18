@@ -7,8 +7,8 @@
 
       <v-spacer></v-spacer>
       <div class="log-toolbar-actions">
-        <v-btn icon="fas fa-cog" color="grey-darken-2" @click="edit=!edit"></v-btn>
-        <v-btn icon="fas fa-times" color="grey-darken-2" @click="$store.dispatch('deltracking', index)"></v-btn>
+        <v-btn icon="fas fa-cog" color="grey-darken-2" variant="text" @click="edit=!edit"></v-btn>
+        <v-btn icon="fas fa-times" color="grey-darken-2" variant="text" @click="$store.dispatch('deltracking', index)"></v-btn>
       </div>
     </v-card-title>
     <v-card-text>
@@ -27,7 +27,7 @@
 
           <template #append>
             <div class="log-entry-actions">
-              <v-btn icon="fas fa-times" color="grey-darken-2" ripple @click="removeEntry(value)"></v-btn>
+              <v-btn icon="fas fa-times" color="grey-darken-2" variant="text" ripple @click="removeEntry(value)"></v-btn>
             </div>
           </template>
         </v-list-item>
