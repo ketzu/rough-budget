@@ -64,7 +64,7 @@
         </v-card>
       </v-dialog>
       <a href="https://paypal.me/roughbudget" target="_blank"><v-btn variant="text">Support me</v-btn></a>
-      <a href="mailto:contact@rough-budget.com"> <v-btn variant="text">Contact</v-btn></a>
+      <a href="mailto:budget@ketzu.net"> <v-btn variant="text">Contact</v-btn></a>
 
       </v-row>
     </v-container>
