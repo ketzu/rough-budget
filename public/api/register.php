@@ -17,10 +17,11 @@ if (!$user && $name !== '' && $pass !== '' && valid_salt(extract_from_request('k
   } else {
     $stmt->bind_param('sss', $name, $verifier, $salt);
     $success = $stmt->execute();
-    if (!$success)
+    if (!$success) {
       http_response_code(500);
+    }
   }
-} elseif (!$user && ($name === '' || $pass === '' || !valid_salt(extract_from_request('kdf_salt')))) {
+} else {
   http_response_code(400);
   password_hash($pass, PASSWORD_DEFAULT);
   $success = FALSE;
