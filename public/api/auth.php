@@ -42,7 +42,7 @@ function valid_salt($salt)
 
 function find_user($name, $mysqli)
 {
-  $stmt = $mysqli->prepare("SELECT name, password, auth_verifier, protocol_version, kdf_salt FROM users WHERE name=?");
+  $stmt = $mysqli->prepare("SELECT name, password, protocol_version, kdf_salt FROM users WHERE name=?");
   $stmt->bind_param('s', $name);
   $stmt->execute();
   return $stmt->get_result()->fetch_assoc() ?: NULL;
@@ -57,7 +57,7 @@ function verify_authentication($user, $pass, $legacy_pass)
   if ((int) $user['protocol_version'] === 1) {
     return password_verify($legacy_pass, $user['password']);
   }
-  return password_verify($pass, $user['auth_verifier']);
+  return password_verify($pass, $user['password']);
 
 }
 

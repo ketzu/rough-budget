@@ -13,7 +13,7 @@ if ($success && $user) {
     $newVerifier = password_hash($pass, PASSWORD_DEFAULT);
     $salt = extract_from_request('kdf_salt');
     if (valid_salt($salt)) {
-      $stmt = $mysqli->prepare("UPDATE users SET auth_verifier=?, protocol_version=2, kdf_salt=? WHERE name=?");
+      $stmt = $mysqli->prepare("UPDATE users SET password=?, protocol_version=2, kdf_salt=? WHERE name=?");
       $stmt->bind_param('sss', $newVerifier, $salt, $user['name']);
       $stmt->execute();
     }

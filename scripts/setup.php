@@ -24,8 +24,7 @@ try {
     $mysqli->query(
         "CREATE TABLE IF NOT EXISTS `users` (
             name varchar(255) NOT NULL,
-            password varchar(255) NOT NULL,
-            auth_verifier varchar(255) DEFAULT NULL,
+            password varchar(255) DEFAULT NULL,
             protocol_version int NOT NULL DEFAULT 1,
             kdf_salt varchar(64) DEFAULT NULL,
             lastaccessed timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -34,7 +33,6 @@ try {
         )"
     );
     $columns = [
-        ['auth_verifier', 'varchar(255) DEFAULT NULL'],
         ['protocol_version', 'int NOT NULL DEFAULT 1'],
         ['kdf_salt', 'varchar(64) DEFAULT NULL']
     ];
@@ -43,6 +41,14 @@ try {
         if ($result->num_rows === 0) {
             $mysqli->query("ALTER TABLE `users` ADD COLUMN {$columnName} {$definition}");
         }
+    }
+    $mysqli->query("ALTER TABLE `users` MODIFY COLUMN `password` varchar(255) DEFAULT NULL");
+    // Older migration builds used a separate verifier column. Fold it back
+    // into the existing password verifier before removing that column.
+    $result = $mysqli->query("SHOW COLUMNS FROM `users` LIKE 'auth_verifier'");
+    if ($result->num_rows > 0) {
+        $mysqli->query("UPDATE `users` SET `password`=`auth_verifier` WHERE `protocol_version`=2 AND `auth_verifier` IS NOT NULL");
+        $mysqli->query("ALTER TABLE `users` DROP COLUMN `auth_verifier`");
     }
     // Sessions are no longer part of the authentication protocol.
     $mysqli->query("DROP TABLE IF EXISTS `sessions`");
