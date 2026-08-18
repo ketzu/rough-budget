@@ -42,7 +42,8 @@ app.mixin({
 })
 
 store.subscribe((mutation, state) => {
-  localStorage.setItem('budget-v3', JSON.stringify(state));
+  const persistedState = {...state, password: ""};
+  localStorage.setItem('budget-v3', JSON.stringify(persistedState));
 });
 
 app.use(router)
