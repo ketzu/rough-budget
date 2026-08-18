@@ -142,7 +142,7 @@
 
 <style scoped>
 .chart-container {
-  height: 200px;
+  height: clamp(280px, 35vw, 440px);
   position: relative;
 }
 </style>
