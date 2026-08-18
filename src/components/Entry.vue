@@ -4,7 +4,6 @@
       <v-btn
         :icon="spending ? 'fas fa-arrow-circle-down' : 'fas fa-arrow-circle-up'"
         :color="spending ? 'red-darken-2' : 'blue-darken-2'"
-        size="large"
         @click="spending = !spending"
       ></v-btn>
     </template>
@@ -154,10 +153,17 @@
   min-width: 0;
 }
 
+:deep(.v-list-item__prepend) {
+  margin-inline-end: 1rem;
+}
+
+:deep(.v-list-item__append) {
+  margin-inline-start: 1rem;
+}
+
 .entry-actions {
   align-items: center;
   display: flex;
   gap: 0.5rem;
-  margin-inline-start: 1rem;
 }
 </style>
