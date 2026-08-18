@@ -16,8 +16,8 @@
     <v-card-text>
       <line-chart :data="data" :options="options" v-if="values.length>0"></line-chart>
       <v-divider v-if="edit"></v-divider>
-      <v-list two-line v-if="edit">
-        <v-list-item :key="index" v-for="(value,index) in rawvalues">
+      <v-list v-if="edit">
+        <v-list-item lines="two" :key="index" v-for="(value,index) in rawvalues">
           <div>
             <v-list-item-title>
               {{(new Date(value.date)).toLocaleDateString()}}
@@ -75,7 +75,7 @@
       </v-container>
     </v-card-text>
     <v-card-actions v-if="values.length>0">
-      <h3 class="ml-5">
+      <h3 class="ms-5">
         <span v-if="values.length>0">
           <span v-if="steps>1">{{steps}}-</span>
           {{firstuppercase(type)}} average: {{formatcurrency(averages.slice(-1)[0]*steps)}}

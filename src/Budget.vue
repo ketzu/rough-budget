@@ -10,7 +10,7 @@
             optional
             grow
         >
-          <v-tab class="icon-label" router to="/summary">
+          <v-tab class="icon-label" to="/summary">
             <v-icon class="me-2">
               fas fa-chart-pie
             </v-icon>
@@ -18,7 +18,7 @@
               Statistics
             </span>
           </v-tab>
-          <v-tab class="icon-label" router to="/inout">
+          <v-tab class="icon-label" to="/inout">
             <v-icon class="me-2">
               fas fa-th-list
             </v-icon>
@@ -26,7 +26,7 @@
               Bookkeeping
             </span>
           </v-tab>
-          <v-tab class="icon-label" router to="/time">
+          <v-tab class="icon-label" to="/time">
             <v-icon class="me-2">
               fas fa-calendar-week
             </v-icon>
@@ -34,7 +34,7 @@
               Time
             </span>
           </v-tab>
-          <v-tab class="icon-label" router to="/trackings">
+          <v-tab class="icon-label" to="/trackings">
             <v-icon class="me-2">
               fas fa-chart-line
             </v-icon>
@@ -52,7 +52,7 @@
       </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer fixed v-model="sidemenu" app right>
+    <v-navigation-drawer v-model="sidemenu" location="right">
       <v-container>
         <settings></settings>
         <account></account>

@@ -4,8 +4,8 @@
       <h2>{{title}}</h2>
     </v-card-title>
 
-    <v-list two-line>
-      <budget-entry v-bind:key="key" :identity="key" :type="type_distinction(entry)"  v-for="(entry, key) in entries"></budget-entry>
+    <v-list>
+      <budget-entry v-bind:key="key" :identity="key" :type="type_distinction(entry)" v-for="(entry, key) in entries"></budget-entry>
       <v-list-item>
         <v-text-field v-model="newname" @keyup.enter="addEntry()"
                       :append-icon="newname != '' ? 'fa-plus' : ''"

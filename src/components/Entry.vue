@@ -2,8 +2,8 @@
   <v-list-item>
     <template #prepend>
       <v-btn icon @click="spending = !spending">
-        <v-icon large v-if="!spending" color="blue-darken-2">fas fa-arrow-circle-up</v-icon>
-        <v-icon large v-if="spending" color="red-darken-2">fas fa-arrow-circle-down</v-icon>
+        <v-icon size="large" v-if="!spending" color="blue-darken-2">fas fa-arrow-circle-up</v-icon>
+        <v-icon size="large" v-if="spending" color="red-darken-2">fas fa-arrow-circle-down</v-icon>
       </v-btn>
     </template>
 

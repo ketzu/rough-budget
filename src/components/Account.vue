@@ -34,7 +34,7 @@
           <span class="headline">Do you really want to delete your account?</span>
         </v-card-title>
         <v-card-text>
-          <v-container grid-list-md>
+          <v-container>
               <v-row>
                 <h2>
                   This will delete your account and remove all data from our database. This can not be undone.

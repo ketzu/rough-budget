@@ -31,7 +31,7 @@
                   <h2>Responsible: David Mödinger</h2>
                 </v-row>
               <v-row>
-                <v-col cols="2" class="text-right">
+                <v-col cols="2" class="text-end">
                   <v-icon>fas fa-home</v-icon>
                 </v-col>
                 <v-col>
@@ -39,7 +39,7 @@
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="2" class="text-right">
+                <v-col cols="2" class="text-end">
                   <v-icon>fas fa-envelope</v-icon>
                 </v-col>
                 <v-col>
@@ -47,7 +47,7 @@
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="2" class="text-right">
+                <v-col cols="2" class="text-end">
                   <v-icon>fas fa-phone</v-icon>
                 </v-col>
                 <v-col>
