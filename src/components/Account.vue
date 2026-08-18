@@ -200,8 +200,10 @@
             body: formdata
           });
           console.log("Store: "+success);
+          if (!success) this.nameerrors = "Store failed.";
         } catch (error) {
           console.error('Store error:', error);
+          this.nameerrors = "Store failed.";
         }
       },
       async load() {
@@ -214,7 +216,7 @@
           });
           console.log("Load: "+success);
           if (!success) {
-            this.logout();
+            this.nameerrors = "Load failed.";
             return;
           }
 
@@ -238,6 +240,7 @@
           if (migrated) await this.store();
         } catch (error) {
           console.error('Load error:', error);
+          this.nameerrors = "Load failed.";
         }
       },
       async formLike(includeContent = false, includeLegacyCredentials = false) {
@@ -296,6 +299,7 @@
     },
     mounted() {
       this.name = this.$store.getters.username;
+      this.password = this.$store.getters.password;
     },
     mixins: [Settings]
   }
