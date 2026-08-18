@@ -1,12 +1,12 @@
 <template>
   <v-app>
-    <v-app-bar dark app short color="accent">
+    <v-app-bar app color="accent" theme="dark">
       <v-toolbar-title class="d-none d-sm-block">
         <v-img src="banner.png" max-height="32" alt="Rough-Budget" max-width="63"></v-img>
       </v-toolbar-title>
 
         <v-tabs
-            background-color="transparent"
+            color="transparent"
             optional
             grow
             icons-and-text
@@ -60,7 +60,7 @@
       </v-container>
     </v-navigation-drawer>
 
-    <v-main class="primary">
+    <v-main class="bg-primary">
       <router-view/>
     </v-main>
     <bottom-footer></bottom-footer>

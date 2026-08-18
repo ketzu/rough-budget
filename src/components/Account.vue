@@ -48,12 +48,12 @@
                 ></v-text-field>
             </v-row>
             <v-row>
-              <v-btn @click="deleteAccount()" color="red darken-2" :disabled="confirmation===''" block>Delete Account</v-btn>
+              <v-btn @click="deleteAccount()" color="red-darken-2" :disabled="confirmation===''" block>Delete Account</v-btn>
             </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="blue darken-1" @click="dialog = false; confirmation=''" block>Keep</v-btn>
+          <v-btn color="blue-darken-1" @click="dialog = false; confirmation=''" block>Keep</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
