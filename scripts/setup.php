@@ -25,9 +25,33 @@ try {
         "CREATE TABLE IF NOT EXISTS `users` (
             name varchar(255) NOT NULL,
             password varchar(255) NOT NULL,
+            auth_verifier varchar(255) DEFAULT NULL,
+            protocol_version int NOT NULL DEFAULT 1,
+            kdf_salt varchar(64) DEFAULT NULL,
             lastaccessed timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             content mediumtext,
             PRIMARY KEY (name)
+        )"
+    );
+    $columns = [
+        ['auth_verifier', 'varchar(255) DEFAULT NULL'],
+        ['protocol_version', 'int NOT NULL DEFAULT 1'],
+        ['kdf_salt', 'varchar(64) DEFAULT NULL']
+    ];
+    foreach ($columns as [$columnName, $definition]) {
+        $result = $mysqli->query("SHOW COLUMNS FROM `users` LIKE '{$columnName}'");
+        if ($result->num_rows === 0) {
+            $mysqli->query("ALTER TABLE `users` ADD COLUMN {$columnName} {$definition}");
+        }
+    }
+    $mysqli->query(
+        "CREATE TABLE IF NOT EXISTS `sessions` (
+            token_hash char(64) NOT NULL,
+            username varchar(255) NOT NULL,
+            expires_at datetime NOT NULL,
+            PRIMARY KEY (token_hash),
+            INDEX (username),
+            CONSTRAINT sessions_user FOREIGN KEY (username) REFERENCES users(name) ON DELETE CASCADE
         )"
     );
     $mysqli->close();
