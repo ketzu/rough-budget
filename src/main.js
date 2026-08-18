@@ -1,19 +1,19 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 import router from './router'
 import Budget from './Budget.vue'
 import store from './store'
 import vuetify from './plugins/vuetify'
-import '@babel/polyfill'
-import VueTour from "vue-tour";
+import Vue3Tour from 'vue3-tour'
+import 'vue3-tour/dist/vue3-tour.css'
 
 navigator.serviceWorker.getRegistrations().then(function(registrations) {
   for(let registration of registrations) {
     registration.unregister()
   } })
 
-Vue.config.productionTip = false;
+const app = createApp(Budget)
 
-Vue.mixin({
+app.mixin({
   methods: {
     formatcurrency(value) {
       let currency = "USD";
@@ -39,22 +39,16 @@ Vue.mixin({
       }
     }
   }
-});
+})
 
 store.subscribe((mutation, state) => {
   localStorage.setItem('budget-v3', JSON.stringify(state));
 });
 
-require('vue-tour/dist/vue-tour.css');
+app.use(router)
+app.use(store)
+app.use(vuetify)
+app.use(Vue3Tour)
 
-Vue.use(VueTour);
-
-new Vue({
-  router,
-  store,
-  vuetify,
-  render: h => h(Budget),
-  beforeCreate() {
-    this.$store.commit('initstore');
-  }
-}).$mount('#app')
+store.commit('initstore')
+app.mount('#app')

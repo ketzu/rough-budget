@@ -1,9 +1,6 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { createStore } from 'vuex'
 
 import onboarding from "@/stores/onboarding";
-
-Vue.use(Vuex);
 
 let filter = (obj, fn) => {
   let result = {};
@@ -41,7 +38,7 @@ let mergedentries = entries => {
     ...typed(entries.yearly,"yearly")};
 };
 
-export default new Vuex.Store({
+export default createStore({
   state: {
     tours: {},
     settings: { currency: '$', lang: 'en', precision: 0, separator: ',', window: 14, locale: 'en-US', dual: false },
@@ -196,16 +193,14 @@ export default new Vuex.Store({
       // Check if the ID exists
       if (localStorage.getItem('budget-v3')) {
         // Replace the state object with the stored item
-        this.replaceState(
-          Object.assign(state, JSON.parse(localStorage.getItem('budget-v3')))
-        );
+        Object.assign(state, JSON.parse(localStorage.getItem('budget-v3')))
       }
     },
     loadstore(state, newstate) {
       console.log(state);
       console.log(newstate);
       // Replace the state object with the loaded item
-      this.replaceState(Object.assign(state, newstate));
+      Object.assign(state, newstate);
     },
     setcurrency(state, symbol) {
       state.settings.currency = symbol;
@@ -246,13 +241,13 @@ export default new Vuex.Store({
       state.entries[payload.type][payload.identity].name = payload.value;
     },
     newentry(state, {type, name, spending}) {
-      Vue.set(state.entries[type], name, {name: name, value: 0, steps: 1, spending: spending});
+      state.entries[type][name] = {name: name, value: 0, steps: 1, spending: spending};
     },
     delentry(state, {type, identity}) {
-      Vue.delete(state.entries[type], identity);
+      delete state.entries[type][identity];
       const tracking = state.trackings.map(obj => obj.type+obj.name).findIndex((value) => value===(type+identity));
       if (tracking !== -1) {
-        Vue.delete(state.trackings, tracking);
+        state.trackings.splice(tracking, 1);
       }
     },
     newtracking(state, {type, identity}) {
@@ -262,7 +257,7 @@ export default new Vuex.Store({
       }
     },
     deltracking(state, index) {
-      Vue.delete(state.trackings, index);
+      state.trackings.splice(index, 1);
     },
     addtrackentry(state, {value, identity, type, date}) {
       const tracking = state.trackings.map(obj => obj.type+obj.name).findIndex((value) => value===(type+identity));
@@ -279,7 +274,7 @@ export default new Vuex.Store({
         newidentity = newidentity.concat(Math.floor(" "+Math.random()*1000));
       }
       state.entries[to][newidentity] = state.entries[type][identity];
-      Vue.delete(state.entries[type], identity);
+      delete state.entries[type][identity];
     }
   },
   actions: {

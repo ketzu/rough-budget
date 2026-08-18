@@ -60,9 +60,9 @@
       </v-container>
     </v-navigation-drawer>
 
-    <v-content class="primary">
+    <v-main class="primary">
       <router-view/>
-    </v-content>
+    </v-main>
     <bottom-footer></bottom-footer>
   </v-app>
 </template>

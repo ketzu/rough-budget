@@ -16,16 +16,16 @@
         @click:append="showpw = !showpw"
     ></v-text-field>
 
-    <v-btn @click="store()" color="blue darken-2" :disabled="!loggedin" block class="white--text">
+    <v-btn @click="store()" color="blue-darken-2" :disabled="!loggedin" block class="text-white">
       Store
     </v-btn>
-    <v-btn @click="load()" color="orange darken-4" :disabled="!loggedin" block class="mt-2 white--text">
+    <v-btn @click="load()" color="orange-darken-4" :disabled="!loggedin" block class="mt-2 text-white">
       Load
     </v-btn>
 
     <v-dialog v-model="dialog" persistent max-width="600px" v-if="loggedin">
-      <template v-slot:activator="{ on }">
-        <v-btn v-on="on" class="mt-2" block>
+      <template #activator="{ props }">
+        <v-btn v-bind="props" class="mt-2" block>
           Delete
         </v-btn>
       </template>

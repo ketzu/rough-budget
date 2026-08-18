@@ -7,31 +7,31 @@
 
       <v-spacer></v-spacer>
       <v-btn icon @click="edit=!edit">
-        <v-icon color="grey darken-2">fas fa-cog</v-icon>
+        <v-icon color="grey-darken-2">fas fa-cog</v-icon>
       </v-btn>
       <v-btn icon @click="$store.dispatch('deltracking', index)">
-        <v-icon color="grey darken-2">fas fa-times</v-icon>
+        <v-icon color="grey-darken-2">fas fa-times</v-icon>
       </v-btn>
     </v-card-title>
     <v-card-text>
-      <chart :chart-data="data" :options="options" v-if="values.length>0"></chart>
+      <line-chart :data="data" :options="options" v-if="values.length>0"></line-chart>
       <v-divider v-if="edit"></v-divider>
       <v-list two-line v-if="edit">
         <v-list-item :key="index" v-for="(value,index) in rawvalues">
-          <v-list-item-content>
+          <div>
             <v-list-item-title>
               {{(new Date(value.date)).toLocaleDateString()}}
             </v-list-item-title>
             <v-list-item-subtitle>
               {{formatcurrency(value.value)}}
             </v-list-item-subtitle>
-          </v-list-item-content>
+          </div>
 
-          <v-list-item-action>
+          <template #append>
             <v-btn icon ripple @click="removeEntry(value)">
-              <v-icon color="grey darken-2">fas fa-times</v-icon>
+              <v-icon color="grey-darken-2">fas fa-times</v-icon>
             </v-btn>
-          </v-list-item-action>
+          </template>
         </v-list-item>
       </v-list>
       <v-divider></v-divider>
@@ -43,7 +43,7 @@
                           :prefix="currency"
                           prepend-icon="fa-money-bill-wave-alt"
                           @click:append="addEntry">
-              <template slot="label">
+              <template #label>
                 New data: Amount {{ spending ? "spent" : "earned" }}
               </template>
             </v-text-field>
@@ -55,20 +55,19 @@
                 persistent
                 width="290px"
             >
-              <template v-slot:activator="{ on }">
+              <template #activator="{ props }">
                 <v-text-field
-                    slot="activator"
-                    v-on="on"
+                    v-bind="props"
                     :value="(new Date(newdate)).toLocaleDateString()"
                     prepend-icon="fa-calendar-alt"
                     readonly
                 >
-                  <template slot="label">
+                  <template #label>
                     When was the amount {{ spending ? "spent" : "earned" }}
                   </template>
                 </v-text-field>
               </template>
-              <v-date-picker v-model="newdate" scrollable @input="modal = false">
+              <v-date-picker v-model="newdate" @update:model-value="modal = false">
               </v-date-picker>
             </v-dialog>
           </v-col>
@@ -83,7 +82,7 @@
         </span>
       </h3>
       <v-spacer></v-spacer>
-      <v-btn text @click="putback()">
+      <v-btn variant="text" @click="putback()">
         Use value
         <v-icon right small>fas fa-share-square</v-icon>
       </v-btn>
@@ -94,26 +93,20 @@
 <script>
   import Settings from './settingsmixin'
   import {mapGetters} from 'vuex'
-  import {Line, mixins} from 'vue-chartjs'
+  import {Line} from 'vue-chartjs'
+  import {CategoryScale, Chart as ChartJS, Legend, LinearScale, LineElement, PointElement, Tooltip} from 'chart.js'
+
+  ChartJS.register(CategoryScale, Legend, LinearScale, LineElement, PointElement, Tooltip)
 
   const dateformat = (date) => {
     return date.getFullYear() + '-' + (date.getMonth() + 1).toLocaleString(undefined, {minimumIntegerDigits: 2}) + '-' + date.getDate();
-  };
-
-  let chart = {
-    extends: Line,
-    props: ['options'],
-    mounted() {
-      this.renderChart(this.chartData, this.options);
-    },
-    mixins: [mixins.reactiveProp]
   };
 
   export default {
     name: 'tracking',
     props: ['index'],
     components: {
-      chart
+      'line-chart': Line
     },
     data() {
       return {
@@ -181,42 +174,39 @@
       options() {
         const self = this;
         return {
-          tooltips: {
+          plugins: {
+            tooltip: {
             callbacks: {
-              label: function (tooltipItems, data) {
-                return data.datasets[tooltipItems.datasetIndex].label + ': ' + self.formatcurrency(tooltipItems.yLabel);
+              label: function (tooltipItems) {
+                return tooltipItems.dataset.label + ': ' + self.formatcurrency(tooltipItems.parsed.y);
               }
+            }
             }
           },
           scales: {
-            yAxes: [
-              {
-                ticks: {
-                  callback: function (label) {
-                    return label + self.currency;
+            y: {
+              ticks: {
+                callback: function (label) {
+                  return label + self.currency;
+                }
+              }
+            },
+            x: {
+              ticks: {
+                callback: function (label) {
+                  const obj = new Date(label);
+                  switch (self.type) {
+                    case 'daily':
+                    case 'weekly':
+                      return obj.getDate() + '. ' + obj.toLocaleString(undefined, {month: 'short'});
+                    case 'monthly':
+                      return obj.toLocaleString(undefined, {month: 'long'});
+                    case 'yearly':
+                      return label;
                   }
                 }
               }
-            ],
-            xAxes: [
-              {
-                ticks: {
-                  callback: function (label) {
-                    const obj = new Date(label);
-                    switch (self.type) {
-                      case 'daily':
-                        return obj.getDate() + '. ' + obj.toLocaleString(undefined, {month: 'short'});
-                      case 'weekly':
-                        return obj.getDate() + '. ' + obj.toLocaleString(undefined, {month: 'short'});
-                      case 'monthly':
-                        return obj.toLocaleString(undefined, {month: 'long'});
-                      case 'yearly':
-                        return label;
-                    }
-                  }
-                }
-              }
-            ]
+            }
           }
         }
       },

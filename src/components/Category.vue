@@ -14,7 +14,7 @@
                       @blur="newEntryFocus=false"
                       :data-v-step="type"
         >
-          <template slot="label">
+          <template #label>
             {{newEntryText}}
           </template>
         </v-text-field>

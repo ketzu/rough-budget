@@ -1,22 +1,22 @@
-import Vue from 'vue';
-import Vuetify from 'vuetify/lib';
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
 
-Vue.use(Vuetify);
-
-export default new Vuetify({
+export default createVuetify({
   icons: {
-    iconfont: 'fa',
+    defaultSet: 'fa',
   },
   theme: {
     themes: {
       light: {
-        primary: '#3B8DBD',
-        secondary: '#222222',
-        accent: '#0D0D0D',
-        error: '#FF5252',
-        info: '#2196F3',
-        success: '#4CAF50',
-        warning: '#FFC107',
+        colors: {
+          primary: '#3B8DBD',
+          secondary: '#222222',
+          accent: '#0D0D0D',
+          error: '#FF5252',
+          info: '#2196F3',
+          success: '#4CAF50',
+          warning: '#FFC107',
+        },
       },
     },
   },
