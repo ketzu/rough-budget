@@ -10,5 +10,6 @@ FROM php:8.2-apache
 RUN docker-php-ext-install mysqli
 COPY --from=build-stage /dist /var/www/html/
 EXPOSE 80/tcp
+COPY --chmod=755 scripts/setup.php /usr/local/bin/setup.php
 COPY --chmod=755 entrypoint.sh /entrypoint.sh
 CMD ["/entrypoint.sh"]
