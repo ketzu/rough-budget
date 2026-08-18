@@ -2,11 +2,11 @@
 include 'auth.php';
 
 $mysqli = database();
-$session = session_user(extract_from_request('session'), $mysqli);
+$user = authenticated_user(extract_from_request('name'), extract_from_request('pass'), extract_from_request('legacy_pass'), $mysqli);
 $success = FALSE;
-if ($session) {
+if ($user) {
   $stmt = $mysqli->prepare("DELETE FROM users WHERE name=?");
-  $stmt->bind_param('s', $session['name']);
+  $stmt->bind_param('s', $user['name']);
   $stmt->execute();
   $success = TRUE;
 }

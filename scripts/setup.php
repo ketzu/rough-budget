@@ -44,16 +44,8 @@ try {
             $mysqli->query("ALTER TABLE `users` ADD COLUMN {$columnName} {$definition}");
         }
     }
-    $mysqli->query(
-        "CREATE TABLE IF NOT EXISTS `sessions` (
-            token_hash char(64) NOT NULL,
-            username varchar(255) NOT NULL,
-            expires_at datetime NOT NULL,
-            PRIMARY KEY (token_hash),
-            INDEX (username),
-            CONSTRAINT sessions_user FOREIGN KEY (username) REFERENCES users(name) ON DELETE CASCADE
-        )"
-    );
+    // Sessions are no longer part of the authentication protocol.
+    $mysqli->query("DROP TABLE IF EXISTS `sessions`");
     $mysqli->close();
 } catch (Throwable $error) {
     error_log("Database initialization failed: {$error->getMessage()}");

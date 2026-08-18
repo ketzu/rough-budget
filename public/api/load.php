@@ -2,12 +2,12 @@
 include 'auth.php';
 
 $mysqli = database();
-$session = session_user(extract_from_request('session'), $mysqli);
+$user = authenticated_user(extract_from_request('name'), extract_from_request('pass'), extract_from_request('legacy_pass'), $mysqli);
 $payload = '{}';
 $success = FALSE;
-if ($session) {
+if ($user) {
   $stmt = $mysqli->prepare("SELECT content FROM users WHERE name=?");
-  $stmt->bind_param('s', $session['name']);
+  $stmt->bind_param('s', $user['name']);
   $stmt->execute();
   $result = $stmt->get_result()->fetch_assoc();
   if ($result) {
