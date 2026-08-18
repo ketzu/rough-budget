@@ -1,5 +1,5 @@
 export default {
-      "Support us": "Unterstütze uns",
+      "Support me": "Unterstütze mich",
       "Contact": "Kontakt",
       "Privacy Policy": "Datenschutz & Impressum",
       "These list all your incomes and expenses per day, week, month and year.": "Hier werden ihre Einkünfte und Ausgaben pro Tag, Woche, Monat und Jahr aufgelistet.",

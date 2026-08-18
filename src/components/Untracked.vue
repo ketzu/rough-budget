@@ -14,12 +14,12 @@
       </h4>
     </v-card-title>
     <v-card-text>
-      <v-btn rounded color="primary" ripple dark :key="index" v-for="(entry, index) in untrackedincome" class="ma-1"
+      <v-btn rounded color="primary" ripple :key="index" v-for="(entry, index) in untrackedincome" class="ma-1 text-white"
              @click="$store.dispatch('newtracking', {type: entry.type, identity: entry.name})"
       >
         {{entry.name}}
       </v-btn>
-      <v-btn rounded color="red darken-2" ripple dark :key="index" v-for="(entry, index) in untrackedexpense" class="ma-1"
+      <v-btn rounded color="red-darken-2" ripple :key="index" v-for="(entry, index) in untrackedexpense" class="ma-1 text-white"
              @click="$store.dispatch('newtracking', {type: entry.type, identity: entry.name})"
       >
         {{entry.name}}

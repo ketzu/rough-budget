@@ -8,12 +8,12 @@
       </v-container>
       <v-list>
         <v-list-item v-for="item in ['daily', 'weekly', 'monthly', 'yearly']" :key="item.title">
-          <v-list-item-avatar>
-            <v-icon :color='balance < 0 ? "red darken-2" : "blue darken-2"'>fas {{icontype(item)}}</v-icon>
-          </v-list-item-avatar>
-          <v-list-item-content>
+          <template #prepend>
+            <v-icon :color='balance < 0 ? "red-darken-2" : "blue-darken-2"'>fas {{icontype(item)}}</v-icon>
+          </template>
+          <div>
             <v-list-item-title>{{formatcurrency(Math.abs(balance/multiplier[item]))}} {{item}}.</v-list-item-title>
-          </v-list-item-content>
+          </div>
         </v-list-item>
       </v-list>
     </v-card-text>

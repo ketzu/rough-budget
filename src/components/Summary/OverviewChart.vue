@@ -6,7 +6,9 @@
           <h3>Monthly Budged Overview</h3>
         </v-row>
       </v-container>
-      <chart :height="200" :chart-data="data" :options="options"></chart>
+      <div class="chart-container">
+        <bar-chart :data="data" :options="options"></bar-chart>
+      </div>
     </v-card-text>
   </v-card>
 </template>
@@ -14,21 +16,22 @@
 <script>
   import Settings from '../settingsmixin'
   import {mapGetters} from 'vuex'
-  import {HorizontalBar, mixins} from 'vue-chartjs'
+  import {Bar} from 'vue-chartjs'
+  import {
+    BarElement,
+    CategoryScale,
+    Chart as ChartJS,
+    Legend,
+    LinearScale,
+    Tooltip
+  } from 'chart.js'
 
-  const chart = {
-    extends: HorizontalBar,
-    props: ['options'],
-    mounted() {
-      this.renderChart(this.chartData, this.options);
-    },
-    mixins: [mixins.reactiveProp]
-  };
+  ChartJS.register(BarElement, CategoryScale, Legend, LinearScale, Tooltip)
 
   export default {
     name: 'overview-chart',
     components: {
-      chart
+      'bar-chart': Bar
     },
     computed: {
       ...mapGetters(['incomes', 'expenses', 'multiplier', 'balance']),
@@ -48,8 +51,9 @@
         const self = this;
         return {
           maintainAspectRatio: false,
+          indexAxis: 'y',
           scales: {
-            xAxes: [{
+            x: {
               stacked: true,
               ticks: {
                 beginAtZero: true,
@@ -57,22 +61,23 @@
                   return label + self.currency;
                 }
               },
-              categoryPercentage: 1.0
-            }],
-            yAxes: [{
+            },
+            y: {
               stacked: true
-            }]
+            }
           },
-          legend: {
+          plugins: {
+            legend: {
             display: false
-          },
-          tooltips: {
-            callbacks: {
-              label: function (tooltipItems, data) {
-                if (tooltipItems.xLabel === 0) {
-                  return '';
+            },
+            tooltip: {
+              callbacks: {
+                label: function (tooltipItems) {
+                  if (tooltipItems.parsed.x === 0) {
+                    return '';
+                  }
+                  return tooltipItems.dataset.label + ': ' + self.formatcurrency(tooltipItems.parsed.x);
                 }
-                return data.datasets[tooltipItems.datasetIndex].label + ': ' + self.formatcurrency(tooltipItems.xLabel);
               }
             }
           }
@@ -136,4 +141,8 @@
 </script>
 
 <style scoped>
+.chart-container {
+  height: clamp(280px, 35vw, 440px);
+  position: relative;
+}
 </style>

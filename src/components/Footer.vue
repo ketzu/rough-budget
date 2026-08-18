@@ -1,10 +1,10 @@
 <template>
-  <v-footer dark app absolute>
+  <v-footer app absolute theme="dark">
     <v-container fluid>
       <v-row justify="center" align="start">
       <v-dialog v-model="dialog" scrollable max-width="600px">
-        <template v-slot:activator="{ on }">
-          <v-btn v-on="on" text>Privacy Policy</v-btn>
+        <template #activator="{ props }">
+          <v-btn v-bind="props" variant="text">Privacy Policy</v-btn>
         </template>
         <v-card>
           <v-card-title>Privacy Policy</v-card-title>
@@ -31,7 +31,7 @@
                   <h2>Responsible: David Mödinger</h2>
                 </v-row>
               <v-row>
-                <v-col cols="2" class="text-right">
+                <v-col cols="2" class="text-end">
                   <v-icon>fas fa-home</v-icon>
                 </v-col>
                 <v-col>
@@ -39,7 +39,7 @@
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="2" class="text-right">
+                <v-col cols="2" class="text-end">
                   <v-icon>fas fa-envelope</v-icon>
                 </v-col>
                 <v-col>
@@ -47,7 +47,7 @@
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="2" class="text-right">
+                <v-col cols="2" class="text-end">
                   <v-icon>fas fa-phone</v-icon>
                 </v-col>
                 <v-col>
@@ -59,12 +59,12 @@
           <v-divider></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-2" text @click="dialog = false">Close</v-btn>
+            <v-btn color="blue-darken-2" variant="text" @click="dialog = false">Close</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <a href="https://paypal.me/roughbudget" target="_blank"><v-btn text>Support us</v-btn></a>
-      <a href="mailto:contact@rough-budget.com"> <v-btn text>Contact</v-btn></a>
+      <a href="https://paypal.me/roughbudget" target="_blank"><v-btn variant="text">Support me</v-btn></a>
+      <a href="mailto:contact@rough-budget.com"> <v-btn variant="text">Contact</v-btn></a>
 
       </v-row>
     </v-container>

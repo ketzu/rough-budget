@@ -6,7 +6,9 @@
                     <h3>Monthly Expenses</h3>
                 </v-row>
             </v-container>
-            <chart :height="200" :chart-data="data" :options="options"></chart>
+            <div class="chart-container">
+                <doughnut-chart :data="data" :options="options"></doughnut-chart>
+            </div>
         </v-card-text>
     </v-card>
 </template>
@@ -14,38 +16,36 @@
 <script>
     import Settings from '../settingsmixin'
     import {mapGetters} from 'vuex'
-    import {Doughnut, mixins} from 'vue-chartjs'
+    import {Doughnut} from 'vue-chartjs'
+    import {ArcElement, Chart as ChartJS, Legend, Tooltip} from 'chart.js'
 
-    const chart = {
-        extends: Doughnut,
-        props: ['options'],
-        mounted() {
-            this.renderChart(this.chartData, this.options);
-        },
-        mixins: [mixins.reactiveProp]
-    };
+    ChartJS.register(ArcElement, Legend, Tooltip)
 
     export default {
         name: "ExpensesChart",
         components: {
-            chart
+            'doughnut-chart': Doughnut
         },
         computed: {
             ...mapGetters(['expense', 'multiplier']),
             options() {
                 const self = this;
                 return {
-                    legend: {
-                        display: true
-                    },
-                    tooltips: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        tooltip: {
                         callbacks: {
-                            label: function (tooltipItems, data) {
-                                if (tooltipItems.xLabel === 0) {
+                            label: function (tooltipItems) {
+                                if (tooltipItems.parsed === 0) {
                                     return '';
                                 }
-                                return data.labels[tooltipItems.index] + ': ' + self.formatcurrency(data.datasets[0].data[tooltipItems.index]);
+                                return tooltipItems.label + ': ' + self.formatcurrency(tooltipItems.parsed);
                             }
+                        }
                         }
                     }
                 }
@@ -79,5 +79,9 @@
 </script>
 
 <style scoped>
+.chart-container {
+    height: clamp(280px, 35vw, 440px);
+    position: relative;
+}
 
 </style>

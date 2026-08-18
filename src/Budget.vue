@@ -1,42 +1,41 @@
 <template>
   <v-app>
-    <v-app-bar dark app short color="accent">
+    <v-app-bar app color="accent" theme="dark">
       <v-toolbar-title class="d-none d-sm-block">
         <v-img src="banner.png" max-height="32" alt="Rough-Budget" max-width="63"></v-img>
       </v-toolbar-title>
 
-        <v-tabs
-            background-color="transparent"
+          <v-tabs
+            color="white"
             optional
             grow
-            icons-and-text
         >
-          <v-tab router to="/summary">
-            <v-icon>
+          <v-tab class="icon-label" to="/summary">
+            <v-icon class="me-2">
               fas fa-chart-pie
             </v-icon>
             <span class="d-none d-md-block">
               Statistics
             </span>
           </v-tab>
-          <v-tab router to="/inout">
-            <v-icon>
+          <v-tab class="icon-label" to="/inout">
+            <v-icon class="me-2">
               fas fa-th-list
             </v-icon>
             <span class="d-none d-md-block">
               Bookkeeping
             </span>
           </v-tab>
-          <v-tab router to="/time">
-            <v-icon>
+          <v-tab class="icon-label" to="/time">
+            <v-icon class="me-2">
               fas fa-calendar-week
             </v-icon>
             <span class="d-none d-md-block">
               Time
             </span>
           </v-tab>
-          <v-tab router to="/trackings">
-            <v-icon>
+          <v-tab class="icon-label" to="/trackings">
+            <v-icon class="me-2">
               fas fa-chart-line
             </v-icon>
             <span class="d-none d-md-block">
@@ -53,16 +52,16 @@
       </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer fixed v-model="sidemenu" app right>
+    <v-navigation-drawer v-model="sidemenu" location="right">
       <v-container>
         <settings></settings>
         <account></account>
       </v-container>
     </v-navigation-drawer>
 
-    <v-content class="primary">
+    <v-main class="bg-primary">
       <router-view/>
-    </v-content>
+    </v-main>
     <bottom-footer></bottom-footer>
   </v-app>
 </template>
@@ -99,4 +98,7 @@
 </script>
 
 <style scoped>
+.icon-label {
+  gap: 0.5rem;
+}
 </style>

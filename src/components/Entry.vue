@@ -1,16 +1,18 @@
 <template>
   <v-list-item>
-    <v-list-item-avatar>
-      <v-btn icon @click="spending = !spending">
-        <v-icon large v-if="!spending" color="blue darken-2">fas fa-arrow-circle-up</v-icon>
-        <v-icon large v-if="spending" color="red darken-2">fas fa-arrow-circle-down</v-icon>
-      </v-btn>
-    </v-list-item-avatar>
+    <template #prepend>
+      <v-btn
+        :icon="spending ? 'fas fa-arrow-circle-down' : 'fas fa-arrow-circle-up'"
+        :color="spending ? 'red-darken-2' : 'blue-darken-2'"
+        variant="text"
+        @click="spending = !spending"
+      ></v-btn>
+    </template>
 
-      <v-list-item-content data-v-step="entry">
+      <div class="entry-content" data-v-step="entry">
         <v-dialog v-model="dialog" max-width="600px">
-          <template v-slot:activator="{ on }">
-          <span v-on="on">
+          <template #activator="{ props }">
+          <span v-bind="props">
             <v-list-item-title>
               {{name}}: {{value}}{{currency}}
             </v-list-item-title>
@@ -35,7 +37,7 @@
                 </v-row>
                 <v-row>
                   <v-col>
-                    <v-switch color="red darken-2" :label="!spending ? 'Income' : 'Expense'" v-model="spending"></v-switch>
+                    <v-switch color="red-darken-2" :label="!spending ? 'Income' : 'Expense'" v-model="spending"></v-switch>
                   </v-col>
                   <v-col>
                     <v-select
@@ -43,34 +45,20 @@
                         v-model="steps"
                         prefix="Every"
                     >
-                      <template
-                          slot="selection"
-                          slot-scope="{item}"
-                      >
-                        <v-spacer></v-spacer>
-                        <span v-if="item>1">
-                          {{ item }}
-                        </span>
-                      </template>
                     </v-select>
                   </v-col>
                   <v-col>
                     <v-select
-                        :items="['daily', 'weekly', 'monthly', 'yearly']"
+                        :items="[
+                          { title: typeshow('daily'), value: 'daily' },
+                          { title: typeshow('weekly'), value: 'weekly' },
+                          { title: typeshow('monthly'), value: 'monthly' },
+                          { title: typeshow('yearly'), value: 'yearly' }
+                        ]"
+                        item-title="title"
+                        item-value="value"
                         v-model="date"
                     >
-                      <template
-                          slot="selection"
-                          slot-scope="{item}"
-                      >
-                        {{ typeshow(item) }}
-                      </template>
-                      <template
-                          slot="item"
-                          slot-scope="{item}"
-                      >
-                        {{ typeshow(item) }}
-                      </template>
                     </v-select>
                   </v-col>
                 </v-row>
@@ -78,22 +66,18 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-2" text @click="dialog = false">Close</v-btn>
+              <v-btn color="blue-darken-2" variant="text" @click="dialog = false">Close</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
-      </v-list-item-content>
+      </div>
 
-    <v-list-item-action>
-      <v-row>
-          <v-btn icon ripple @click="$store.dispatch('newtracking', {type: type, identity: identity})" data-v-step="track">
-            <v-icon color="blue darken-2">fas fa-chart-line</v-icon>
-          </v-btn>
-          <v-btn icon ripple @click="$store.dispatch('delentry',{type: type, identity: identity})" data-v-step="delete">
-            <v-icon color="grey darken-2">fas fa-times</v-icon>
-          </v-btn>
-      </v-row>
-    </v-list-item-action>
+    <template #append>
+      <div class="entry-actions">
+          <v-btn icon="fas fa-chart-line" color="blue-darken-2" variant="text" ripple @click="$store.dispatch('newtracking', {type: type, identity: identity})" data-v-step="track"></v-btn>
+          <v-btn icon="fas fa-times" color="grey-darken-2" variant="text" ripple @click="$store.dispatch('delentry',{type: type, identity: identity})" data-v-step="delete"></v-btn>
+      </div>
+    </template>
     <entry-tour></entry-tour>
   </v-list-item>
 </template>
@@ -166,4 +150,21 @@
 </script>
 
 <style scoped>
+.entry-content {
+  min-width: 0;
+}
+
+:deep(.v-list-item__prepend) {
+  margin-inline-end: 1rem;
+}
+
+:deep(.v-list-item__append) {
+  margin-inline-start: 1rem;
+}
+
+.entry-actions {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+}
 </style>

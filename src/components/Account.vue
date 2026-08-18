@@ -16,16 +16,16 @@
         @click:append="showpw = !showpw"
     ></v-text-field>
 
-    <v-btn @click="store()" color="blue darken-2" :disabled="!loggedin" block class="white--text">
+    <v-btn @click="store()" color="blue-darken-2" :disabled="!loggedin" block class="text-white">
       Store
     </v-btn>
-    <v-btn @click="load()" color="orange darken-4" :disabled="!loggedin" block class="mt-2 white--text">
+    <v-btn @click="load()" color="orange-darken-4" :disabled="!loggedin" block class="mt-2 text-white">
       Load
     </v-btn>
 
     <v-dialog v-model="dialog" persistent max-width="600px" v-if="loggedin">
-      <template v-slot:activator="{ on }">
-        <v-btn v-on="on" class="mt-2" block>
+      <template #activator="{ props }">
+        <v-btn v-bind="props" class="mt-2" block>
           Delete
         </v-btn>
       </template>
@@ -34,7 +34,7 @@
           <span class="headline">Do you really want to delete your account?</span>
         </v-card-title>
         <v-card-text>
-          <v-container grid-list-md>
+          <v-container>
               <v-row>
                 <h2>
                   This will delete your account and remove all data from our database. This can not be undone.
@@ -48,12 +48,12 @@
                 ></v-text-field>
             </v-row>
             <v-row>
-              <v-btn @click="deleteAccount()" color="red darken-2" :disabled="confirmation===''" block>Delete Account</v-btn>
+              <v-btn @click="deleteAccount()" color="red-darken-2" :disabled="confirmation===''" block>Delete Account</v-btn>
             </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="blue darken-1" @click="dialog = false; confirmation=''" block>Keep</v-btn>
+          <v-btn color="blue-darken-1" @click="dialog = false; confirmation=''" block>Keep</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -74,6 +74,7 @@
 
 <script>
   import Settings from './settingsmixin'
+  import { apiRequest } from '../api'
 
   const b64tou8a = base64_string => Uint8Array.from(atob(base64_string), c => c.charCodeAt(0));
   const u8atob64 = uint8array => btoa(String.fromCharCode(...uint8array));
@@ -107,10 +108,10 @@
           this.dialog = false;
           this.confirmation = "";
           this.formLike().then(formdata => {
-            fetch("/api/delete.php", {
+            apiRequest("/api/delete.php", {
               method: 'POST',
               body: formdata
-            }).then(res => res.json())
+            })
               .then(({success}) => {
                 console.log("Delete: "+success);
                 if(success) {
@@ -119,8 +120,8 @@
                   // delete failed
                 }
               })
-              .catch(error => console.error('Error:', error));
-          });
+              .catch(error => console.error('Delete error:', error));
+          }).catch(error => console.error('Delete preparation error:', error));
         }
       },
       loginsuccess() {
@@ -132,10 +133,10 @@
 
         // Dispatch registering call
         this.formLike().then(formdata => {
-          fetch("/api/register.php", {
+          apiRequest("/api/register.php", {
             method: 'POST',
             body: formdata
-          }).then(res => res.json())
+          })
             .then(({success}) => {
               console.log("Register: "+success);
               if(success) {
@@ -144,7 +145,13 @@
                 self.nameerrors = "Name already exists.";
               }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+              console.error('Register error:', error);
+              self.nameerrors = error.message;
+            });
+        }).catch(error => {
+          console.error('Register preparation error:', error);
+          self.nameerrors = error;
         });
       },
       login() {
@@ -153,10 +160,10 @@
 
         // Dispatch login call
         this.formLike().then(formdata => {
-          fetch("/api/login.php", {
+          apiRequest("/api/login.php", {
             method: 'POST',
             body: formdata
-          }).then(res => res.json())
+          })
             .then(({success}) => {
               if(success) {
                 self.loginsuccess();
@@ -164,7 +171,16 @@
                 self.logout();
                 self.nameerrors = "Name or password wrong.";
               }
+            })
+            .catch(error => {
+              console.error('Login error:', error);
+              self.logout();
+              self.nameerrors = error.message;
             });
+        }).catch(error => {
+          console.error('Login preparation error:', error);
+          self.logout();
+          self.nameerrors = error;
         });
       },
       logout() {
@@ -175,10 +191,10 @@
       store() {
         // dispatch store operation
         this.formLike(true).then(formdata => {
-          fetch("/api/store.php", {
+          apiRequest("/api/store.php", {
             method: 'POST',
             body: formdata
-          }).then(res => res.json())
+          })
             .then(({success}) => {
               console.log("Store: "+success);
               if(success) {
@@ -188,17 +204,17 @@
                 // Store failed
               }
             })
-            .catch(error => console.error('Fetch Error:', error));
-        }).catch(error => console.error('FormLike Error:', error));
+            .catch(error => console.error('Store error:', error));
+        }).catch(error => console.error('Store preparation error:', error));
       },
       load() {
         // dispatch load operation
         let self = this;
         this.formLike().then(formdata => {
-          fetch("/api/load.php", {
+          apiRequest("/api/load.php", {
             method: 'POST', // or 'PUT'
             body: formdata
-          }).then(res => res.json())
+          })
             .then(({success, data}) => {
               console.log("Load: "+success);
               if(success) {
@@ -217,8 +233,8 @@
               }else{
                 // Load failed
               }
-            }).catch(error => console.error('Fetch error:', error));
-        }).catch(error => console.error('Formlike error:', error));
+            }).catch(error => console.error('Load error:', error));
+        }).catch(error => console.error('Load preparation error:', error));
       },
       formLike(includeContent = false) {
         let self = this;

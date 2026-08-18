@@ -6,32 +6,30 @@
       </h4>
 
       <v-spacer></v-spacer>
-      <v-btn icon @click="edit=!edit">
-        <v-icon color="grey darken-2">fas fa-cog</v-icon>
-      </v-btn>
-      <v-btn icon @click="$store.dispatch('deltracking', index)">
-        <v-icon color="grey darken-2">fas fa-times</v-icon>
-      </v-btn>
+      <div class="log-toolbar-actions">
+        <v-btn icon="fas fa-cog" color="grey-darken-2" variant="text" @click="edit=!edit"></v-btn>
+        <v-btn icon="fas fa-times" color="grey-darken-2" variant="text" @click="$store.dispatch('deltracking', index)"></v-btn>
+      </div>
     </v-card-title>
     <v-card-text>
-      <chart :chart-data="data" :options="options" v-if="values.length>0"></chart>
+      <line-chart :data="data" :options="options" v-if="values.length>0"></line-chart>
       <v-divider v-if="edit"></v-divider>
-      <v-list two-line v-if="edit">
-        <v-list-item :key="index" v-for="(value,index) in rawvalues">
-          <v-list-item-content>
+      <v-list v-if="edit">
+        <v-list-item lines="two" :key="index" v-for="(value,index) in rawvalues">
+          <div>
             <v-list-item-title>
               {{(new Date(value.date)).toLocaleDateString()}}
             </v-list-item-title>
             <v-list-item-subtitle>
               {{formatcurrency(value.value)}}
             </v-list-item-subtitle>
-          </v-list-item-content>
+          </div>
 
-          <v-list-item-action>
-            <v-btn icon ripple @click="removeEntry(value)">
-              <v-icon color="grey darken-2">fas fa-times</v-icon>
-            </v-btn>
-          </v-list-item-action>
+          <template #append>
+            <div class="log-entry-actions">
+              <v-btn icon="fas fa-times" color="grey-darken-2" variant="text" ripple @click="removeEntry(value)"></v-btn>
+            </div>
+          </template>
         </v-list-item>
       </v-list>
       <v-divider></v-divider>
@@ -39,11 +37,11 @@
         <v-row>
           <v-col>
             <v-text-field v-model="newentry" @keyup.enter="addEntry()"
-                          :append-icon="newentry != 0 ? 'fa-plus' : ''"
+                          :append-icon="newentry != 0 ? 'fas fa-plus' : ''"
                           :prefix="currency"
-                          prepend-icon="fa-money-bill-wave-alt"
+                          prepend-icon="fas fa-money-bill-wave-alt"
                           @click:append="addEntry">
-              <template slot="label">
+              <template #label>
                 New data: Amount {{ spending ? "spent" : "earned" }}
               </template>
             </v-text-field>
@@ -55,20 +53,17 @@
                 persistent
                 width="290px"
             >
-              <template v-slot:activator="{ on }">
+              <template #activator="{ props }">
                 <v-text-field
-                    slot="activator"
-                    v-on="on"
-                    :value="(new Date(newdate)).toLocaleDateString()"
-                    prepend-icon="fa-calendar-alt"
+                    v-bind="props"
+                    :model-value="(new Date(newdate)).toLocaleDateString()"
+                    :label="`When was the amount ${spending ? 'spent' : 'earned'}`"
+                    prepend-icon="fas fa-calendar-alt"
                     readonly
                 >
-                  <template slot="label">
-                    When was the amount {{ spending ? "spent" : "earned" }}
-                  </template>
                 </v-text-field>
               </template>
-              <v-date-picker v-model="newdate" scrollable @input="modal = false">
+              <v-date-picker v-model="newdate" @update:model-value="modal = false">
               </v-date-picker>
             </v-dialog>
           </v-col>
@@ -76,16 +71,16 @@
       </v-container>
     </v-card-text>
     <v-card-actions v-if="values.length>0">
-      <h3 class="ml-5">
+      <h3 class="ms-5">
         <span v-if="values.length>0">
           <span v-if="steps>1">{{steps}}-</span>
           {{firstuppercase(type)}} average: {{formatcurrency(averages.slice(-1)[0]*steps)}}
         </span>
       </h3>
       <v-spacer></v-spacer>
-      <v-btn text @click="putback()">
+      <v-btn variant="text" @click="putback()">
         Use value
-        <v-icon right small>fas fa-share-square</v-icon>
+        <v-icon class="ms-2" size="small">fas fa-share-square</v-icon>
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -94,26 +89,22 @@
 <script>
   import Settings from './settingsmixin'
   import {mapGetters} from 'vuex'
-  import {Line, mixins} from 'vue-chartjs'
+  import {Line} from 'vue-chartjs'
+  import {CategoryScale, Chart as ChartJS, Legend, LinearScale, LineElement, PointElement, Tooltip} from 'chart.js'
+
+  ChartJS.register(CategoryScale, Legend, LinearScale, LineElement, PointElement, Tooltip)
 
   const dateformat = (date) => {
-    return date.getFullYear() + '-' + (date.getMonth() + 1).toLocaleString(undefined, {minimumIntegerDigits: 2}) + '-' + date.getDate();
+    return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
   };
 
-  let chart = {
-    extends: Line,
-    props: ['options'],
-    mounted() {
-      this.renderChart(this.chartData, this.options);
-    },
-    mixins: [mixins.reactiveProp]
-  };
+  const normalizeDate = (date) => date instanceof Date ? dateformat(date) : String(date).substring(0, 10);
 
   export default {
     name: 'tracking',
     props: ['index'],
     components: {
-      chart
+      'line-chart': Line
     },
     data() {
       return {
@@ -129,7 +120,7 @@
           identity: this.name,
           type: this.type,
           value: Number(this.newentry),
-          date: this.newdate
+          date: normalizeDate(this.newdate)
         });
         this.newentry = 0;
       },
@@ -181,42 +172,39 @@
       options() {
         const self = this;
         return {
-          tooltips: {
+          plugins: {
+            tooltip: {
             callbacks: {
-              label: function (tooltipItems, data) {
-                return data.datasets[tooltipItems.datasetIndex].label + ': ' + self.formatcurrency(tooltipItems.yLabel);
+              label: function (tooltipItems) {
+                return tooltipItems.dataset.label + ': ' + self.formatcurrency(tooltipItems.parsed.y);
               }
+            }
             }
           },
           scales: {
-            yAxes: [
-              {
-                ticks: {
-                  callback: function (label) {
-                    return label + self.currency;
+            y: {
+              ticks: {
+                callback: function (label) {
+                  return label + self.currency;
+                }
+              }
+            },
+            x: {
+              ticks: {
+                callback: function (label) {
+                  const obj = new Date(label);
+                  switch (self.type) {
+                    case 'daily':
+                    case 'weekly':
+                      return obj.getDate() + '. ' + obj.toLocaleString(undefined, {month: 'short'});
+                    case 'monthly':
+                      return obj.toLocaleString(undefined, {month: 'long'});
+                    case 'yearly':
+                      return label;
                   }
                 }
               }
-            ],
-            xAxes: [
-              {
-                ticks: {
-                  callback: function (label) {
-                    const obj = new Date(label);
-                    switch (self.type) {
-                      case 'daily':
-                        return obj.getDate() + '. ' + obj.toLocaleString(undefined, {month: 'short'});
-                      case 'weekly':
-                        return obj.getDate() + '. ' + obj.toLocaleString(undefined, {month: 'short'});
-                      case 'monthly':
-                        return obj.toLocaleString(undefined, {month: 'long'});
-                      case 'yearly':
-                        return label;
-                    }
-                  }
-                }
-              }
-            ]
+            }
           }
         }
       },
@@ -254,7 +242,7 @@
       },
       values() {
         let container = {};
-        let datevalue = value => value.date;
+         let datevalue = value => normalizeDate(value.date);
         switch (this.type) {
           case 'monthly':
             datevalue = value => value.date.substring(0, 7);
@@ -327,4 +315,14 @@
 </script>
 
 <style scoped>
+.log-entry-actions {
+  align-items: center;
+  display: flex;
+  margin-inline-start: 1rem;
+}
+
+.log-toolbar-actions {
+  display: flex;
+  gap: 0.5rem;
+}
 </style>
