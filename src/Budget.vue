@@ -5,11 +5,10 @@
         <v-img src="banner.png" max-height="32" alt="Rough-Budget" max-width="63"></v-img>
       </v-toolbar-title>
 
-        <v-tabs
-            color="transparent"
+          <v-tabs
+            color="white"
             optional
             grow
-            icons-and-text
         >
           <v-tab router to="/summary">
             <v-icon>

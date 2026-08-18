@@ -6,7 +6,9 @@
                     <h3>Monthly Expenses</h3>
                 </v-row>
             </v-container>
-            <doughnut-chart :height="200" :data="data" :options="options"></doughnut-chart>
+            <div class="chart-container">
+                <doughnut-chart :data="data" :options="options"></doughnut-chart>
+            </div>
         </v-card-text>
     </v-card>
 </template>
@@ -75,5 +77,9 @@
 </script>
 
 <style scoped>
+.chart-container {
+    height: 200px;
+    position: relative;
+}
 
 </style>

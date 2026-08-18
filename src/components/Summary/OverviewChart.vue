@@ -6,7 +6,9 @@
           <h3>Monthly Budged Overview</h3>
         </v-row>
       </v-container>
-      <bar-chart :height="200" :data="data" :options="options"></bar-chart>
+      <div class="chart-container">
+        <bar-chart :data="data" :options="options"></bar-chart>
+      </div>
     </v-card-text>
   </v-card>
 </template>
@@ -139,4 +141,8 @@
 </script>
 
 <style scoped>
+.chart-container {
+  height: 200px;
+  position: relative;
+}
 </style>

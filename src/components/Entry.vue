@@ -43,25 +43,20 @@
                         v-model="steps"
                         prefix="Every"
                     >
-                      <template #selection="{item}">
-                        <v-spacer></v-spacer>
-                        <span v-if="item>1">
-                          {{ item }}
-                        </span>
-                      </template>
                     </v-select>
                   </v-col>
                   <v-col>
                     <v-select
-                        :items="['daily', 'weekly', 'monthly', 'yearly']"
+                        :items="[
+                          { title: typeshow('daily'), value: 'daily' },
+                          { title: typeshow('weekly'), value: 'weekly' },
+                          { title: typeshow('monthly'), value: 'monthly' },
+                          { title: typeshow('yearly'), value: 'yearly' }
+                        ]"
+                        item-title="title"
+                        item-value="value"
                         v-model="date"
                     >
-                      <template #selection="{item}">
-                        {{ typeshow(item.title ?? item) }}
-                      </template>
-                      <template #item="{item}">
-                        {{ typeshow(item.title ?? item) }}
-                      </template>
                     </v-select>
                   </v-col>
                 </v-row>
