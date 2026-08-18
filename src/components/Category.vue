@@ -8,7 +8,7 @@
       <budget-entry v-bind:key="key" :identity="key" :type="type_distinction(entry)" v-for="(entry, key) in entries"></budget-entry>
       <v-list-item>
         <v-text-field v-model="newname" @keyup.enter="addEntry()"
-                      :append-icon="newname != '' ? 'fa-plus' : ''"
+                      :append-icon="newname != '' ? 'fas fa-plus' : ''"
                       @click:append="addEntry"
                       @focus="newEntryFocus=true"
                       @blur="newEntryFocus=false"

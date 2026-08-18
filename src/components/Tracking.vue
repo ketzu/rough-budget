@@ -6,12 +6,10 @@
       </h4>
 
       <v-spacer></v-spacer>
-      <v-btn icon @click="edit=!edit">
-        <v-icon color="grey-darken-2">fas fa-cog</v-icon>
-      </v-btn>
-      <v-btn icon @click="$store.dispatch('deltracking', index)">
-        <v-icon color="grey-darken-2">fas fa-times</v-icon>
-      </v-btn>
+      <div class="log-toolbar-actions">
+        <v-btn icon="fas fa-cog" color="grey-darken-2" @click="edit=!edit"></v-btn>
+        <v-btn icon="fas fa-times" color="grey-darken-2" @click="$store.dispatch('deltracking', index)"></v-btn>
+      </div>
     </v-card-title>
     <v-card-text>
       <line-chart :data="data" :options="options" v-if="values.length>0"></line-chart>
@@ -29,9 +27,7 @@
 
           <template #append>
             <div class="log-entry-actions">
-              <v-btn icon ripple @click="removeEntry(value)">
-              <v-icon color="grey-darken-2">fas fa-times</v-icon>
-              </v-btn>
+              <v-btn icon="fas fa-times" color="grey-darken-2" ripple @click="removeEntry(value)"></v-btn>
             </div>
           </template>
         </v-list-item>
@@ -41,9 +37,9 @@
         <v-row>
           <v-col>
             <v-text-field v-model="newentry" @keyup.enter="addEntry()"
-                          :append-icon="newentry != 0 ? 'fa-plus' : ''"
+                          :append-icon="newentry != 0 ? 'fas fa-plus' : ''"
                           :prefix="currency"
-                          prepend-icon="fa-money-bill-wave-alt"
+                          prepend-icon="fas fa-money-bill-wave-alt"
                           @click:append="addEntry">
               <template #label>
                 New data: Amount {{ spending ? "spent" : "earned" }}
@@ -60,13 +56,11 @@
               <template #activator="{ props }">
                 <v-text-field
                     v-bind="props"
-                    :value="(new Date(newdate)).toLocaleDateString()"
-                    prepend-icon="fa-calendar-alt"
+                    :model-value="(new Date(newdate)).toLocaleDateString()"
+                    :label="`When was the amount ${spending ? 'spent' : 'earned'}`"
+                    prepend-icon="fas fa-calendar-alt"
                     readonly
                 >
-                  <template #label>
-                    When was the amount {{ spending ? "spent" : "earned" }}
-                  </template>
                 </v-text-field>
               </template>
               <v-date-picker v-model="newdate" @update:model-value="modal = false">
@@ -320,6 +314,13 @@
 
 <style scoped>
 .log-entry-actions {
+  align-items: center;
+  display: flex;
   margin-inline-start: 1rem;
+}
+
+.log-toolbar-actions {
+  display: flex;
+  gap: 0.5rem;
 }
 </style>

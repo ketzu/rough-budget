@@ -1,10 +1,12 @@
 <template>
   <v-list-item>
     <template #prepend>
-      <v-btn icon @click="spending = !spending">
-        <v-icon size="large" v-if="!spending" color="blue-darken-2">fas fa-arrow-circle-up</v-icon>
-        <v-icon size="large" v-if="spending" color="red-darken-2">fas fa-arrow-circle-down</v-icon>
-      </v-btn>
+      <v-btn
+        :icon="spending ? 'fas fa-arrow-circle-down' : 'fas fa-arrow-circle-up'"
+        :color="spending ? 'red-darken-2' : 'blue-darken-2'"
+        size="large"
+        @click="spending = !spending"
+      ></v-btn>
     </template>
 
       <div class="entry-content" data-v-step="entry">
@@ -72,12 +74,8 @@
 
     <template #append>
       <div class="entry-actions">
-          <v-btn icon ripple @click="$store.dispatch('newtracking', {type: type, identity: identity})" data-v-step="track">
-            <v-icon color="blue-darken-2">fas fa-chart-line</v-icon>
-          </v-btn>
-          <v-btn icon ripple @click="$store.dispatch('delentry',{type: type, identity: identity})" data-v-step="delete">
-            <v-icon color="grey-darken-2">fas fa-times</v-icon>
-          </v-btn>
+          <v-btn icon="fas fa-chart-line" color="blue-darken-2" ripple @click="$store.dispatch('newtracking', {type: type, identity: identity})" data-v-step="track"></v-btn>
+          <v-btn icon="fas fa-times" color="grey-darken-2" ripple @click="$store.dispatch('delentry',{type: type, identity: identity})" data-v-step="delete"></v-btn>
       </div>
     </template>
     <entry-tour></entry-tour>
