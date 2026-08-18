@@ -1,14 +1,16 @@
 <?php
 include 'auth.php';
 
-if($auth == TRUE) {
-    $stmt2 = $mysqli->prepare("UPDATE users SET content=? WHERE name=?");
-    $stmt2->bind_param('ss',$data,$name);
-    $stmt2->execute();
-    $success = TRUE;
+$mysqli = database();
+$session = session_user(extract_from_request('session'), $mysqli);
+$data = extract_from_request('data');
+$success = FALSE;
+if ($session) {
+  $stmt = $mysqli->prepare("UPDATE users SET content=? WHERE name=?");
+  $stmt->bind_param('ss', $data, $session['name']);
+  $stmt->execute();
+  $success = $stmt->affected_rows >= 0;
 }
-
 $mysqli->close();
 echo json_encode(array('success' => $success));
-
 ?>
