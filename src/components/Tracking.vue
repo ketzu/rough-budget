@@ -95,8 +95,10 @@
   ChartJS.register(CategoryScale, Legend, LinearScale, LineElement, PointElement, Tooltip)
 
   const dateformat = (date) => {
-    return date.getFullYear() + '-' + (date.getMonth() + 1).toLocaleString(undefined, {minimumIntegerDigits: 2}) + '-' + date.getDate();
+    return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
   };
+
+  const normalizeDate = (date) => date instanceof Date ? dateformat(date) : String(date).substring(0, 10);
 
   export default {
     name: 'tracking',
@@ -118,7 +120,7 @@
           identity: this.name,
           type: this.type,
           value: Number(this.newentry),
-          date: this.newdate
+          date: normalizeDate(this.newdate)
         });
         this.newentry = 0;
       },
@@ -240,7 +242,7 @@
       },
       values() {
         let container = {};
-        let datevalue = value => value.date;
+         let datevalue = value => normalizeDate(value.date);
         switch (this.type) {
           case 'monthly':
             datevalue = value => value.date.substring(0, 7);
