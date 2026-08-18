@@ -7,7 +7,7 @@
       </v-btn>
     </template>
 
-      <div data-v-step="entry">
+      <div class="entry-content" data-v-step="entry">
         <v-dialog v-model="dialog" max-width="600px">
           <template #activator="{ props }">
           <span v-bind="props">
@@ -71,14 +71,14 @@
       </div>
 
     <template #append>
-      <v-row>
+      <div class="entry-actions">
           <v-btn icon ripple @click="$store.dispatch('newtracking', {type: type, identity: identity})" data-v-step="track">
             <v-icon color="blue-darken-2">fas fa-chart-line</v-icon>
           </v-btn>
           <v-btn icon ripple @click="$store.dispatch('delentry',{type: type, identity: identity})" data-v-step="delete">
             <v-icon color="grey-darken-2">fas fa-times</v-icon>
           </v-btn>
-      </v-row>
+      </div>
     </template>
     <entry-tour></entry-tour>
   </v-list-item>
@@ -152,4 +152,14 @@
 </script>
 
 <style scoped>
+.entry-content {
+  min-width: 0;
+}
+
+.entry-actions {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  margin-inline-start: 1rem;
+}
 </style>

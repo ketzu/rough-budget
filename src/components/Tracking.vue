@@ -28,9 +28,11 @@
           </div>
 
           <template #append>
-            <v-btn icon ripple @click="removeEntry(value)">
+            <div class="log-entry-actions">
+              <v-btn icon ripple @click="removeEntry(value)">
               <v-icon color="grey-darken-2">fas fa-times</v-icon>
-            </v-btn>
+              </v-btn>
+            </div>
           </template>
         </v-list-item>
       </v-list>
@@ -317,4 +319,7 @@
 </script>
 
 <style scoped>
+.log-entry-actions {
+  margin-inline-start: 1rem;
+}
 </style>
