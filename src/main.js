@@ -6,10 +6,11 @@ import vuetify from './plugins/vuetify'
 import Vue3Tour from 'vue3-tour'
 import 'vue3-tour/dist/vue3-tour.css'
 
-navigator.serviceWorker.getRegistrations().then(function(registrations) {
-  for(let registration of registrations) {
+navigator.serviceWorker.getRegistrations().then(function (registrations) {
+  for (let registration of registrations) {
     registration.unregister()
-  } })
+  }
+})
 
 const app = createApp(Budget)
 
