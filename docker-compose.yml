@@ -1,0 +1,31 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: budget
+      MYSQL_USER: budget
+      MYSQL_PASSWORD: budget-dev-password
+      MYSQL_ROOT_PASSWORD: root-dev-password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "budget", "-pbudget-dev-password"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - budget-mysql:/var/lib/mysql
+
+  budget:
+    build: .
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_SERVER: mysql
+      DB_NAME: budget
+      DB_USER: budget
+      DB_PASSWORD: budget-dev-password
+    ports:
+      - "8080:80"
+
+volumes:
+  budget-mysql:
