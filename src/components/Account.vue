@@ -75,6 +75,13 @@
 <script>
   import Settings from './settingsmixin'
   import { apiRequest } from '../api'
+  import {
+    deriveKeys,
+    deriveLegacyAuthenticationKey,
+    deriveLegacyEncryptionKey,
+    fromBase64,
+    PROTOCOL_VERSION
+  } from '../security/keys'
 
   const b64tou8a = base64_string => Uint8Array.from(atob(base64_string), c => c.charCodeAt(0));
   const u8atob64 = uint8array => btoa(String.fromCharCode(...uint8array));
@@ -84,8 +91,11 @@
     name: "account",
     data() {
       return {
-        authkey: undefined,
-        enckey: undefined,
+         authkey: undefined,
+         enckey: undefined,
+         protocol: undefined,
+         legacyAuthkey: undefined,
+         legacyEnckey: undefined,
         confirmation: "",
         showpw: false,
         name: "",
@@ -102,206 +112,190 @@
       }
     },
     methods: {
-      deleteAccount() {
+      async deleteAccount() {
         if (this.confirmation !== "") {
-          this.logout();
           this.dialog = false;
           this.confirmation = "";
-          this.formLike().then(formdata => {
-            apiRequest("/api/delete.php", {
+          try {
+            const formdata = await this.formLike();
+            const {success} = await apiRequest("/api/delete.php", {
               method: 'POST',
               body: formdata
-            })
-              .then(({success}) => {
-                console.log("Delete: "+success);
-                if(success) {
-                  // delete Success
-                }else{
-                  // delete failed
-                }
-              })
-              .catch(error => console.error('Delete error:', error));
-          }).catch(error => console.error('Delete preparation error:', error));
+            });
+            console.log("Delete: "+success);
+            if (success) this.logout();
+          } catch (error) {
+            console.error('Delete error:', error);
+          }
         }
       },
       loginsuccess() {
-        this.$store.dispatch('setcredentials', {username: this.name, password: this.password, loggedin: true});
+        this.$store.dispatch('setcredentials', {username: this.name, loggedin: true, password: this.password});
       },
-      registerAccount() {
-        let self = this;
+      async registerAccount() {
         this.nameerrors = "";
 
         // Dispatch registering call
-        this.formLike().then(formdata => {
-          apiRequest("/api/register.php", {
+        try {
+          const parameters = await apiRequest("/api/salt.php", {
+            method: "POST",
+            body: JSON.stringify({name: this.name, registration: true}),
+            headers: {"Content-Type": "application/json"}
+          });
+          this.protocol = {version: PROTOCOL_VERSION, salt: parameters.salt};
+          const formdata = await this.formLike();
+          formdata.append("kdf_salt", this.protocol.salt);
+          const {success} = await apiRequest("/api/register.php", {
             method: 'POST',
             body: formdata
-          })
-            .then(({success}) => {
-              console.log("Register: "+success);
-              if(success) {
-                self.loginsuccess();
-              }else{
-                self.nameerrors = "Name already exists.";
-              }
-            })
-            .catch(error => {
-              console.error('Register error:', error);
-              self.nameerrors = error.message;
-            });
-        }).catch(error => {
+          });
+          console.log("Register: "+success);
+          if (success) {
+            this.loginsuccess();
+          } else {
+            this.nameerrors = "Registration could not be completed, maybe the account already exists or you left some fields empty.";
+          }
+        } catch (error) {
           console.error('Register preparation error:', error);
-          self.nameerrors = error;
-        });
+          this.nameerrors = error.message || error;
+        }
       },
-      login() {
-        let self = this;
+      async login() {
         this.nameerrors = "";
 
         // Dispatch login call
-        this.formLike().then(formdata => {
-          apiRequest("/api/login.php", {
+        try {
+          const formdata = await this.formLike(false, true);
+          formdata.append("kdf_salt", this.protocol.salt);
+          const {success} = await apiRequest("/api/login.php", {
             method: 'POST',
             body: formdata
-          })
-            .then(({success}) => {
-              if(success) {
-                self.loginsuccess();
-              }else{
-                self.logout();
-                self.nameerrors = "Name or password wrong.";
-              }
-            })
-            .catch(error => {
-              console.error('Login error:', error);
-              self.logout();
-              self.nameerrors = error.message;
-            });
-        }).catch(error => {
+          });
+          if (success) {
+            this.loginsuccess();
+          } else {
+            this.logout();
+            this.nameerrors = "Name or password wrong.";
+          }
+        } catch (error) {
           console.error('Login preparation error:', error);
-          self.logout();
-          self.nameerrors = error;
-        });
+          this.logout();
+          this.nameerrors = error.message || error;
+        }
       },
       logout() {
         this.authkey = undefined;
         this.enckey = undefined;
+        this.protocol = undefined;
+        this.legacyAuthkey = undefined;
+        this.legacyEnckey = undefined;
         this.$store.dispatch('setcredentials', {username: "", password: "", loggedin: false});
       },
-      store() {
+      async store() {
         // dispatch store operation
-        this.formLike(true).then(formdata => {
-          apiRequest("/api/store.php", {
+        try {
+          const formdata = await this.formLike(true);
+          const {success} = await apiRequest("/api/store.php", {
             method: 'POST',
             body: formdata
-          })
-            .then(({success}) => {
-              console.log("Store: "+success);
-              if(success) {
-                // Store Success
-                // flash check on button
-              }else{
-                // Store failed
-              }
-            })
-            .catch(error => console.error('Store error:', error));
-        }).catch(error => console.error('Store preparation error:', error));
+          });
+          console.log("Store: "+success);
+        } catch (error) {
+          console.error('Store error:', error);
+        }
       },
-      load() {
+      async load() {
         // dispatch load operation
-        let self = this;
-        this.formLike().then(formdata => {
-          apiRequest("/api/load.php", {
+        try {
+          const formdata = await this.formLike();
+          const {success, data} = await apiRequest("/api/load.php", {
             method: 'POST', // or 'PUT'
             body: formdata
-          })
-            .then(({success, data}) => {
-              console.log("Load: "+success);
-              if(success) {
-                // Load Success
-                let ivAndData = data.split(";");
-                let iv = b64tou8a(ivAndData[0]);
-                let encdata = b64tou8a(ivAndData[1]);
-                window.crypto.subtle.decrypt({name: "AES-GCM",iv: iv,tagLength: 128},self.enckey, encdata)
-                  .then(decrypted => {
-                    let state = JSON.parse((new TextDecoder()).decode(decrypted));
-                    this.$store.dispatch('loadstore', state);
-                  })
-                  .catch(err =>{
-                    console.error("Decrypt error:", err);
-                  });
-              }else{
-                // Load failed
-              }
-            }).catch(error => console.error('Load error:', error));
-        }).catch(error => console.error('Load preparation error:', error));
-      },
-      formLike(includeContent = false) {
-        let self = this;
-        return new Promise((resolve, reject) => {
-          // if keys are missing, create them
-          self.keys().then(() => {
-            // create a FormData version of name+key
-            let fd = new FormData();
-
-            fd.append("name", self.name);
-            fd.append("pass", self.authkey);
-
-            // Conent needs to be encrypted if used
-            if(includeContent) {
-              let iv = window.crypto.getRandomValues(new Uint8Array(12));
-              window.crypto.subtle.encrypt({name: "AES-GCM",iv: iv},self.enckey,(new TextEncoder()).encode(self.$store.getters.json))
-                .then(encrypted => {
-                  //returns an ArrayBuffer containing the encrypted data
-                  fd.append("data", u8atob64(iv)+";"+abtob64(encrypted));
-                  resolve(fd);
-                })
-                .catch(err => {
-                  console.error('Encrypt error:', err);
-                  reject("Encryption failed.");
-                });
-            }else{
-              resolve(fd);
-            }
           });
-        });
-      },
-      keys() {
-        let self = this;
-        return new Promise(resolve => {
-          if(self.enckey !== undefined && self.authkey !== undefined)
-          {
-            console.log("Keys do exist.");
-            resolve([self.authkey, self.enckey]);
+          console.log("Load: "+success);
+          if (!success) {
+            this.logout();
+            return;
           }
-          window.crypto.subtle.importKey("raw", (new TextEncoder()).encode("my password"), {name: "PBKDF2",}, false, ["deriveKey"])
-            .then((key) => {
-              // Dervie Enc/Dec Key
-              let enc = new Promise(resolve => {window.crypto.subtle.deriveKey({name: "PBKDF2",salt: (new TextEncoder()).encode(self.password),iterations: 2500,hash: {name: "SHA-256"},}, key, {name: "AES-GCM", length: 256,}, false, ["encrypt", "decrypt"])
-                .then(key => {
-                  self.enckey = key;
-                  resolve(key);
-              });});
-              // Derive Auth Key
-              let auth = new Promise(resolve => {window.crypto.subtle.deriveKey({name: "PBKDF2",salt: (new TextEncoder()).encode(self.password),iterations: 5000,hash: {name: "SHA-256"},}, key, {name: "AES-GCM", length: 256,}, true, ["encrypt", "decrypt"])
-                .then(key => {
-                  window.crypto.subtle.exportKey("jwk", key)
-                    .then(keydata => {
-                      self.authkey = keydata.k;
-                      resolve(keydata.k);
-                    });
-                });});
-              Promise.all([auth, enc]).then(() => resolve());
-            });
-        });
-      }
+
+          const ivAndData = data.split(";");
+          const iv = b64tou8a(ivAndData[0]);
+          const encdata = b64tou8a(ivAndData[1]);
+          const decrypt = key => window.crypto.subtle.decrypt(
+            {name: "AES-GCM",iv: iv,tagLength: 128}, key, encdata
+          );
+          let decrypted;
+          let migrated = false;
+          try {
+            decrypted = await decrypt(this.enckey);
+          } catch {
+            if (!this.legacyEnckey) throw new Error("Decrypt failed");
+            decrypted = await decrypt(this.legacyEnckey);
+            migrated = true;
+          }
+          const state = JSON.parse((new TextDecoder()).decode(decrypted));
+          this.$store.dispatch('loadstore', state);
+          if (migrated) await this.store();
+        } catch (error) {
+          console.error('Load error:', error);
+        }
+      },
+      async formLike(includeContent = false, includeLegacyCredentials = false) {
+        await this.keys();
+        const fd = new FormData();
+
+        fd.append("name", this.name);
+        fd.append("pass", this.authkey);
+        if (includeLegacyCredentials) {
+          fd.append("legacy_pass", this.legacyAuthkey);
+        }
+
+        if (includeContent) {
+          const iv = window.crypto.getRandomValues(new Uint8Array(12));
+          const encrypted = await window.crypto.subtle.encrypt(
+            {name: "AES-GCM",iv: iv},
+            this.enckey,
+            (new TextEncoder()).encode(this.$store.getters.json)
+          );
+          fd.append("data", u8atob64(iv)+";"+abtob64(encrypted));
+        }
+        return fd;
+      },
+      async keys() {
+        if (this.enckey !== undefined && this.authkey !== undefined) {
+          return [this.authkey, this.enckey];
+        }
+        if (!this.protocol) {
+          const parameters = await apiRequest("/api/salt.php", {
+            method: "POST",
+            body: JSON.stringify({name: this.name}),
+            headers: {"Content-Type": "application/json"}
+          });
+          this.protocol = {
+            version: PROTOCOL_VERSION,
+            salt: parameters.salt
+          };
+          if (!this.protocol.salt) throw new Error("Server returned no salt");
+          return this.keys();
+        }
+        const salt = fromBase64(this.protocol.salt);
+        const deriveNewKeys = deriveKeys(this.password, salt, this.protocol.version);
+        const deriveLegacyAuth = deriveLegacyAuthenticationKey(this.password);
+        const deriveLegacyEncryption = deriveLegacyEncryptionKey(this.password);
+        const [keys, legacyAuthkey, legacyEnckey] = await Promise.all([
+          deriveNewKeys,
+          deriveLegacyAuth,
+          deriveLegacyEncryption
+        ]);
+        this.authkey = keys.authenticationKey;
+        this.enckey = keys.encryptionKey;
+        this.legacyAuthkey = legacyAuthkey;
+        this.legacyEnckey = legacyEnckey;
+        return [this.authkey, this.enckey];
+      },
     },
     mounted() {
       this.name = this.$store.getters.username;
-      this.password = this.$store.getters.password;
-      if(this.loggedin) {
-        this.login();
-      }
     },
     mixins: [Settings]
   }
