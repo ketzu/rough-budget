@@ -6,10 +6,11 @@ import vuetify from './plugins/vuetify'
 import Vue3Tour from 'vue3-tour'
 import 'vue3-tour/dist/vue3-tour.css'
 
-navigator.serviceWorker.getRegistrations().then(function(registrations) {
-  for(let registration of registrations) {
+navigator.serviceWorker.getRegistrations().then(function (registrations) {
+  for (let registration of registrations) {
     registration.unregister()
-  } })
+  }
+})
 
 const app = createApp(Budget)
 
@@ -42,8 +43,7 @@ app.mixin({
 })
 
 store.subscribe((mutation, state) => {
-  const persistedState = {...state, password: ""};
-  localStorage.setItem('budget-v3', JSON.stringify(persistedState));
+  localStorage.setItem('budget-v3', JSON.stringify(state));
 });
 
 app.use(router)
