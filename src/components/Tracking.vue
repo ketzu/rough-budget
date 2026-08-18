@@ -84,7 +84,7 @@
       <v-spacer></v-spacer>
       <v-btn variant="text" @click="putback()">
         Use value
-        <v-icon right small>fas fa-share-square</v-icon>
+        <v-icon class="ms-2" size="small">fas fa-share-square</v-icon>
       </v-btn>
     </v-card-actions>
   </v-card>

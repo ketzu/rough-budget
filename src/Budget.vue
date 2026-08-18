@@ -10,32 +10,32 @@
             optional
             grow
         >
-          <v-tab router to="/summary">
-            <v-icon>
+          <v-tab class="icon-label" router to="/summary">
+            <v-icon class="me-2">
               fas fa-chart-pie
             </v-icon>
             <span class="d-none d-md-block">
               Statistics
             </span>
           </v-tab>
-          <v-tab router to="/inout">
-            <v-icon>
+          <v-tab class="icon-label" router to="/inout">
+            <v-icon class="me-2">
               fas fa-th-list
             </v-icon>
             <span class="d-none d-md-block">
               Bookkeeping
             </span>
           </v-tab>
-          <v-tab router to="/time">
-            <v-icon>
+          <v-tab class="icon-label" router to="/time">
+            <v-icon class="me-2">
               fas fa-calendar-week
             </v-icon>
             <span class="d-none d-md-block">
               Time
             </span>
           </v-tab>
-          <v-tab router to="/trackings">
-            <v-icon>
+          <v-tab class="icon-label" router to="/trackings">
+            <v-icon class="me-2">
               fas fa-chart-line
             </v-icon>
             <span class="d-none d-md-block">
@@ -98,4 +98,7 @@
 </script>
 
 <style scoped>
+.icon-label {
+  gap: 0.5rem;
+}
 </style>
