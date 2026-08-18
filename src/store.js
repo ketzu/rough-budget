@@ -195,9 +195,7 @@ export default createStore({
       // Check if the ID exists
       if (localStorage.getItem('budget-v3')) {
         // Replace the state object with the stored item
-        Object.assign(state, JSON.parse(localStorage.getItem('budget-v3')))
-        state.password = "";
-        state.loggedin = false;
+        Object.assign(state, JSON.parse(localStorage.getItem('budget-v3')));
       }
     },
     loadstore(state, newstate) {
@@ -215,8 +213,8 @@ export default createStore({
     setdual(state, dual) {
       state.settings.dual = dual;
     },
-    setcredentials(state, { username, loggedin }) {
-      state.password = "";
+    setcredentials(state, { username, loggedin, password }) {
+      state.password = password;
       state.username = username;
       state.loggedin = loggedin;
     },
