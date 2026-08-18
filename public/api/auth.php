@@ -34,8 +34,13 @@ function dummy_salt($name) {
   return base64_encode(substr(hash_hmac('sha256', $name, $db_passwd, TRUE), 0, 16));
 }
 
+function valid_salt($salt) {
+  $decoded = base64_decode($salt, TRUE);
+  return $decoded !== FALSE && strlen($decoded) >= 16;
+}
+
 function find_user($name, $mysqli) {
-  $stmt = $mysqli->prepare("SELECT name, password, auth_verifier, protocol_version, kdf, kdf_iterations, kdf_salt FROM users WHERE name=?");
+  $stmt = $mysqli->prepare("SELECT name, password, auth_verifier, protocol_version, kdf_salt FROM users WHERE name=?");
   $stmt->bind_param('s', $name);
   $stmt->execute();
   return $stmt->get_result()->fetch_assoc() ?: NULL;
