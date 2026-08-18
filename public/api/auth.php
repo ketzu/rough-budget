@@ -49,7 +49,6 @@ function find_user($name, $mysqli) {
 function verify_authentication($user, $pass, $legacy_pass) {
   $verifier = $user['auth_verifier'] ?? dummy_verifier();
   $valid = password_verify($pass, $verifier);
-  if ($legacy_pass !== '') password_verify($legacy_pass, dummy_verifier());
   if ($user && (int)$user['protocol_version'] === 1 && $legacy_pass !== '') {
     $valid = password_verify($legacy_pass, $user['password']);
   }
