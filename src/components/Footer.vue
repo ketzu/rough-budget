@@ -28,30 +28,30 @@
 
             <v-container>
                 <v-row>
-                  <h2>Responsible: David Mödinger</h2>
+                  <h2 v-if="privacy.responsible">Responsible: {{ privacy.responsible }}</h2>
                 </v-row>
-              <v-row>
+              <v-row v-if="privacy.address">
                 <v-col cols="2" class="text-end">
                   <v-icon>fas fa-home</v-icon>
                 </v-col>
                 <v-col>
-                  <h4>Römerstr. 118, 89077 Ulm, Germany</h4>
+                  <h4>{{ privacy.address }}</h4>
                 </v-col>
               </v-row>
-              <v-row>
+              <v-row v-if="privacy.email">
                 <v-col cols="2" class="text-end">
                   <v-icon>fas fa-envelope</v-icon>
                 </v-col>
                 <v-col>
-                  <h4>contact@rough-budget.com</h4>
+                  <h4>{{ privacy.email }}</h4>
                 </v-col>
               </v-row>
-              <v-row>
+              <v-row v-if="privacy.phone">
                 <v-col cols="2" class="text-end">
                   <v-icon>fas fa-phone</v-icon>
                 </v-col>
                 <v-col>
-                  <h4>+49 - 177 299 1047</h4>
+                  <h4>{{ privacy.phone }}</h4>
                 </v-col>
               </v-row>
             </v-container>
@@ -76,7 +76,13 @@
     name: "Footer",
     data() {
       return {
-        dialog: false
+        dialog: false,
+        privacy: {
+          responsible: window.__ROUGH_BUDGET_CONFIG__?.privacy?.responsible || "",
+          address: window.__ROUGH_BUDGET_CONFIG__?.privacy?.address || "",
+          email: window.__ROUGH_BUDGET_CONFIG__?.privacy?.email || "",
+          phone: window.__ROUGH_BUDGET_CONFIG__?.privacy?.phone || ""
+        }
       }
     }
   }

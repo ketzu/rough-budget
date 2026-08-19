@@ -43,6 +43,15 @@ The docker container requires 4 environment variables to have a functioning api.
 - DB_USER
 - DB_PASSWORD
 
+The privacy policy contact details are configured at container startup. Set
+these environment variables for the hosting instance, or leave them unset to
+omit the corresponding contact details:
+
+- PRIVACY_RESPONSIBLE
+- PRIVACY_ADDRESS
+- PRIVACY_EMAIL
+- PRIVACY_PHONE
+
 It is available via [dockerhub](https://hub.docker.com/r/ketzu/budget) as `ketzu/budget`.
 
 ### docker-compose example
@@ -80,6 +89,10 @@ DB_SERVER=mysql
 DB_NAME=budget
 DB_USER=budget
 DB_PASSWORD=Yeah no, not gonna tell you.
+PRIVACY_RESPONSIBLE=The person responsible for this instance
+PRIVACY_ADDRESS=The address for this instance
+PRIVACY_EMAIL=privacy@example.com
+PRIVACY_PHONE=The phone number for this instance
 ```
 
 This setup requires a second container under the name of `mysql` with the respective credentials and database.
