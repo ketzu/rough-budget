@@ -6,13 +6,16 @@ on:
     tags: ["v*"]
   workflow_dispatch:
 
+concurrency:
+  group: dockerhub-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   dockerhub:
     name: Build and push image
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write
 
     steps:
       - name: checkout sources
@@ -30,7 +33,7 @@ jobs:
         with:
           images: ketzu/budget
           tags: |
-            type=ref,event=branch
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' }}
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
 
