@@ -6,7 +6,7 @@ COPY . .
 RUN npm run build
 
 # production stage
-FROM php:8.2-apache
+FROM php:8.5-apache
 RUN docker-php-ext-install mysqli
 COPY --from=build-stage /dist /var/www/html/
 EXPOSE 80/tcp
